@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin>
+    <class>com.skyseas.openfireplugins.userintegration.UserIntegrationPlugin</class>
+    <name>userintegration</name>
+    <description>提供订阅用户成功注册消息事件的功能，并将用户账号信息发布给订阅者。</description>
+    <author>张智</author>
+    <version>1.0.0</version>
+    <date>7/4/2014</date>
+    <minServerVersion>3.9.0</minServerVersion>
+    
+ <!--    <adminconsole>
+        <tab id="tab-server">
+            <sidebar id="sidebar-server-manager">
+                <item id="db-access" name="DB Access"
+                    url="db-access.jsp"
+                    description="Direct database manipulation tool." />
+            </sidebar>
+        </tab>
+    </adminconsole> -->
+    
+</plugin>
