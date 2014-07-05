@@ -12,12 +12,12 @@ import java.io.File;
 /**
  * openfire用户整合插件。
  * 运行时插件拦截XMPP协议中的 <b>jabber:iq:register</b>消息，当用户成功注册XMPP账号之后
- * 将用户注册的账号信息通过 {@link:RegisterSubscriber} 发布出去。
+ * 将用户注册的账号信息通过 {@link:RegisterSubscriber} 进行发布。
  */
 public class UserIntegrationPlugin implements Plugin {
 
     private static final Logger Log = LoggerFactory.getLogger(UserIntegrationPlugin.class);
-    private final static String REGISTER_SUBSCRIBER_CLASS_KEY ="register.subscriber.class";
+    public final static String REGISTER_SUBSCRIBER_CLASS_KEY ="register.subscriber.class";
 
     /**
      * 注册消息拦截器
@@ -58,7 +58,6 @@ public class UserIntegrationPlugin implements Plugin {
         // 插件销毁时移除消息拦截器
         InterceptorManager.getInstance().removeInterceptor(interceptor);
     }
-
     
     private RegisterSubscriber createSubscriber(String subscriberClassName) 
     		throws ClassNotFoundException, 
@@ -68,7 +67,7 @@ public class UserIntegrationPlugin implements Plugin {
 			subscriberClassName.length() == 0){
     		
     		// 使用默认的restful接口的订阅器
-    		return new RestfulSubscriber();
+    		return new HttpSubscriber();
     	}
     	
     	// 动态加载指定的订阅器
@@ -79,5 +78,9 @@ public class UserIntegrationPlugin implements Plugin {
     
     private RegisterInterceptor createInterceptor(RegisterSubscriber subscriber) {
         return new RegisterInterceptor(subscriber);
+    }
+    
+    RegisterInterceptor getInterceptor() {
+    	return interceptor;
     }
 }

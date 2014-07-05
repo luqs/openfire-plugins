@@ -9,12 +9,25 @@ import org.xmpp.packet.Packet;
  * Created by apple on 14-7-4.
  */
 public class RegisterInterceptor implements PacketInterceptor {
-    public RegisterInterceptor(RegisterSubscriber subscriber) {
+    private RegisterSubscriber subscriber;
 
+	public RegisterInterceptor(RegisterSubscriber subscriber) {
+		if(subscriber == null) { throw new NullPointerException("subscriber"); }
+		this.subscriber = subscriber;
     }
 
     @Override
-    public void interceptPacket(Packet packet, Session session, boolean b, boolean b2) throws PacketRejectedException {
-
+    public void interceptPacket(Packet packet, Session session, boolean incoming, boolean processed) throws PacketRejectedException {
+    	System.out.printf("incoming:%b\r\n", incoming);
+    	System.out.printf("processed:%b\r\n", processed);
+    	System.out.printf("xml:%s\r\n", packet.toXML());
+    	System.out.println();
+    	System.out.println("--------------------------------");
+    	System.out.println();
+    	System.out.println();
     }
+
+	public RegisterSubscriber getSubscriber() {
+		return subscriber;
+	}
 }

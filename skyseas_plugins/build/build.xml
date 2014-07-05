@@ -71,7 +71,8 @@
 		<javac destdir="${webapp.output.path}/jsp-dist/classes" optimize="off"
             encoding="UTF-8" debug="on" failonerror="false"
 			fork="yes"         
-			
+			target="1.6"
+			source="1.6"
             srcdir="${webapp.output.path}/jsp-dist/src" 
 			excludes="**/*.smap">
 			<classpath>

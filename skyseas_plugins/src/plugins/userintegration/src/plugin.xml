@@ -9,14 +9,14 @@
     <date>7/4/2014</date>
     <minServerVersion>3.9.0</minServerVersion>
     
- <!--    <adminconsole>
+    <adminconsole>
         <tab id="tab-server">
             <sidebar id="sidebar-server-manager">
-                <item id="db-access" name="DB Access"
-                    url="db-access.jsp"
-                    description="Direct database manipulation tool." />
+                <item id="userintegration" name="User Integration"
+                    url="userintegration_setting.jsp"
+                    description="set userintegration parameters." />
             </sidebar>
         </tab>
-    </adminconsole> -->
+    </adminconsole> 
     
 </plugin>
