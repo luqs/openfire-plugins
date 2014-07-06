@@ -9,9 +9,9 @@ import org.xmpp.packet.Packet;
  * Created by apple on 14-7-4.
  */
 public class RegisterInterceptor implements PacketInterceptor {
-    private RegisterSubscriber subscriber;
+    private UserEventSubscriber subscriber;
 
-	public RegisterInterceptor(RegisterSubscriber subscriber) {
+	public RegisterInterceptor(UserEventSubscriber subscriber) {
 		if(subscriber == null) { throw new NullPointerException("subscriber"); }
 		this.subscriber = subscriber;
     }
@@ -27,7 +27,7 @@ public class RegisterInterceptor implements PacketInterceptor {
     	System.out.println();
     }
 
-	public RegisterSubscriber getSubscriber() {
+	public UserEventSubscriber getSubscriber() {
 		return subscriber;
 	}
 }

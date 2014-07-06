@@ -4,16 +4,18 @@ import junit.framework.TestCase;
 import mockit.Expectations;
 import mockit.Mock;
 import mockit.MockUp;
+import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
 
+import org.jivesoftware.openfire.event.UserEventDispatcher;
 import org.jivesoftware.openfire.interceptor.InterceptorManager;
 import org.jivesoftware.openfire.interceptor.PacketInterceptor;
 import org.jivesoftware.util.JiveGlobals;
 
 public class UserIntegrationPluginTest extends TestCase {
 
-	private UserIntegrationPlugin plugin;
+ private UserIntegrationPlugin plugin;
 
 	@Override
 	public void setUp() throws Exception {
@@ -21,7 +23,7 @@ public class UserIntegrationPluginTest extends TestCase {
 	}
 
 
-	public void testInitializePlugin_when_subscriber_is_not_set() {
+	public void testInitializePlugin_when_subscriber_is_not_set(@Mocked UserEventDispatcher dispatcher) {
 		
 		// Arrange
 		new NonStrictExpectations(JiveGlobals.class) {
@@ -35,18 +37,22 @@ public class UserIntegrationPluginTest extends TestCase {
 		plugin.initializePlugin(null, null);
 		
 		// Assert
-		RegisterInterceptor interceptor = plugin.getInterceptor();
-		assertTrue(InterceptorManager.getInstance().getInterceptors().contains(interceptor));
-		assertEquals(interceptor.getSubscriber().getClass(), HttpSubscriber.class);
+		final UserIntegrationEventLister lisenter = plugin.getUserEventLisenter();
+		assertEquals(lisenter.getSubscriber().getClass(), HttpSubscriber.class);
+		new Verifications(){
+			{
+				UserEventDispatcher.addListener(lisenter); times = 1;
+			}
+		};
 	}
 	
-	public void testInitializePlugin_when_subscriber_is_set() {
+	public void testInitializePlugin_when_subscriber_is_set(@Mocked UserEventDispatcher dispatcher) {
 		
 		// Arrange
 		new NonStrictExpectations(JiveGlobals.class) {
 			{
 				JiveGlobals.getProperty(UserIntegrationPlugin.REGISTER_SUBSCRIBER_CLASS_KEY);
-				result = "com.skyseas.openfireplugins.userintegration.UserIntegrationPluginTest$MockSubscriber";
+				result = MockSubscriber.class.getName();
 			}
 		};
 		
@@ -54,29 +60,35 @@ public class UserIntegrationPluginTest extends TestCase {
 		plugin.initializePlugin(null, null);
 		
 		// Assert
-		RegisterInterceptor interceptor = plugin.getInterceptor();
-		assertTrue(InterceptorManager.getInstance().getInterceptors().contains(interceptor));
-		assertEquals(interceptor.getSubscriber().getClass(), MockSubscriber.class);
+		final UserIntegrationEventLister lisenter = plugin.getUserEventLisenter();
+		assertEquals(lisenter.getSubscriber().getClass(), MockSubscriber.class);
+		new Verifications(){
+			{
+				UserEventDispatcher.addListener(lisenter); times = 1;
+			}
+		};
 	}
 	
-	public void testDestroyPlugin() {
+	public void testDestroyPlugin(@Mocked UserEventDispatcher dispatcher) {
 		// Arrange
 		plugin.initializePlugin(null, null);
+		final UserIntegrationEventLister lisenter = plugin.getUserEventLisenter();
 		
 		// Act
 		plugin.destroyPlugin();
 		
 		// Assert
-		assertFalse(InterceptorManager
-				.getInstance()
-				.getInterceptors()
-				.contains(plugin.getInterceptor()));
+		new Verifications(){
+			{
+				UserEventDispatcher.removeListener(lisenter); times = 1;
+			}
+		};
 	}
 	
-	public static class MockSubscriber implements RegisterSubscriber {
+	public static class MockSubscriber implements UserEventSubscriber {
 
 		@Override
-		public void publish(RegisterUser user) { }
+		public void publish(UserInfo user) { }
 	}
 	
 }
