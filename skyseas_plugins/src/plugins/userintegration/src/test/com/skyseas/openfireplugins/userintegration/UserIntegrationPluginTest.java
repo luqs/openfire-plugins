@@ -37,7 +37,7 @@ public class UserIntegrationPluginTest extends TestCase {
 		plugin.initializePlugin(null, null);
 		
 		// Assert
-		final UserIntegrationEventLister lisenter = plugin.getUserEventLisenter();
+		final UserIntegrationEventListener lisenter = plugin.getUserEventLisenter();
 		assertEquals(lisenter.getSubscriber().getClass(), HttpSubscriber.class);
 		new Verifications(){
 			{
@@ -60,7 +60,7 @@ public class UserIntegrationPluginTest extends TestCase {
 		plugin.initializePlugin(null, null);
 		
 		// Assert
-		final UserIntegrationEventLister lisenter = plugin.getUserEventLisenter();
+		final UserIntegrationEventListener lisenter = plugin.getUserEventLisenter();
 		assertEquals(lisenter.getSubscriber().getClass(), MockSubscriber.class);
 		new Verifications(){
 			{
@@ -72,7 +72,7 @@ public class UserIntegrationPluginTest extends TestCase {
 	public void testDestroyPlugin(@Mocked UserEventDispatcher dispatcher) {
 		// Arrange
 		plugin.initializePlugin(null, null);
-		final UserIntegrationEventLister lisenter = plugin.getUserEventLisenter();
+		final UserIntegrationEventListener lisenter = plugin.getUserEventLisenter();
 		
 		// Act
 		plugin.destroyPlugin();

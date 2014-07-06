@@ -21,7 +21,7 @@ public class UserIntegrationPlugin implements Plugin {
     /**
      * 用户事件侦听器
      */
-	private UserIntegrationEventLister listener;
+	private UserIntegrationEventListener listener;
 
 
     /**
@@ -69,11 +69,11 @@ public class UserIntegrationPlugin implements Plugin {
         return (UserEventSubscriber)subscriber.newInstance();
     }
 
-    private UserIntegrationEventLister createListener(UserEventSubscriber subscriber) {
-		return new UserIntegrationEventLister(subscriber);
+    private UserIntegrationEventListener createListener(UserEventSubscriber subscriber) {
+		return new UserIntegrationEventListener(subscriber);
 	}
     
-    UserIntegrationEventLister getUserEventLisenter() {
+    UserIntegrationEventListener getUserEventLisenter() {
     	return listener;
     }
 

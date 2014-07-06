@@ -5,11 +5,11 @@ import java.util.Map;
 import org.jivesoftware.openfire.event.UserEventListener;
 import org.jivesoftware.openfire.user.User;
 
-public class UserIntegrationEventLister implements UserEventListener {
+public class UserIntegrationEventListener implements UserEventListener {
 
 	private UserEventSubscriber subscriber;
 
-	public UserIntegrationEventLister(UserEventSubscriber subscriber) {
+	public UserIntegrationEventListener(UserEventSubscriber subscriber) {
 		this.subscriber = subscriber;
 	}
 
