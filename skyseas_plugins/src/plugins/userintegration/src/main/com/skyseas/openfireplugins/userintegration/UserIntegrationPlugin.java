@@ -37,9 +37,10 @@ public class UserIntegrationPlugin implements Plugin {
             UserEventSubscriber subscriber = createSubscriber(subscriberClassName);
 
             // 创建用户事件侦听器
-            listener = createListener(subscriber);
-            UserEventDispatcher.addListener(listener);
+            UserIntegrationEventListener eventListener = createListener(subscriber);
+            UserEventDispatcher.addListener(eventListener);
             
+            this.listener = eventListener;
             Log.info(String.format("用户集成插件初始化完毕 Subscriber:%s", subscriber.getClass()));
             
         }catch (Exception exp) {
@@ -52,9 +53,13 @@ public class UserIntegrationPlugin implements Plugin {
      */
     @Override
     public void destroyPlugin() {
-        // 插件销毁时移除用户事件侦听器
-    	UserEventDispatcher.removeListener(listener);
+    	if(listener != null) {
+	        // 插件销毁时移除用户事件侦听器
+	    	UserEventDispatcher.removeListener(listener);
+    	}
     }
+    
+    UserIntegrationEventListener getUserEventLisenter() { return listener; }
     
     private UserEventSubscriber createSubscriber(String subscriberClassName) 
     		throws ClassNotFoundException,  IllegalAccessException, InstantiationException {
@@ -72,9 +77,4 @@ public class UserIntegrationPlugin implements Plugin {
     private UserIntegrationEventListener createListener(UserEventSubscriber subscriber) {
 		return new UserIntegrationEventListener(subscriber);
 	}
-    
-    UserIntegrationEventListener getUserEventLisenter() {
-    	return listener;
-    }
-
 }

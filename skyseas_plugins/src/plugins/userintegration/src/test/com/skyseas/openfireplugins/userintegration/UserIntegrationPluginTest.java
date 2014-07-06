@@ -1,16 +1,10 @@
 package com.skyseas.openfireplugins.userintegration;
 
 import junit.framework.TestCase;
-import mockit.Expectations;
-import mockit.Mock;
-import mockit.MockUp;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
-
 import org.jivesoftware.openfire.event.UserEventDispatcher;
-import org.jivesoftware.openfire.interceptor.InterceptorManager;
-import org.jivesoftware.openfire.interceptor.PacketInterceptor;
 import org.jivesoftware.util.JiveGlobals;
 
 public class UserIntegrationPluginTest extends TestCase {
@@ -88,7 +82,12 @@ public class UserIntegrationPluginTest extends TestCase {
 	public static class MockSubscriber implements UserEventSubscriber {
 
 		@Override
-		public void publish(UserInfo user) { }
+		public void publish(UserInfo user, UserEventType eventType) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		
 	}
 	
 }

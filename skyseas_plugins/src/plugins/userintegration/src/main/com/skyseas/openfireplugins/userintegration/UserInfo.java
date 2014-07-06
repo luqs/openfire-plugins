@@ -1,7 +1,7 @@
 package com.skyseas.openfireplugins.userintegration;
 
 /**
- * 注册用户信息。
+ * 用户信息。
  */
 public final class UserInfo {
     private final String username;
