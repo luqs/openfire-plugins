@@ -66,7 +66,7 @@ public class UserIntegrationPlugin implements Plugin {
     	
     	// 如果配置文件有显式设置订阅器类型则构建配置文件指定类型的订阅器，否则使用默认的Http订阅器
     	if( subscriberClassName == null || subscriberClassName.length() == 0){
-    		return new HttpSubscriber();
+    		return new HttpUserEventSubscriber();
     	}
     	
     	// 动态加载指定的订阅器

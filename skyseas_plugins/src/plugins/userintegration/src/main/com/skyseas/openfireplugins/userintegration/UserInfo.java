@@ -10,10 +10,10 @@ public final class UserInfo {
     private final String name;
 
     public UserInfo(String username, String password, String email, String name) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.name = name;
+        this.username 	= username;
+        this.password 	= password;  
+        this.email 		= email;
+        this.name 		= name;
     }
 
 

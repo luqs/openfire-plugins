@@ -32,7 +32,7 @@ public class UserIntegrationPluginTest extends TestCase {
 		
 		// Assert
 		final UserIntegrationEventListener lisenter = plugin.getUserEventLisenter();
-		assertEquals(lisenter.getSubscriber().getClass(), HttpSubscriber.class);
+		assertEquals(lisenter.getSubscriber().getClass(), HttpUserEventSubscriber.class);
 		new Verifications(){
 			{
 				UserEventDispatcher.addListener(lisenter); times = 1;

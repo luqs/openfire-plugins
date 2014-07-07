@@ -41,7 +41,7 @@ public class UserIntegrationEventListener implements UserEventListener {
 	// 用户消息修改之后
 	@Override
 	public void userModified(User user, Map<String, Object> params) {
-		publish(user, UserEventSubscriber.UserEventType.MODIFIED);
+		publish(user, UserEventSubscriber.UserEventType.MODIFIED);    
 	}
 
 	/**

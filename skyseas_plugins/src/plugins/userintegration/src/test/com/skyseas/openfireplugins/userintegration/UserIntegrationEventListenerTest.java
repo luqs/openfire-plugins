@@ -106,6 +106,7 @@ public class UserIntegrationEventListenerTest extends TestCase {
 		
 	}
 
+	
 
 	private void assertEventDispatch() {
 		// Assert
