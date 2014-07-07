@@ -182,7 +182,7 @@
 
 	<target name="openfire-plugin" depends="jspc,java-jar"/>
 
-	<target name="openfire-plugins" depends="all,java-jar,plug-jar"/>
+	<target name="openfire-plugins" depends="all,java-jar,java-plug-jar,plug-jar"/>
 
 	<target name="openfire-plugin-java" depends="clean,java-jar,java-plug-jar"/>
 </project>

@@ -1,12 +1,10 @@
 package com.skyseas.openfireplugins.userintegration;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.jivesoftware.util.JiveGlobals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +18,6 @@ import org.slf4j.LoggerFactory;
 public class HttpUserEventSubscriber implements UserEventSubscriber {
 	private EventConfigItem[] 			eventConfigItems;
 	private static final Logger 		Log 			= LoggerFactory.getLogger(HttpUserEventSubscriber.class);
-	private static final ObjectMapper 	objectMapper 	= new ObjectMapper(); /* 线程安全 */
 
 	public HttpUserEventSubscriber() {
 		initConfig();
@@ -28,82 +25,26 @@ public class HttpUserEventSubscriber implements UserEventSubscriber {
 	
 	@Override
 	public void publish(UserInfo user, UserEventType eventType) {
-
 		assert user != null;
 		assert eventType != null;
 		
 		// 获得当前事件类型的订阅配置项
-		EventConfigItem eventConfigItem = eventConfigItems[eventType.ordinal()];
-		if(eventConfigItem.enabled) {
-			publish(user, eventConfigItem);
-		} else {
-			Log.info(String.format("当前事件订阅未启用，忽略publish，eventType:%s。", eventType));
-		}
-	}
-	
-	private void publish(UserInfo user, EventConfigItem eventConfigItem) {
-		String targetUrl = eventConfigItem.getTargetUrl(user);
-		if(targetUrl.length() > 0) {
-			try {
-				int httpStatusCode = httpRequest(
-						eventConfigItem.method, 
-						targetUrl, 
-						eventConfigItem.sendConetntBody ? wrapContentBody(user) : null);
-				
-				if(httpStatusCode != HttpURLConnection.HTTP_OK) {
-					Log.warn(String.format("发送请求未成功, userName:%s, eventType:%s, httpStatusCode:%d", 
-							user.getUsername(), eventConfigItem.eventType, httpStatusCode));
-					
-					System.out.print("no");
-				}else {
-					System.out.print("ok");
-				}
-				
-			} catch (Exception e) {
-				Log.error(String.format("发送请求失败, userName:%s, eventType:%s", 
-						user.getUsername(), eventConfigItem.eventType), e);
-				System.out.print("no:" + e);
-			}	
-		} else {
-			Log.warn(String.format(
-					"没有为当前事件设置适当的targeturl, 忽略publish，eventType:%s", 
-					eventConfigItem.eventType));
-		}
-	}
-	
-	private Object wrapContentBody(UserInfo user) {
-		HashMap<String,Object> map = new HashMap<String, Object>(1);
-		map.put("user", user);
-		return map;
-	}
-	
-	private int httpRequest(String method, String targetUrl, Object contentBody) throws Exception{
-		URL url = new URL(targetUrl);
-		HttpURLConnection connection = (HttpURLConnection)url.openConnection(); 
-		
+		EventConfigItem eventConfigItem = getEventConfigItem(eventType);
 		try {
-			connection.setRequestMethod(method);
-			if(contentBody != null) {
-				// 写入json内容主体
-				byte[] data = objectMapper.writeValueAsBytes(contentBody);
-				connection.setDoOutput(true);
-				connection.setRequestProperty("content-length", String.valueOf(data.length));
-				connection.setRequestProperty("content-type", "application/json");
-				connection.getOutputStream().write(data);
-			}
-			connection.connect();
-			return connection.getResponseCode();
-			
-		}catch(Exception exp) {
-			throw exp;
-		}finally {
-			if(connection != null) { connection.disconnect(); }
+			eventConfigItem.processEvent(user);
+		} catch(Exception exp) {
+			Log.error(String.format("处理用户事件失败：UserName:%s, EventType:%s", 
+					user.getUsername(), eventType));
 		}
 	}
-
+	
 	public static String getEventTypeConfigKey(UserEventType eventType, String property) {
 		final String CONFIG_KEY_PREFIX = "userintegration.httpscriber.";
 		return CONFIG_KEY_PREFIX + eventType.toString() + "." + property;
+	}
+
+	private EventConfigItem getEventConfigItem(UserEventType eventType) {
+		return eventConfigItems[eventType.ordinal()];
 	}
 
 	/**
@@ -161,6 +102,25 @@ public class HttpUserEventSubscriber implements UserEventSubscriber {
 			this.urlShouldFormat 	= targetUrl != null &&  targetUrl.contains(USER_NAME_PLACEHOLDER);
 		}
 		
+		/**
+		 * 处理事件
+		 * @param user
+		 * @throws IOException 
+		 */
+		public void processEvent(UserInfo user) throws IOException {
+			if(enabled) {
+				String targetUrl 	= getTargetUrl(user);
+				Object content		= sendConetntBody ? wrapContentBody(user) : null;
+				int statusCode 		= HttpHelper.request(targetUrl, method, content);
+			}
+		}
+		
+		private Object wrapContentBody(UserInfo user) {
+			HashMap<String,Object> map = new HashMap<String, Object>(1);
+			map.put("User", user);
+			return map;
+		}
+
 		public String getTargetUrl(UserInfo user) {
 			if(!urlShouldFormat) { return targetUrl; }
 			assert user != null;
@@ -173,8 +133,8 @@ public class HttpUserEventSubscriber implements UserEventSubscriber {
 			} catch (UnsupportedEncodingException e) {
 				return null;
 			}
-			
 		}
+		
 	}
 
 }

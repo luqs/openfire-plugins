@@ -37,8 +37,6 @@ public class UserIntegrationEventListenerTest extends TestCase {
 		assertEquals(subscriber, listener.getSubscriber());
 	}
 	
-
-	
 	public void testUserCreated() throws UserNotFoundException  {
 		
 		// Arrange
