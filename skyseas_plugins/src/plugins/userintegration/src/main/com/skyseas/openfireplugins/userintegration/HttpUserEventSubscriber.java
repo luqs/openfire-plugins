@@ -2,6 +2,7 @@ package com.skyseas.openfireplugins.userintegration;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
@@ -34,7 +35,7 @@ public class HttpUserEventSubscriber implements UserEventSubscriber {
 			eventConfigItem.processEvent(user);
 		} catch(Exception exp) {
 			Log.error(String.format("处理用户事件失败：UserName:%s, EventType:%s", 
-					user.getUsername(), eventType));
+					user.getUserName(), eventType));
 		}
 	}
 	
@@ -112,6 +113,10 @@ public class HttpUserEventSubscriber implements UserEventSubscriber {
 				String targetUrl 	= getTargetUrl(user);
 				Object content		= sendConetntBody ? wrapContentBody(user) : null;
 				int statusCode 		= HttpHelper.request(targetUrl, method, content);
+				if(statusCode != HttpURLConnection.HTTP_OK) {
+					Log.warn(String.format("Http请求可能未成功：UserName:%s, EventType:%s, StatusCode:%d", 
+							user.getUserName(), eventType, statusCode));
+				}
 			}
 		}
 		
@@ -129,7 +134,7 @@ public class HttpUserEventSubscriber implements UserEventSubscriber {
 			try {
 				return targetUrl.replace(
 						(CharSequence)USER_NAME_PLACEHOLDER, 
-						(CharSequence)URLEncoder.encode(user.getUsername(), "utf-8"));
+						(CharSequence)URLEncoder.encode(user.getUserName(), "utf-8"));
 			} catch (UnsupportedEncodingException e) {
 				return null;
 			}

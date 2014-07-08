@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import junit.framework.TestCase;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 
@@ -34,7 +35,10 @@ public class HttpHelperTest extends TestCase {
 	
 	
 	public void testRequest() throws IOException {
-	
+		  ObjectMapper 	objectMapper 	= new ObjectMapper();
+		UserInfo user = new UserInfo("xiaomi", "password", "zhangsan@qq.com", "уехЩ");
+		System.out.println(objectMapper.writeValueAsString(user));
+		
 	}
 	
 

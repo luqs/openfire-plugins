@@ -11,7 +11,7 @@ import java.io.File;
 
 /**
  * openfire用户整合插件。
- * 运行时插件侦听用户事件，并将事件信息通过{@link:RegisterSubscriber} 进行发布。
+ * 运行时插件侦听用户事件，并将事件信息通过{@link:UserIntegrationEventListener} 进行发布。
  */
 public class UserIntegrationPlugin implements Plugin {
 

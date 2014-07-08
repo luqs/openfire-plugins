@@ -115,7 +115,7 @@ public class UserIntegrationEventListenerTest extends TestCase {
 				forEachInvocation = new Object() {
 					@SuppressWarnings("unused")
 					public void validate(UserInfo userInfo, UserEventType eventType) {
-						assertEquals(expectUser.getUsername(), userInfo.getUsername());
+						assertEquals(expectUser.getUsername(), userInfo.getUserName());
 						assertEquals(expectUser.getName(), userInfo.getName());
 						assertEquals(expectUser.getEmail(), userInfo.getEmail());
 						assertEquals(expectPassword, userInfo.getPassword());

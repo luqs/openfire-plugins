@@ -16,7 +16,7 @@ public final class UserInfo {
         this.name 		= name;
     }
 
-    public String getUsername() {
+    public String getUserName() {
         return userName;
     }
 
