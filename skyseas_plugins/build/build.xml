@@ -13,6 +13,9 @@
 	<property name="plugin.jsp.src.path" value="${plugin.output.path}/jsp/src" />
 	<property name="plugin.jsp.jar" value="${plugin.output.path}/jsp/plugin-${plugin.name}-jsp.jar" />
 	
+	<import file="${plugin.main.src.path}/buildext.xml" optional="true" />
+  
+	
 	<target name="init">
 		<mkdir dir="${plugin.output.path}" />
 		<mkdir dir="${plugin.main.dist.path}" />
@@ -126,16 +129,17 @@
 		<!-- 复制插件主代码jar和servlet jar  -->
 		<copy file="${plugin.main.jar}" todir="${lib}"/>
 		<copy file="${plugin.jsp.jar}" todir="${lib}"/>
+		
+		<!-- 复制插件自身依赖的jar文件 -->
+		<antcall target="copy_plugin_refs" >
+			<param name="todir" value="${lib}"/>
+		</antcall>
 
 		<!-- 将相关的图片、帮助文档、修改日志等文件复制到插件目录下 -->
 		<copy todir="${plugin_root}">
-			<fileset dir="${plugin.main.src.path}" includes="*.*"/>
+			<fileset dir="${plugin.main.src.path}" includes="*.*" excludes="buildext.xml" />
 		</copy>
-		
-		
-		<copy file="../lib/jackson-core-asl-1.9.4.jar" todir="${lib}"/>
-		<copy file="../lib/jackson-mapper-asl-1.9.4.jar" todir="${lib}"/>
-		
+
 		<!-- jsp servlet的web xml 复制到插件目录下 -->
 		<copy file="${plugin.jsp.src.path}/web.xml" todir="${plugin_root}/web/WEB-INF"/>
 		
@@ -165,6 +169,14 @@
 			<fileset dir="${plugin_root}" includes="**/**"/>
 		</jar>
 			
+	</target>
+	
+	<target name="copy_plugin_refs" if="copy_refs">
+		<copy todir="${todir}">
+			<fileset dir="../lib">
+				<patternset refid="plugin_refs" />
+			</fileset>
+		</copy>
 	</target>
 
 </project>
