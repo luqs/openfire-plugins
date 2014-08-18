@@ -1,32 +1,89 @@
-<project name="Webapp Precompilation" default="openfire-plugins" basedir=".">
+
+<project name="openfire plugin build" default="plugin_jar" basedir=".">
 	
-	<!-- 全局变量设置 -->
 	<property file="build.properties" />
 	
-	<!-- 插件源码位置 -->
-	<property name="plugin.path" value="../src/plugins/${plugin.name}/src" />
 	
-	<!-- web应用输出目录 -->
-	<property name="webapp.output.path" value="../src/plugins/${plugin.name}/bin" />
+	<property name="plugin.output.path" value="../src/plugins/${plugin.name}/dist" />
+	<property name="plugin.main.src.path" value="../src/plugins/${plugin.name}/src" />
+	<property name="plugin.main.dist.path" value="${plugin.output.path}/main/classes" />
+	<property name="plugin.main.jar" value="${plugin.output.path}/main/plugin-${plugin.name}-main.jar" />
+		
+	<property name="plugin.jsp.dist.path" value="${plugin.output.path}/jsp/classes" />
+	<property name="plugin.jsp.src.path" value="${plugin.output.path}/jsp/src" />
+	<property name="plugin.jsp.jar" value="${plugin.output.path}/jsp/plugin-${plugin.name}-jsp.jar" />
 	
-	<!-- java servlet相关文件编译jar存放位置 -->
-	<property name="java.jar.dir" value="${webapp.output.path}/java-dist"/>
+	<target name="init">
+		<mkdir dir="${plugin.output.path}" />
+		<mkdir dir="${plugin.main.dist.path}" />
+		<mkdir dir="${plugin.jsp.dist.path}" />
+		<mkdir dir="${plugin.jsp.src.path}" />
+	</target>
 	
-	<!-- jsp servlet编译后jar存放位置 -->
-	<property name="jsp.jar.dir" value="${webapp.output.path}/jsp-dist/lib"/>
+	<target name="clean">
+		<delete dir="${plugin.output.path}" />
+	</target>
 
-	<!-- 定义java servlet编译打包的Jar包名称 -->
-	<property name="java.jar" value="${java.jar.dir}/plugin-${plugin.name}.jar"/>
+
+	<target name="main_compile" depends="init">
+	<description> 编译插件代码 </description>
+		<javac destdir="${plugin.main.dist.path}"  failonerror="false"
+				fork="yes"  target="1.6" source="1.6"
+				srcdir="${plugin.main.src.path}/main" 
+				excludes="**/*.smap" >
+				<classpath>
+					<fileset dir="../lib">
+						<include name="*.jar" />
+					</fileset>
+				</classpath>
+				<include name="**" />
+				<exclude name="tags/**" />
+		</javac>
+		
+		<jar jarfile="${plugin.main.jar}" basedir="${plugin.main.dist.path}" />
+	</target>
 	
-	<!-- 定义jsp servlet编译打包的Jar包名称 -->
-	<property name="jsp.jar" value="${jsp.jar.dir}/plugin-${plugin.name}-jsp.jar"/>
+	<target name="jsp_compile" depends="jspc">
+		<description> 将编译好的jsp文件，编译为class </description>
+	
+		<javac destdir="${plugin.jsp.dist.path}" 
+            encoding="UTF-8" debug="on" failonerror="false"
+			fork="yes"         
+			target="1.6"
+			source="1.6"
+            srcdir="${plugin.jsp.src.path}" 
+			excludes="**/*.smap">
+			<classpath>
+				<pathelement location="${plugin.main.dist.path}" />
+				<pathelement location="../bin" />
+				
+				<fileset dir="../lib">
+					<include name="*.jar" />
+				</fileset>
+				
+				<pathelement location="${tomcat.home}/common/classes" />
+				<fileset dir="${tomcat.home}/common/lib">
+					<include name="*.jar" />
+				</fileset>
+				
+				<pathelement location="${tomcat.home}/shared/classes" />
+				<fileset dir="${tomcat.home}/shared/lib">
+					<include name="*.jar" />
+				</fileset>
+				
+				<fileset dir="${tomcat.home}/bin">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<include name="**" />
+			<exclude name="tags/**" />
+		</javac>
 
-	<!-- jsp servlet配置到web.xml中 -->
-	<property name="plugin.web.xml" value="${webapp.output.path}/jsp-dist/web.xml"/>
+		<jar jarfile="${plugin.jsp.jar}" basedir="${plugin.jsp.dist.path}" />
+	</target>
 
-	<!-- 编译jsp 并生成相关jar、xml文件 -->
 	<target name="jspc">
-
+	<description> 编译插件jsp文件 </description>
 		<taskdef classname="org.apache.jasper.JspC" name="jasper2">
 			<classpath id="jspc.classpath">
 				<pathelement location="${java.home}/../lib/tools.jar" />
@@ -39,150 +96,75 @@
 				<fileset dir="${tomcat.home}/common/lib">
 					<include name="*.jar" />
 				</fileset>
-				<!--
-                <fileset dir="D:/Workspace/openfire/build/lib">
-                    <include name="**/*.jar" />
-                </fileset-->
 			</classpath>
 		</taskdef>
 
-		<!-- 编译jsp -> servlet class -->
-		<jasper2 javaEncoding="UTF-8" validateXml="false"
-            uriroot="${plugin.path}/web"
-            outputDir="${webapp.output.path}/jsp-dist/src"
+	
+		<jasper2 javaEncoding="UTF-8" validateXml="false" uriroot="${plugin.main.src.path}/web"
+            outputDir="${plugin.jsp.src.path}"
             package="com.skyseas.openfireplugins.${plugin.name}" />
 
-		<!-- 编译后的servlet class 配置到web.xml文件中 -->
-		<jasper2
-            validateXml="false"
-            uriroot="${plugin.path}/web"
-            outputDir="${webapp.output.path}/jsp-dist/src"
+		<jasper2 validateXml="false" uriroot="${plugin.main.src.path}/web"
+            outputDir="${plugin.jsp.src.path}"
             package="com.skyseas.openfireplugins.${plugin.name}"
-            webXml="${plugin.web.xml}"/>
+            webXml="${plugin.jsp.src.path}/web.xml"/>
+			
 	</target>
-
-	<!-- 编译jsp 并将其打jar包 -->
-	<target name="compile">
-
-		<mkdir dir="${webapp.output.path}/jsp-dist/classes" />
-		<mkdir dir="${webapp.output.path}/jsp-dist/lib" />
-		<mkdir dir="${webapp.output.path}/jsp-dist/src" />
-
-		<javac destdir="${webapp.output.path}/jsp-dist/classes" optimize="off"
-            encoding="UTF-8" debug="on" failonerror="false"
-			fork="yes"         
-			target="1.6"
-			source="1.6"
-            srcdir="${webapp.output.path}/jsp-dist/src" 
-			excludes="**/*.smap">
-			<classpath>
-				<pathelement location="${webapp.output.path}/jsp-dist/classes" />
-				<pathelement location="../bin" />
-				
-				<fileset dir="${webapp.output.path}/jsp-dist/lib">
-					<include name="*.jar" />
-				</fileset>
-				<fileset dir="../lib">
-					<include name="*.jar" />
-				</fileset>
-				<pathelement location="${tomcat.home}/common/classes" />
-				<fileset dir="${tomcat.home}/common/lib">
-					<include name="*.jar" />
-				</fileset>
-				<pathelement location="${tomcat.home}/shared/classes" />
-				<fileset dir="${tomcat.home}/shared/lib">
-					<include name="*.jar" />
-				</fileset>
-				<fileset dir="${tomcat.home}/bin">
-					<include name="*.jar" />
-				</fileset>
-			</classpath>
-			<include name="**" />
-			<exclude name="tags/**" />
-		</javac>
-
-		<jar jarfile="${jsp.jar}" basedir="${webapp.output.path}/jsp-dist/classes" />
-	</target>
-
-	<!-- 将java servlet打包成jar -->
-	<target name="java-jar">
-		<mkdir dir="${java.jar.dir}"/>
-		<jar jarfile="${java.jar}">
-			<fileset dir="../bin" includes="**/*.class" excludes="**/*Test*.class"/>
-		</jar>
-	</target>
-
-	<!-- 生成可部署的插件包 -->
-	<target name="plug-jar">
+	
+	
+	<target name="plugin_jar"  depends="main_compile,jsp_compile" >
+		<description> 打包可部署的插件jar文件 </description>
+		
+		<property name="plugin_root" value="${plugin.output.path}/plugin" />
+		<property name="lib" value="${plugin_root}/lib" />
+		
+		
 		<!-- 插件插件包相关lib、 web目录 -->
-		<mkdir dir="${webapp.output.path}/${plugin.name}/lib"/>
-		<mkdir dir="${webapp.output.path}/${plugin.name}/web/WEB-INF"/>
+		<mkdir dir="${lib}"/>
+		<mkdir dir="${plugin.output.path}/plugin/web/WEB-INF"/>
 
-		<!-- 复制jsp servlet的jar和java servlet的相关jar包到插件包的lib目录下 -->
-		<copy file="${java.jar}" todir="${webapp.output.path}/${plugin.name}/lib"/>
-		<copy file="${jsp.jar}" todir="${webapp.output.path}/${plugin.name}/lib"/>
+		<!-- 复制插件主代码jar和servlet jar  -->
+		<copy file="${plugin.main.jar}" todir="${lib}"/>
+		<copy file="${plugin.jsp.jar}" todir="${lib}"/>
 
 		<!-- 将相关的图片、帮助文档、修改日志等文件复制到插件目录下 -->
-		<copy todir="${webapp.output.path}/${plugin.name}">
-			<fileset dir="${plugin.path}" includes="*.*"/>
+		<copy todir="${plugin_root}">
+			<fileset dir="${plugin.main.src.path}" includes="*.*"/>
 		</copy>
-		<copy todir="${webapp.output.path}/${plugin.name}/web">
-			<fileset dir="${plugin.path}/web">
+		
+		
+		<copy file="../lib/jackson-core-asl-1.9.4.jar" todir="${lib}"/>
+		<copy file="../lib/jackson-mapper-asl-1.9.4.jar" todir="${lib}"/>
+		
+		<!-- jsp servlet的web xml 复制到插件目录下 -->
+		<copy file="${plugin.jsp.src.path}/web.xml" todir="${plugin_root}/web/WEB-INF"/>
+		
+		
+		<!--
+		<copy todir="${plugin_root}/web">
+			<fileset dir="${plugin.main.src.path}/web">
 				<include name="*"/>
 				<include name="**/*.*"/>
 				<exclude name="**/*.xml"/>
 				<exclude name="**/*.jsp"/>
 			</fileset>
 		</copy>
-		<!-- jsp servlet的web复制到插件目录下 -->
-		<copy file="${plugin.web.xml}" todir="${webapp.output.path}/${plugin.name}/web/WEB-INF"/>
+		
+		-->
+
+		<!--
 		<copy todir="${webapp.output.path}/${plugin.name}/web">
 			<fileset dir="${plugin.path}/web" includes="**/*.xml"/>
 		</copy>
+		-->
 		<!-- 将国际化相关资源文件复制到插件目录下 
         <copy file="${webapp.output.path}/bin/i18n" todir="${webapp.output.path}/${plugin.name}"/>
         -->
 		<!-- 产生可部署插件包 -->
-		<jar jarfile="${webapp.output.path}/${plugin.name}.jar">
-			<fileset dir="${webapp.output.path}/${plugin.name}" includes="**/**"/>
+		<jar jarfile="${plugin.output.path}/${plugin.name}.jar">
+			<fileset dir="${plugin_root}" includes="**/**"/>
 		</jar>
+			
 	</target>
 
-	<!-- 生成没有Web资源的可部署插件包 -->
-	<target name="java-plug-jar">
-		<!-- 插件插件包相关lib、 web目录 -->
-		<mkdir dir="${webapp.output.path}/${plugin.name}/lib"/>
-
-		<!-- 复制java servlet的相关jar包到插件包的lib目录下 -->
-		<copy file="${java.jar}" todir="${webapp.output.path}/${plugin.name}/lib"/>
-		
-		<copy file="../lib/jackson-core-asl-1.9.4.jar" todir="${webapp.output.path}/${plugin.name}/lib"/>
-		<copy file="../lib/jackson-mapper-asl-1.9.4.jar" todir="${webapp.output.path}/${plugin.name}/lib"/>
-
-		<!-- 将相关的图片、帮助文档、修改日志等文件复制到插件目录下 -->
-		<copy todir="${webapp.output.path}/${plugin.name}">
-			<fileset dir="${plugin.path}" includes="*.*"/>
-		</copy>
-
-		<!-- 产生可部署插件包 -->
-		<jar jarfile="${webapp.output.path}/${plugin.name}.jar">
-			<fileset dir="${webapp.output.path}/${plugin.name}" includes="**/**"/>
-		</jar>
-	</target>
-
-	<!-- 清理生成的文件 -->
-	<target name="clean">
-		<delete file="${webapp.output.path}/${plugin.name}.jar"/>
-		<delete dir="${webapp.output.path}/${plugin.name}"/>
-		<delete dir="${webapp.output.path}/jsp-dist"/>
-		<delete dir="${webapp.output.path}/java-dist"/>
-	</target>
-
-	<target name="all" depends="clean,jspc,compile"/>
-
-	<target name="openfire-plugin" depends="jspc,java-jar"/>
-
-	<target name="openfire-plugins" depends="all,java-jar,java-plug-jar,plug-jar"/>
-
-	<target name="openfire-plugin-java" depends="clean,java-jar,java-plug-jar"/>
 </project>

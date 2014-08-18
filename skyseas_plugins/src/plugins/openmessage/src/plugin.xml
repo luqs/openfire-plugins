@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin>
+    <class>com.skyseas.openfireplugins.userintegration.UserIntegrationPlugin</class>
+    <name>userintegration</name>
+    <description>提供开放的系统消息接口。</description>
+    <author>张智</author>
+    <version>1.0.0</version>
+    <date>8/15/2014</date>
+    <minServerVersion>3.9.0</minServerVersion>
+    
+    <adminconsole>
+        <tab id="tab-server">
+            <sidebar id="sidebar-server-manager">
+                <item id="userintegration" name="User Integration"
+                    url="userintegration_setting.jsp"
+                    description="set userintegration parameters." />
+            </sidebar>
+        </tab>
+    </adminconsole> 
+    
+</plugin>
