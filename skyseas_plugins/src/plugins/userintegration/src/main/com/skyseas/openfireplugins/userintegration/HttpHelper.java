@@ -8,7 +8,7 @@ import java.net.URL;
 import org.codehaus.jackson.map.ObjectMapper;
 
 public final class HttpHelper {
-	private static final ObjectMapper 	objectMapper 	= new ObjectMapper(); /* 线程安全 */
+	private static final ObjectMapper 	objectMapper 	= new ObjectMapper(); /* 绾跨▼瀹夊叏 */
 	private HttpHelper() {}
 
 	
@@ -18,7 +18,7 @@ public final class HttpHelper {
 		connection.setRequestMethod(method);
 		
 		if(content != null) {
-			// 写入json内容主体
+			// 鍐欏叆json鍐呭涓讳綋
 			byte[] data = objectMapper.writeValueAsBytes(content);
 			connection.setDoOutput(true);
 			connection.setRequestProperty("content-length", String.valueOf(data.length));

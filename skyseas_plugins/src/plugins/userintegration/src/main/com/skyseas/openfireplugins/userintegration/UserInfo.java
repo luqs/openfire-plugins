@@ -1,7 +1,7 @@
 package com.skyseas.openfireplugins.userintegration;
 
 /**
- * ÓÃ»§ĞÅÏ¢¡£
+ * ç”¨æˆ·ä¿¡æ¯ã€‚
  */
 public final class UserInfo {
     private final String userName;

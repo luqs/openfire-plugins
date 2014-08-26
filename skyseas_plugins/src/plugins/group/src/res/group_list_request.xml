@@ -1,0 +1,21 @@
+<iq id="wrg1u-8933" to="my@group.192.168.1.104" type="set">
+    <query xmlns="http://skyseas.com/protocol/group#info">
+        <x xmlns="jabber:x:data" type="submit">
+            <field var="FORM_TYPE" type="hidden">
+                <value>http://jabber.org/protocol/muc#roomconfig</value>
+            </field>
+            <field var="group#groupconfig_roomname" type="text-single">
+                <value>w我的</value>
+            </field>
+            <field var="muc#roomconfig_roomdesc" type="text-single">
+                <value/>
+            </field>
+            <field var="muc#roomconfig_persistentroom" type="boolean">
+                <value>1</value>
+            </field>
+            <field var="muc#roomconfig_roomowners" type="jid-multi">
+                <value>admin@192.168.1.104</value>
+            </field>
+        </x>
+    </query>
+</iq>

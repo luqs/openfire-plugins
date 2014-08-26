@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 
 /**
- * openfireÓÃ»§ÕûºÏ²å¼ş¡£
- * ÔËĞĞÊ±²å¼şÕìÌıÓÃ»§ÊÂ¼ş£¬²¢½«ÊÂ¼şĞÅÏ¢Í¨¹ı{@link:UserIntegrationEventListener} ½øĞĞ·¢²¼¡£
+ * openfireç”¨æˆ·æ•´åˆæ’ä»¶ã€‚
+ * è¿è¡Œæ—¶æ’ä»¶ä¾¦å¬ç”¨æˆ·äº‹ä»¶ï¼Œå¹¶å°†äº‹ä»¶ä¿¡æ¯é€šè¿‡{@link:UserIntegrationEventListener} è¿›è¡Œå‘å¸ƒã€‚
  */
 public class UserIntegrationPlugin implements Plugin {
 
@@ -19,42 +19,42 @@ public class UserIntegrationPlugin implements Plugin {
     public final static String REGISTER_SUBSCRIBER_CLASS_KEY ="register.subscriber.class";
 
     /**
-     * ÓÃ»§ÊÂ¼şÕìÌıÆ÷
+     * ç”¨æˆ·äº‹ä»¶ä¾¦å¬å™¨
      */
 	private UserIntegrationEventListener listener;
 
 
     /**
-     * ²å¼ş³õÊ¼»¯ÊÂ¼ş
-     * @param pluginManager ²å¼ş¹ÜÀíÆ÷ÊµÀı
+     * æ’ä»¶åˆå§‹åŒ–äº‹ä»¶
+     * @param pluginManager æ’ä»¶ç®¡ç†å™¨å®ä¾‹
      * @param file
      */
     @Override
     public void initializePlugin(PluginManager pluginManager, File file) {
         try {
-            // ´ÓÅäÖÃÎÄ¼şÖĞ»ñÈ¡¶©ÔÄÆ÷ÀàĞÍ
+            // ä»é…ç½®æ–‡ä»¶ä¸­è·å–è®¢é˜…å™¨ç±»å‹
             String subscriberClassName = JiveGlobals.getProperty(REGISTER_SUBSCRIBER_CLASS_KEY);
             UserEventSubscriber subscriber = createSubscriber(subscriberClassName);
 
-            // ´´½¨ÓÃ»§ÊÂ¼şÕìÌıÆ÷
+            // åˆ›å»ºç”¨æˆ·äº‹ä»¶ä¾¦å¬å™¨
             UserIntegrationEventListener eventListener = createListener(subscriber);
             UserEventDispatcher.addListener(eventListener);
             
             this.listener = eventListener;
-            Log.info(String.format("ÓÃ»§¼¯³É²å¼ş³õÊ¼»¯Íê±Ï Subscriber:%s", subscriber.getClass()));
+            Log.info(String.format("ç”¨æˆ·é›†æˆæ’ä»¶åˆå§‹åŒ–å®Œæ¯• Subscriber:%s", subscriber.getClass()));
             
         }catch (Exception exp) {
-            Log.error("ÓÃ»§ÕûºÏ²å¼ş³õÊ¼»¯Ê§°Ü", exp);
+            Log.error("ç”¨æˆ·æ•´åˆæ’ä»¶åˆå§‹åŒ–å¤±è´¥", exp);
         }
     }
 
 	/**
-     * ²å¼şÏú»ÙÊÂ¼ş
+     * æ’ä»¶é”€æ¯äº‹ä»¶
      */
     @Override
     public void destroyPlugin() {
     	if(listener != null) {
-	        // ²å¼şÏú»ÙÊ±ÒÆ³ıÓÃ»§ÊÂ¼şÕìÌıÆ÷
+	        // æ’ä»¶é”€æ¯æ—¶ç§»é™¤ç”¨æˆ·äº‹ä»¶ä¾¦å¬å™¨
 	    	UserEventDispatcher.removeListener(listener);
     	}
     }
@@ -64,12 +64,12 @@ public class UserIntegrationPlugin implements Plugin {
     private UserEventSubscriber createSubscriber(String subscriberClassName) 
     		throws ClassNotFoundException,  IllegalAccessException, InstantiationException {
     	
-    	// Èç¹ûÅäÖÃÎÄ¼şÓĞÏÔÊ½ÉèÖÃ¶©ÔÄÆ÷ÀàĞÍÔò¹¹½¨ÅäÖÃÎÄ¼şÖ¸¶¨ÀàĞÍµÄ¶©ÔÄÆ÷£¬·ñÔòÊ¹ÓÃÄ¬ÈÏµÄHttp¶©ÔÄÆ÷
+    	// å¦‚æœé…ç½®æ–‡ä»¶æœ‰æ˜¾å¼è®¾ç½®è®¢é˜…å™¨ç±»å‹åˆ™æ„å»ºé…ç½®æ–‡ä»¶æŒ‡å®šç±»å‹çš„è®¢é˜…å™¨ï¼Œå¦åˆ™ä½¿ç”¨é»˜è®¤çš„Httpè®¢é˜…å™¨
     	if( subscriberClassName == null || subscriberClassName.length() == 0){
     		return new HttpUserEventSubscriber();
     	}
     	
-    	// ¶¯Ì¬¼ÓÔØÖ¸¶¨µÄ¶©ÔÄÆ÷
+    	// åŠ¨æ€åŠ è½½æŒ‡å®šçš„è®¢é˜…å™¨
     	Class<?> subscriber = Class.forName(subscriberClassName);
         return (UserEventSubscriber)subscriber.newInstance();
     }

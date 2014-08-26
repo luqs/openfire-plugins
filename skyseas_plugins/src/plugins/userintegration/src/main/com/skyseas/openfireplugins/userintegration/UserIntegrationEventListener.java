@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import com.skyseas.openfireplugins.userintegration.UserEventSubscriber.UserEventType;
 
 /**
- * openfireÓÃ»§ÕûºÏÊÂ¼şÕìÌıÆ÷£¬{@link:UserIntegrationEventListener}ÕìÌıopenfireÓÃ»§ÊÂ¼ş£¬²¢½«
- * ÊÂ¼şÏûÏ¢·¢²¼µ½Ö¸¶¨¶©ÔÄÆ÷¡£
+ * openfireç”¨æˆ·æ•´åˆäº‹ä»¶ä¾¦å¬å™¨ï¼Œ{@link:UserIntegrationEventListener}ä¾¦å¬openfireç”¨æˆ·äº‹ä»¶ï¼Œå¹¶å°†
+ * äº‹ä»¶æ¶ˆæ¯å‘å¸ƒåˆ°æŒ‡å®šè®¢é˜…å™¨ã€‚
  * @author apple
  *
  */
@@ -26,34 +26,34 @@ public class UserIntegrationEventListener implements UserEventListener {
 		this.subscriber = subscriber;
 	}
 
-	// ÓÃ»§ÏûÏ¢´´½¨Ö®ºó
+	// ç”¨æˆ·æ¶ˆæ¯åˆ›å»ºä¹‹å
 	@Override
 	public void userCreated(User user, Map<String, Object> params) {
 		publish(user, UserEventSubscriber.UserEventType.CREATED);
 	}
 	
-	// ÓÃ»§ĞÅÏ¢É¾³ıÖ®Ç°
+	// ç”¨æˆ·ä¿¡æ¯åˆ é™¤ä¹‹å‰
 	@Override
 	public void userDeleting(User user, Map<String, Object> params) {
 		publish(user, UserEventSubscriber.UserEventType.DELETING);
 	}
 
-	// ÓÃ»§ÏûÏ¢ĞŞ¸ÄÖ®ºó
+	// ç”¨æˆ·æ¶ˆæ¯ä¿®æ”¹ä¹‹å
 	@Override
 	public void userModified(User user, Map<String, Object> params) {
 		publish(user, UserEventSubscriber.UserEventType.MODIFIED);    
 	}
 
 	/**
-	 * »ñµÃµ±Ç°¶©ÔÄÆ÷ÊµÀı¡£
-	 * @return ¶©ÔÄÆ÷ÊµÀı¡£
+	 * è·å¾—å½“å‰è®¢é˜…å™¨å®ä¾‹ã€‚
+	 * @return è®¢é˜…å™¨å®ä¾‹ã€‚
 	 */
 	public UserEventSubscriber getSubscriber() {
 		return subscriber;
 	}
 	
 	/**
-	 * ½«ÓÃ»§ÊÂ¼ş·¢²¼µ½¶©ÔÄÆ÷¶ÔÏóÊµÀı¡£
+	 * å°†ç”¨æˆ·äº‹ä»¶å‘å¸ƒåˆ°è®¢é˜…å™¨å¯¹è±¡å®ä¾‹ã€‚
 	 * @param user
 	 * @param eventType
 	 */
@@ -63,13 +63,13 @@ public class UserIntegrationEventListener implements UserEventListener {
 		try {
 			subscriber.publish(userInfo, eventType);
 		}catch(Exception exp) {
-			Log.error(String.format("½«ÓÃ»§ÊÂ¼ş·¢²¼µ½¶©ÔÄÆ÷Ê§°Ü£¬UserName:%s, EventType:%s", 
+			Log.error(String.format("å°†ç”¨æˆ·äº‹ä»¶å‘å¸ƒåˆ°è®¢é˜…å™¨å¤±è´¥ï¼ŒUserName:%s, EventType:%s", 
 					user.getName(), eventType.toString()));
 		}
 	}
 	
 	/**
-	 * ´ÓopenfireÓÃ»§ĞÅÏ¢£¬»ñµÃ¶©ÔÄÆ÷ĞèÒªµÄUserInfoÊµÀı¡£
+	 * ä»openfireç”¨æˆ·ä¿¡æ¯ï¼Œè·å¾—è®¢é˜…å™¨éœ€è¦çš„UserInfoå®ä¾‹ã€‚
 	 * @param user
 	 * @return
 	 */
@@ -78,13 +78,13 @@ public class UserIntegrationEventListener implements UserEventListener {
 		
 		try {
 			
-			// ´ÓAuthÄ£¿é»ñµÃÓÃ»§ÃÜÂëĞÅÏ¢
+			// ä»Authæ¨¡å—è·å¾—ç”¨æˆ·å¯†ç ä¿¡æ¯
 			password = AuthFactory.getPassword(user.getUsername());
 		} catch (UnsupportedOperationException e) {
-			Log.error(String.format("»ñµÃusername:%sÃÜÂëÊ§°Ü,ÒòÎªµ±Ç°AuthFactory²»Ö§³Ö¡£", 
+			Log.error(String.format("è·å¾—username:%så¯†ç å¤±è´¥,å› ä¸ºå½“å‰AuthFactoryä¸æ”¯æŒã€‚", 
 							user.getUsername()), e);
 		} catch (UserNotFoundException e) {
-			Log.error(String.format("»ñµÃusername:%sÃÜÂëÊ§°Ü,ÒòÎªµ±Ç°UserName²»´æÔÚ¡£", 
+			Log.error(String.format("è·å¾—username:%så¯†ç å¤±è´¥,å› ä¸ºå½“å‰UserNameä¸å­˜åœ¨ã€‚", 
 					user.getUsername()), e);
 		}
 	

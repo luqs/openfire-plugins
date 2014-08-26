@@ -1,6 +1,6 @@
 package com.skyseas.openfireplugins.userintegration;
 
-import static org.junit.Assert.*;
+
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import junit.framework.TestCase;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.junit.Test;
+
 
 
 
@@ -36,7 +36,7 @@ public class HttpHelperTest extends TestCase {
 	
 	public void testRequest() throws IOException {
 		  ObjectMapper 	objectMapper 	= new ObjectMapper();
-		UserInfo user = new UserInfo("xiaomi", "password", "zhangsan@qq.com", "ÕÅÈý");
+		UserInfo user = new UserInfo("xiaomi", "password", "zhangsan@qq.com", "å¼ ä¸‰");
 		System.out.println(objectMapper.writeValueAsString(user));
 		
 	}

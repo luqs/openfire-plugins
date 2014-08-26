@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * »ùÓÚHTTPµÄÓÃ»§ÊÂ¼ş¶©ÔÄÆ÷£¬½«ÓÃ»§ÊÂ¼şĞÅÏ¢Í¨¹ıHTTP½Ó¿Ú½øĞĞ·¢²¼¡£
+ * åŸºäºHTTPçš„ç”¨æˆ·äº‹ä»¶è®¢é˜…å™¨ï¼Œå°†ç”¨æˆ·äº‹ä»¶ä¿¡æ¯é€šè¿‡HTTPæ¥å£è¿›è¡Œå‘å¸ƒã€‚
  * @author apple
  *
  */
@@ -29,12 +29,12 @@ public class HttpUserEventSubscriber implements UserEventSubscriber {
 		assert user != null;
 		assert eventType != null;
 		
-		// »ñµÃµ±Ç°ÊÂ¼şÀàĞÍµÄ¶©ÔÄÅäÖÃÏî
+		// è·å¾—å½“å‰äº‹ä»¶ç±»å‹çš„è®¢é˜…é…ç½®é¡¹
 		EventConfigItem eventConfigItem = getEventConfigItem(eventType);
 		try {
 			eventConfigItem.processEvent(user);
 		} catch(Exception exp) {
-			Log.error(String.format("´¦ÀíÓÃ»§ÊÂ¼şÊ§°Ü£ºUserName:%s, EventType:%s", 
+			Log.error(String.format("å¤„ç†ç”¨æˆ·äº‹ä»¶å¤±è´¥ï¼šUserName:%s, EventType:%s", 
 					user.getUserName(), eventType));
 		}
 	}
@@ -49,7 +49,7 @@ public class HttpUserEventSubscriber implements UserEventSubscriber {
 	}
 
 	/**
-	 * ³õÊ¼»¯ÅäÖÃĞÅÏ¢
+	 * åˆå§‹åŒ–é…ç½®ä¿¡æ¯
 	 */
 	private void initConfig() {
 		UserEventType[] values 	= UserEventType.values();
@@ -75,7 +75,7 @@ public class HttpUserEventSubscriber implements UserEventSubscriber {
 	}
 	
 	/**
-	 * ÊÂ¼şÅäÖÃÏî
+	 * äº‹ä»¶é…ç½®é¡¹
 	 * @author apple
 	 *
 	 */
@@ -104,7 +104,7 @@ public class HttpUserEventSubscriber implements UserEventSubscriber {
 		}
 		
 		/**
-		 * ´¦ÀíÊÂ¼ş
+		 * å¤„ç†äº‹ä»¶
 		 * @param user
 		 * @throws IOException 
 		 */
@@ -114,7 +114,7 @@ public class HttpUserEventSubscriber implements UserEventSubscriber {
 				Object content		= sendConetntBody ? wrapContentBody(user) : null;
 				int statusCode 		= HttpHelper.request(targetUrl, method, content);
 				if(statusCode != HttpURLConnection.HTTP_OK) {
-					Log.warn(String.format("HttpÇëÇó¿ÉÄÜÎ´³É¹¦£ºUserName:%s, EventType:%s, StatusCode:%d", 
+					Log.warn(String.format("Httpè¯·æ±‚å¯èƒ½æœªæˆåŠŸï¼šUserName:%s, EventType:%s, StatusCode:%d", 
 							user.getUserName(), eventType, statusCode));
 				}
 			}

@@ -2,37 +2,37 @@ package com.skyseas.openfireplugins.userintegration;
 
 
 /**
- * ÓÃ»§ÊÂ¼ş¶©ÔÄÆ÷£¬ÓÃÓÚ½ÓÊÕopenfireµÄÓÃ»§ÊÂ¼ş¡£
+ * ç”¨æˆ·äº‹ä»¶è®¢é˜…å™¨ï¼Œç”¨äºæ¥æ”¶openfireçš„ç”¨æˆ·äº‹ä»¶ã€‚
  */
 public interface UserEventSubscriber {
 	
 	/**
-	 * ÓÃ»§ÊÂ¼şÀàĞÍ¡£
+	 * ç”¨æˆ·äº‹ä»¶ç±»å‹ã€‚
 	 * @author apple
 	 *
 	 */
 	public enum UserEventType {
 		
 		/**
-		 * µ±ÓÃ»§´´½¨Ö®ºó¡£
+		 * å½“ç”¨æˆ·åˆ›å»ºä¹‹åã€‚
 		 */
 		CREATED,
 		
 		/**
-		 * µ±ÓÃ»§¼´½«É¾³ıÖ®Ç°¡£
+		 * å½“ç”¨æˆ·å³å°†åˆ é™¤ä¹‹å‰ã€‚
 		 */
 		DELETING,
 		
 		/**
-		 * µ±ÓÃ»§ÏûÏ¢ĞŞ¸ÄÖ®ºó£¬Èç£ºÓÃ»§ÃÜÂë±»ĞŞ¸Ä¡£
+		 * å½“ç”¨æˆ·æ¶ˆæ¯ä¿®æ”¹ä¹‹åï¼Œå¦‚ï¼šç”¨æˆ·å¯†ç è¢«ä¿®æ”¹ã€‚
 		 */
 		MODIFIED
 	}
 
     /**
-     * ·¢²¼×¢²áÓÃ»§ĞÅÏ¢µ½¶©ÔÄÆ÷ÉÏ¡£
-     * @param user ÓÃ»§ĞÅÏ¢¡£
-     * @param eventType ÊÂ¼şÀàĞÍ¡£
+     * å‘å¸ƒæ³¨å†Œç”¨æˆ·ä¿¡æ¯åˆ°è®¢é˜…å™¨ä¸Šã€‚
+     * @param user ç”¨æˆ·ä¿¡æ¯ã€‚
+     * @param eventType äº‹ä»¶ç±»å‹ã€‚
      */
     void publish(UserInfo user, UserEventType eventType);
 }

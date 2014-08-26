@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="1139723521">
+    <data-source source="LOCAL" name="MySQL - openfiredb@192.168.1.104" uuid="1b3b220d-1e53-4144-8930-358d1c791a6e">
+      <driver-ref>mysql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://192.168.1.104:3306/openfiredb</jdbc-url>
+      <user-name>root</user-name>
+      <user-password>dfc9dfd8dfdfdfc3dfd9dfcfdfd8dfc5dfc5dfde</user-password>
+      <driver-properties>
+        <property name="zeroDateTimeBehavior" value="convertToNull" />
+        <property name="tinyInt1isBit" value="false" />
+      </driver-properties>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+

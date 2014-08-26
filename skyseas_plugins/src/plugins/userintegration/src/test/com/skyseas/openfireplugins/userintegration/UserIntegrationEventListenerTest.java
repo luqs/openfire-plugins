@@ -41,7 +41,7 @@ public class UserIntegrationEventListenerTest extends TestCase {
 		
 		// Arrange
 		expectEventType = UserEventType.CREATED;
-		expectUser = new User("zhangsanCreated","´´½¨", "created@xx.com", new Date(), new Date());
+		expectUser = new User("zhangsanCreated","åˆ›å»º", "created@xx.com", new Date(), new Date());
 		expectPassword = "createdPassword";
 		
 		new NonStrictExpectations(AuthFactory.class) {
@@ -63,7 +63,7 @@ public class UserIntegrationEventListenerTest extends TestCase {
 			
 			// Arrange
 			expectEventType = UserEventType.DELETING;
-			expectUser = new User("zhangsanDeleting","É¾³ý", "deleting@xx.com", new Date(), new Date());
+			expectUser = new User("zhangsanDeleting","åˆ é™¤", "deleting@xx.com", new Date(), new Date());
 			expectPassword = "deletingPassword";
 			
 			new NonStrictExpectations(AuthFactory.class) {
@@ -86,7 +86,7 @@ public class UserIntegrationEventListenerTest extends TestCase {
 		
 		// Arrange
 		expectEventType = UserEventType.MODIFIED;
-		expectUser = new User("zhangsanModified","ÐÞ¸Ä", "modified@xx.com", new Date(), new Date());
+		expectUser = new User("zhangsanModified","ä¿®æ”¹", "modified@xx.com", new Date(), new Date());
 		expectPassword = "modifiedPassword";
 		
 		new NonStrictExpectations(AuthFactory.class) {

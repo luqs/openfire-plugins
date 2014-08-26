@@ -10,8 +10,8 @@
     <minServerVersion>3.9.0</minServerVersion>
     
     <adminconsole>
-        <tab id="tab-server">
-            <sidebar id="sidebar-server-manager">
+          <tab id="tab-users">
+            <sidebar id="sidebar-users">
                 <item id="userintegration" name="User Integration"
                     url="userintegration_setting.jsp"
                     description="set userintegration parameters." />

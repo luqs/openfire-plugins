@@ -24,7 +24,7 @@ public class EventConfigItemTest extends TestCase {
 		// Arrange
 		EventConfigItem item = new EventConfigItem
 				(UserEventType.CREATED, true,"post", "http://www.xxx.com?u=$username&u=$username", true);
-		UserInfo userInfo = new UserInfo("’≈÷«", "1234", "zz@qq.com", "zz");
+		UserInfo userInfo = new UserInfo("Âº†Êô∫", "1234", "zz@qq.com", "zz");
 		
 		// Act
 		String targetUrl = item.getTargetUrl(userInfo);
