@@ -35,8 +35,8 @@
 
 ####以下是已定义的角色：
 
-名称          		| 说明
--------------------	|------------------------------------
+名称          			| 说明
+-----------------------	|------------------------------------
 用户	(User)			| 普通的XMPP用户
 圈子成员(Member)		| 已经加入圈子的XMPP用户
 圈子所有者(Owner)		| 创建圈子的XMPP用户，同事也是圈子成员
@@ -45,7 +45,7 @@
 ####以下是角色相关的权限列表：
 
 权限					| 圈子成员	| 圈子所有者
--------------------	|----------	|-------------------------
+-----------------------	|------------	|-------------------------
 发送圈子消息			| 是			| 是
 接收圈子消息			| 是			| 是
 邀请用户加入圈子		| 否			| 是
@@ -71,9 +71,12 @@
 ####例子3.用户提交查询表单
 
 ```
-<iq to='group.skysea.com' id='v2' type='set'>
+<iq from='user@skysea.com' to='group.skysea.com' id='v2' type='set'>
 	<action xmlns='http://skysea.com/protocol/group#query'>
 		<x xmlns='jabber:x:data' type='submit'>
+			<field var='id' type='text-single'>
+			 <value></value>
+		    </field>
 		    <field var='name'  type='text-single'>
 		      <value>圈子名称</value>
 		    </field>
@@ -91,16 +94,18 @@
 ####例子4.服务返回查询出的圈子列表
 
 ```
-<iq from='group.skysea.com' to='user@jabber.org' id='v2' type='result'>
+<iq from='group.skysea.com' to='user@skysea.com' id='v2' type='result'>
 	<action xmlns='http://skysea.com/protocol/group#query'>
 		<x xmlns='jabber:x:data' type='result'>
 			<reported>
+				<field var='id'/>
 				<field var='jid'/>
 		        <field var='name'/>
 		        <field var='num_users' />
 		        <field var='subject'/>
 	      	</reported>
 			<item>
+				<field var='id'> <value>1</value> </field>
 				<field var='jid'> <value>group1@group.skysea.com</value> </field>
 		        <field var='name'> <value>一起狂欢</value> </field>
 		        <field var='num_users'> <value>100</value> </field>
@@ -110,6 +115,7 @@
 		    [8 more items]
 		    .
 		    <item>
+				<field var='id'> <value>10</value> </field>
 				<field var='jid'> <value>group10@group.skysea.com</value> </field>
 		        <field var='name'> <value>80后交友</value> </field>
 		        <field var='num_users'> <value>70</value> </field>
@@ -117,8 +123,8 @@
 		    </item>
 		</x>
 		<set xmlns='http://jabber.org/protocol/rsm'>
-	      <first index='0'>group1@group.skysea.com</first>
-	      <last>group10@group.skysea.com</last>
+	      <first index='0'>1</first>
+	      <last>10</last>
 	      <count>800</count>
 	    </set>
 	</action>
@@ -148,7 +154,7 @@
 		      <value>圈子名称</value>
 		    </field>
 		    <field var='category' type='list-single'>
-		      <value>圈子分类</value>
+		      <value>1</value>
 		    </field>
 		    <field var='subject' type='text-single'>
 		      <value>圈子主题</value>
@@ -157,7 +163,7 @@
 		      <value>圈子描述</value>
 		    </field>
 		    <field var='openness' type='list-single'>
-		      <value>圈子开放程度</value>
+		      <value>PUBLIC</value>
 		    </field>
 	  	</x>
   	</action>
@@ -207,14 +213,14 @@ AFFIRM_REQUIRED	| 需要审核
 ####例子3.用户提交修改表单
 
 ```
-<iq to='group1@group.skysea.com' id='v1' type='set'>
+<iq from='user@skysea.com' to='100@group.skysea.com' id='v1' type='set'>
 	<action xmlns='http://skysea.com/protocol/group#modify'>
 		<x xmlns='jabber:x:data' type='submit'>
 		    <field var='name'  type='text-single'>
 		      <value>圈子名称</value>
 		    </field>
 		    <field var='category' type='list-single'>
-		      <value>圈子分类</value>
+		      <value>23</value>
 		    </field>
 		    <field var='subject' type='text-single'>
 		      <value>圈子主题</value>
@@ -223,7 +229,7 @@ AFFIRM_REQUIRED	| 需要审核
 		      <value>圈子描述</value>
 		    </field>
 		    <field var='openness' type='list-single'>
-		      <value>圈子开放程度</value>
+		      <value>PUBLIC</value>
 		    </field>
 	  	</x>
   	</action>
@@ -233,7 +239,7 @@ AFFIRM_REQUIRED	| 需要审核
 ####例子4.服务返回修改成功
 
 ```
-<iq from='group1@group.skysea.com' to='user@jabber.org' id='v1' type='result'>
+<iq from='100@group.skysea.com' to='user@skysea.com' id='v1' type='result'>
 </iq>
 ```
 
@@ -242,7 +248,7 @@ AFFIRM_REQUIRED	| 需要审核
 ####例子1.圈子所有者删除圈子
 
 ```
-<iq to='group1@group.skysea.com' id='v1' type='set'>
+<iq to='100@group.skysea.com' id='v1' type='set'>
 	<action xmlns='http://skysea.com/protocol/group#delete'>
   	</action>
 </iq>

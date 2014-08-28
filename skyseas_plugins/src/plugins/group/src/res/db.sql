@@ -1,7 +1,8 @@
-CREATE TABLE sky_group(
+CREATE TABLE sky_Group(
   id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(50) NOT NULL,
   owner VARCHAR(50) NOT NULL,
+  subject VARCHAR(100) NOT NULL,
   category INT DEFAULT 0 ,
   logo VARCHAR(200),
   description TEXT,
