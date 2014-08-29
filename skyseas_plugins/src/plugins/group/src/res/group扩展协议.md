@@ -87,15 +87,15 @@
 	  	<set xmlns='http://jabber.org/protocol/rsm'>
 	      <max>10</max>
 	      <index>0</index>
-	    </set>
+	    </set>	        		
   	</action>
 </iq>
 ```
 ####例子4.服务返回查询出的圈子列表
 
 ```
-<iq from='group.skysea.com' to='user@skysea.com' id='v2' type='result'>
-	<action xmlns='http://skysea.com/protocol/group#query'>
+<iq from='group.skyseas.com' to='user@skyseas.com' id='v2' type='result'>
+	<action name='query' xmlns='http://skyseas.com/protocol/group#user'>
 		<x xmlns='jabber:x:data' type='result'>
 			<reported>
 				<field var='id'/>
@@ -106,7 +106,7 @@
 	      	</reported>
 			<item>
 				<field var='id'> <value>1</value> </field>
-				<field var='jid'> <value>group1@group.skysea.com</value> </field>
+				<field var='jid'> <value>group1@group.skyseas.com</value> </field>
 		        <field var='name'> <value>一起狂欢</value> </field>
 		        <field var='num_users'> <value>100</value> </field>
 		        <field var='subject'> <value>开心不开心的请跟我来！</value> </field>
@@ -115,8 +115,8 @@
 		    [8 more items]
 		    .
 		    <item>
-				<field var='id'> <value>10</value> </field>
-				<field var='jid'> <value>group10@group.skysea.com</value> </field>
+		    	<field var='id'> <value>10</value> </field>
+				<field var='jid'> <value>group10@group.skyseas.com</value> </field>
 		        <field var='name'> <value>80后交友</value> </field>
 		        <field var='num_users'> <value>70</value> </field>
 		        <field var='subject'> <value>80后的伙伴们，一起hi吧！</value> </field>
@@ -130,7 +130,6 @@
 	</action>
 </iq>
 ```
-
 
 ## 圈子所有者用例
 
