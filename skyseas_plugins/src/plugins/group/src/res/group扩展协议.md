@@ -1,4 +1,4 @@
-# Group扩展协议
+# 圈子扩展协议
 ## 摘要
 本文定义了一个XMPP扩展协议用于实现持久化的多用户社交圈子功能，即多个XMPP用户可以在同一个圈子中互相交流信息，类似`QQ`的聊天群，用户可以获得自己加入的圈子，创建属于自己的圈子也可以邀请其他用户加入圈子等。
 
@@ -94,21 +94,23 @@
 ####例子4.服务返回查询出的圈子列表
 
 ```
-<iq from='group.skyseas.com' to='user@skyseas.com' id='v2' type='result'>
-	<action name='query' xmlns='http://skyseas.com/protocol/group#user'>
+<iq from='group.skysea.com' to='user@skysea.com' id='v2' type='result'>
+	<action xmlns='http://skysea.com/protocol/group#query'>
 		<x xmlns='jabber:x:data' type='result'>
 			<reported>
 				<field var='id'/>
 				<field var='jid'/>
+				<field var='owner'/>
 		        <field var='name'/>
-		        <field var='num_users' />
+		        <field var='num_members' />
 		        <field var='subject'/>
 	      	</reported>
 			<item>
 				<field var='id'> <value>1</value> </field>
-				<field var='jid'> <value>group1@group.skyseas.com</value> </field>
+				<field var='jid'> <value>1@group.skysea.com</value> </field>
+				<field var='owner'> <value>admin</value> </field>
 		        <field var='name'> <value>一起狂欢</value> </field>
-		        <field var='num_users'> <value>100</value> </field>
+		        <field var='num_members'> <value>100</value> </field>
 		        <field var='subject'> <value>开心不开心的请跟我来！</value> </field>
 		    </item>
 		    .
@@ -116,9 +118,10 @@
 		    .
 		    <item>
 		    	<field var='id'> <value>10</value> </field>
-				<field var='jid'> <value>group10@group.skyseas.com</value> </field>
+				<field var='jid'> <value>10@group.skysea.com</value> </field>
+				<field var='owner'> <value>admin</value> </field>
 		        <field var='name'> <value>80后交友</value> </field>
-		        <field var='num_users'> <value>70</value> </field>
+		        <field var='num_members'> <value>70</value> </field>
 		        <field var='subject'> <value>80后的伙伴们，一起hi吧！</value> </field>
 		    </item>
 		</x>
@@ -130,6 +133,191 @@
 	</action>
 </iq>
 ```
+
+###查询圈子详情
+
+####列子1.用户查询圈子详细信息
+
+```
+<iq id='v3' from='user@skysea.com' to='123@group.skysea.com' type='get'>
+  <action xmlns='http://skysea.com/protocol/group#info'/>
+</iq>
+```
+
+####列子2.服务返回圈子详细信息
+
+```
+<iq id='v3' from='123@group.skysea.com' to='user@skysea.com' type='result'>
+  <action xmlns='http://skysea.com/protocol/group#info'/>
+  	<x xmlns='jabber:x:data' type='result'>
+		<field var='id'> <value>1</value> </field>
+		<field var='jid'> <value>group1@group.skysea.com</value> </field>
+		<field var='owner'> <value>admin</value> </field>
+		<field var='name'> <value>一起狂欢</value> </field>
+		<field var='num_members'> <value>100</value> </field>
+		<field var='subject'> <value>今晚一醉方休！</value> </field>
+		<field var='description'> <value>欢迎80，90，00后的少年们的加入！</value> </field>
+		<field var='openness'> <value>PUBLIC</value> </field>
+		<field var='createTime'> <value>2001-07-04T12:08:56.235-0700</value> </field>
+	</x>
+  </action>
+</iq>
+```
+###申请加入圈子
+
+####例子1.用户申请加入圈子
+```
+<iq id='v4' from='applyuser@skysea.com' to='123@group.skysea.com' type='set'>
+  <action xmlns='http://skysea.com/protocol/group/member#apply'>
+  	<reason>我也是80后，请让我加入吧！</reason>
+  </action>
+</iq>
+```
+
+`reason`是可选的附加消息。
+
+####例子2.服务返回申请成功
+```
+<iq type="result" id="v4" from="123@group.skysea.com" to="applyuser@skysea.com"/>
+```
+用户发起申请之后服务会根据圈子的开放程度决定是直接将用户加入圈子，还是将申请转发给圈子所有者，由圈子所有者
+决定是否允许该用户的加入。
+
+####例子3.服务返回申请失败，人数已经达到最大上限
+```
+<iq id='v4' from='123@group.skysea.com' to='applyuser@skysea.com' type='error'>
+	<error type='wait'>
+    	<service-unavailable xmlns='urn:ietf:params:xml:ns:xmpp-stanzas'/>
+	</error>
+</iq>
+```
+
+####例子4.服务通知用户申请已处理通过
+```
+<message from='123@group.skysea.com' to='applyuser@skysea.com'>
+  <x xmlns='http://skysea.com/protocol/group/member#apply'>
+	<agree from='123@group.skysea.com' />
+    <reason>...</reason>
+  </x>
+</message>
+```
+`agree`包含可选的`from`属性，如果申请是经由所有者处理同意的则值为所有者jid。
+`reason`是可选的消息元素，申请通过时可能是欢迎消息，申请被拒绝时可能是拒绝的原因。
+
+####例子5.服务通知用户申请已被拒绝
+```
+<message from='123@group.skysea.com' to='applyuser@skysea.com'>
+  <x xmlns='http://skysea.com/protocol/group/member#apply'>
+    <decline from='owner@skysea.com' />
+    <reason>目前不考虑新人加入，不好意思！</reason>
+  </x>
+</message>
+```
+`decline`的`from`属性表明是owner@skysea.com拒绝了用户的申请。
+可选的`reason`显示了被拒绝的原因。
+
+####例子6.服务将用户的申请转发给圈子所有者
+```
+<message from='123@group.skysea.com' to='owner@skysea.com'>
+  <x xmlns='http://skysea.com/protocol/group/owner#member_apply'>
+  	<apply id='s2fd1' from='applyuser@skysea.com' />
+  	<reason>我也是80后，请让我加入吧！</reason>
+  </x>
+</message>
+```
+圈子所有者客户端程序收到经由服务转发的申请之后，应当显示适当的UI元素方便圈子所有者做出决定拒绝或是同意用户的申请。
+
+####例子7.圈子所有者同意用户的加入申请
+```
+<iq id='v4' from='owner@skysea.com' to='123@group.skysea.com' type='set'>
+  <action xmlns='http://skysea.com/protocol/group/owner#member_apply'>
+  	<apply id='s2fd1' from='applyuser@skysea.com' />
+  	<agree />
+  	<reason>欢迎加入</reason>
+  </action>
+</iq>
+```
+####例子8.圈子所有者拒绝用户的加入申请
+```
+<iq id='v4' from='owner@skysea.com' to='123@group.skysea.com' type='set'>
+  <action xmlns='http://skysea.com/protocol/group/owner#member_apply'>
+  	<apply id='s2fd1' from='applyuser@skysea.com' />
+  	<decline />
+  	<reason>目前不考虑新人加入，不好意思！</reason>
+  </action>
+</iq>
+```
+**注意： 圈子所有者向服务发送拒绝/同意应答消息时`apply`元素的`id`属性是必须按原样返回的。**
+
+####例子9.服务返回处理申请成功
+```
+<iq type="result" id="v4" from="123@group.skysea.com" to="owner@skysea.com"/>
+```
+
+####例子10.服务通知每个在线的圈子成员有新用户加入
+
+```
+<message from='123@group.skysea.com' to='user@group.skysea.com'>
+  <x xmlns='http://skysea.com/protocol/group#member'>
+  	<join>
+  		<member 
+  			username='applyuser' 
+  			nickname='applyuser' 
+  			jid='applyuser@skysea.com' />
+  	</join>
+  </x>
+</message>
+```
+
+## 圈子成员用例
+
+###查询已加入的圈子列表
+
+####例子1.用户查询已加入的圈子列表
+```
+<iq from='user@skysea.com' to='group.skysea.com' id='v2' type='get'>
+	<action xmlns='http://skysea.com/protocol/member#groups' />
+</iq>
+	
+```
+
+####例子2.服务返回用户加入的所有圈子列表
+
+```
+<iq from='group.skysea.com' to='user@skysea.com' id='v2' type='result'>
+	<action xmlns='http://skysea.com/protocol/member#groups'>
+		<x xmlns='jabber:x:data' type='result'>
+			<reported>
+				<field var='id'/>
+				<field var='jid'/>
+				<field var='owner'/>
+		        <field var='name'/>
+		        <field var='num_members' />
+		        <field var='subject'/>
+	      	</reported>
+			<item>
+				<field var='id'> <value>1</value> </field>
+				<field var='jid'> <value>1@group.skysea.com</value> </field>
+				<field var='owner'> <value>admin</value> </field>
+		        <field var='name'> <value>一起狂欢</value> </field>
+		        <field var='num_members'> <value>100</value> </field>
+		        <field var='subject'> <value>开心不开心的请跟我来！</value> </field>
+		    </item>
+		    .
+		    [more items]
+		    .
+		    <item>
+		    	<field var='id'> <value>10</value> </field>
+				<field var='jid'> <value>10@group.skysea.com</value> </field>
+				<field var='owner'> <value>admin</value> </field>
+		        <field var='name'> <value>80后交友</value> </field>
+		        <field var='num_members'> <value>70</value> </field>
+		        <field var='subject'> <value>80后的伙伴们，一起hi吧！</value> </field>
+		    </item>
+		</x>
+	</action>
+</iq>
+
 
 ## 圈子所有者用例
 
