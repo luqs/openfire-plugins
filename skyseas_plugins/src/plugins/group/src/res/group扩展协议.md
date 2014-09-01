@@ -33,7 +33,7 @@
 
 ## 角色和权限
 
-####以下是已定义的角色：
+#### 以下是已定义的角色：
 
 名称          			| 说明
 -----------------------	|------------------------------------
@@ -42,7 +42,7 @@
 圈子所有者(Owner)		| 创建圈子的XMPP用户，同事也是圈子成员
 
 
-####以下是角色相关的权限列表：
+#### 以下是角色相关的权限列表：
 
 权限					| 圈子成员	| 圈子所有者
 -----------------------	|------------	|-------------------------
@@ -58,17 +58,17 @@
 
 ## 用户用例
 
-###查询圈子
+### 查询圈子
 
-####例子1.用户提出查询圈子
-
-略
-
-####例子2.服务返回查询表单
+#### 例子1.用户提出查询圈子
 
 略
 
-####例子3.用户提交查询表单
+#### 例子2.服务返回查询表单
+
+略
+
+#### 例子3.用户提交查询表单
 
 ```
 <iq from='user@skysea.com' to='group.skysea.com' id='v2' type='set'>
@@ -91,7 +91,7 @@
   	</action>
 </iq>
 ```
-####例子4.服务返回查询出的圈子列表
+#### 例子4.服务返回查询出的圈子列表
 
 ```
 <iq from='group.skysea.com' to='user@skysea.com' id='v2' type='result'>
@@ -134,9 +134,9 @@
 </iq>
 ```
 
-###查询圈子详情
+### 查询圈子详情
 
-####列子1.用户查询圈子详细信息
+#### 列子1.用户查询圈子详细信息
 
 ```
 <iq id='v3' from='user@skysea.com' to='123@group.skysea.com' type='get'>
@@ -144,7 +144,7 @@
 </iq>
 ```
 
-####列子2.服务返回圈子详细信息
+#### 列子2.服务返回圈子详细信息
 
 ```
 <iq id='v3' from='123@group.skysea.com' to='user@skysea.com' type='result'>
@@ -163,9 +163,9 @@
   </action>
 </iq>
 ```
-###申请加入圈子
+### 申请加入圈子
 
-####例子1.用户申请加入圈子
+#### 例子1.用户申请加入圈子
 ```
 <iq id='v4' from='applyuser@skysea.com' to='123@group.skysea.com' type='set'>
   <action xmlns='http://skysea.com/protocol/group/member#apply'>
@@ -176,14 +176,14 @@
 
 `reason`是可选的附加消息。
 
-####例子2.服务返回申请成功
+#### 例子2.服务返回申请成功
 ```
 <iq type="result" id="v4" from="123@group.skysea.com" to="applyuser@skysea.com"/>
 ```
 用户发起申请之后服务会根据圈子的开放程度决定是直接将用户加入圈子，还是将申请转发给圈子所有者，由圈子所有者
 决定是否允许该用户的加入。
 
-####例子3.服务返回申请失败，人数已经达到最大上限
+#### 例子3.服务返回申请失败，人数已经达到最大上限
 ```
 <iq id='v4' from='123@group.skysea.com' to='applyuser@skysea.com' type='error'>
 	<error type='wait'>
@@ -192,7 +192,7 @@
 </iq>
 ```
 
-####例子4.服务通知用户申请已处理通过
+#### 例子4.服务通知用户申请已处理通过
 ```
 <message from='123@group.skysea.com' to='applyuser@skysea.com'>
   <x xmlns='http://skysea.com/protocol/group/member#apply'>
@@ -204,7 +204,7 @@
 `agree`包含可选的`from`属性，如果申请是经由所有者处理同意的则值为所有者jid。
 `reason`是可选的消息元素，申请通过时可能是欢迎消息，申请被拒绝时可能是拒绝的原因。
 
-####例子5.服务通知用户申请已被拒绝
+#### 例子5.服务通知用户申请已被拒绝
 ```
 <message from='123@group.skysea.com' to='applyuser@skysea.com'>
   <x xmlns='http://skysea.com/protocol/group/member#apply'>
@@ -216,7 +216,7 @@
 `decline`的`from`属性表明是owner@skysea.com拒绝了用户的申请。
 可选的`reason`显示了被拒绝的原因。
 
-####例子6.服务将用户的申请转发给圈子所有者
+#### 例子6.服务将用户的申请转发给圈子所有者
 ```
 <message from='123@group.skysea.com' to='owner@skysea.com'>
   <x xmlns='http://skysea.com/protocol/group/owner#member_apply'>
@@ -227,7 +227,7 @@
 ```
 圈子所有者客户端程序收到经由服务转发的申请之后，应当显示适当的UI元素方便圈子所有者做出决定拒绝或是同意用户的申请。
 
-####例子7.圈子所有者同意用户的加入申请
+#### 例子7.圈子所有者同意用户的加入申请
 ```
 <iq id='v4' from='owner@skysea.com' to='123@group.skysea.com' type='set'>
   <action xmlns='http://skysea.com/protocol/group/owner#member_apply'>
@@ -237,7 +237,7 @@
   </action>
 </iq>
 ```
-####例子8.圈子所有者拒绝用户的加入申请
+#### 例子8.圈子所有者拒绝用户的加入申请
 ```
 <iq id='v4' from='owner@skysea.com' to='123@group.skysea.com' type='set'>
   <action xmlns='http://skysea.com/protocol/group/owner#member_apply'>
@@ -249,12 +249,12 @@
 ```
 **注意： 圈子所有者向服务发送拒绝/同意应答消息时`apply`元素的`id`属性是必须按原样返回的。**
 
-####例子9.服务返回处理申请成功
+#### 例子9.服务返回处理申请成功
 ```
 <iq type="result" id="v4" from="123@group.skysea.com" to="owner@skysea.com"/>
 ```
 
-####例子10.服务通知每个在线的圈子成员有新用户加入
+#### 例子10.服务通知每个在线的圈子成员有新用户加入
 
 ```
 <message from='123@group.skysea.com' to='user@group.skysea.com'>
@@ -271,9 +271,9 @@
 
 ## 圈子成员用例
 
-###查询已加入的圈子列表
+### 查询已加入的圈子列表
 
-####例子1.用户查询已加入的圈子列表
+#### 例子1.用户查询已加入的圈子列表
 ```
 <iq from='user@skysea.com' to='group.skysea.com' id='v2' type='get'>
 	<action xmlns='http://skysea.com/protocol/member#groups' />
@@ -281,7 +281,7 @@
 	
 ```
 
-####例子2.服务返回用户加入的所有圈子列表
+#### 例子2.服务返回用户加入的所有圈子列表
 
 ```
 <iq from='group.skysea.com' to='user@skysea.com' id='v2' type='result'>
@@ -317,21 +317,21 @@
 		</x>
 	</action>
 </iq>
-
+```
 
 ## 圈子所有者用例
 
-###创建圈子
+### 创建圈子
 
-####例子1.用户提出创建申请
-
-略
-
-####例子2.服务返回创建表单
+#### 例子1.用户提出创建申请
 
 略
 
-####例子3.用户提交创建表单
+#### 例子2.服务返回创建表单
+
+略
+
+#### 例子3.用户提交创建表单
 
 ```
 <iq to='group.skysea.com' id='v1' type='set'>
@@ -372,7 +372,7 @@
 PUBLIC			| 完全开放
 AFFIRM_REQUIRED	| 需要审核
 
-####例子4.服务通知用户圈子创建成功
+#### 例子4.服务通知用户圈子创建成功
 
 ```
 <iq from='group.skysea.com' to='user@jabber.org' id='v1' type='result'>
@@ -387,17 +387,17 @@ AFFIRM_REQUIRED	| 需要审核
 ```
 服务返回表单中`group#id`字段显示了服务为圈子自动生成的`jid`，圈子jid是进行圈子通信功能的目标地址。
 
-###修改圈子信息
+### 修改圈子信息
 
-####例子1.圈子所有者提出修改申请
-
-略
-
-####例子2.服务返回修改表单
+#### 例子1.圈子所有者提出修改申请
 
 略
 
-####例子3.用户提交修改表单
+#### 例子2.服务返回修改表单
+
+略
+
+#### 例子3.用户提交修改表单
 
 ```
 <iq from='user@skysea.com' to='100@group.skysea.com' id='v1' type='set'>
@@ -423,16 +423,16 @@ AFFIRM_REQUIRED	| 需要审核
 </iq>
 ```
 
-####例子4.服务返回修改成功
+#### 例子4.服务返回修改成功
 
 ```
 <iq from='100@group.skysea.com' to='user@skysea.com' id='v1' type='result'>
 </iq>
 ```
 
-###删除圈子
+### 删除圈子
 
-####例子1.圈子所有者删除圈子
+#### 例子1.圈子所有者删除圈子
 
 ```
 <iq to='100@group.skysea.com' id='v1' type='set'>
@@ -441,13 +441,13 @@ AFFIRM_REQUIRED	| 需要审核
 </iq>
 ```
 
-####例子2.服务返回删除成功
+#### 例子2.服务返回删除成功
 
 ```
 <iq from='group1@group.skysea.com' to='user@jabber.org' id='v1' type='result'>
 </iq>
 ```
-####例子3.服务向圈子成员广播圈子已被删除
+#### 例子3.服务向圈子成员广播圈子已被删除
 
 
 
