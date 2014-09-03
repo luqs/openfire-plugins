@@ -163,6 +163,48 @@
   </action>
 </iq>
 ```
+
+### 查询圈子成员列表
+
+#### 例子1.用户提出查询圈子
+
+```
+<iq id='v3' from='user@skysea.com' to='123@group.skysea.com' type='get'>
+  <action xmlns='http://skysea.com/protocol/group#members'/>
+</iq>
+```
+
+#### 例子2.服务返回圈子成员列表
+
+```
+<iq id='v3' from='123@group.skysea.com'  to='user@skysea.com' type='result'>
+  <action xmlns='http://skysea.com/protocol/group#members'>
+  	<x xmlns='jabber:x:data' type='result'>
+			<reported>
+				<field var='username'/>
+				<field var='nickname'/>
+		        <field var='status'/>
+	      	</reported>
+			<item>
+				<field var='username'> <value>user1</value> </field>
+				<field var='nickname'> <value>小李飞刀</value> </field>
+		        <field var='status'> <value>online</value> </field>
+		    </item>
+		    .
+		    [more items]
+		    .
+		    <item>
+				<field var='username'> <value>user10</value> </field>
+				<field var='nickname'> <value>大刀关胜</value> </field>
+		        <field var='status'> <value>offline</value> </field>
+		    </item>
+		</x>
+  </action>
+</iq>
+```
+
+
+
 ### 申请加入圈子
 
 #### 例子1.用户申请加入圈子
@@ -247,7 +289,7 @@
   </action>
 </iq>
 ```
-**注意： 圈子所有者向服务发送拒绝/同意应答消息时`apply`元素的`id`属性是必须按原样返回的。**
+**注意： 圈子所有者向服务发送拒绝/同意应答消息时`apply`元素的`id`和`from`属性是必须按原样返回的。**
 
 #### 例子9.服务返回处理申请成功
 ```
@@ -259,12 +301,8 @@
 ```
 <message from='123@group.skysea.com' to='user@group.skysea.com'>
   <x xmlns='http://skysea.com/protocol/group#member'>
-  	<join>
-  		<member 
-  			username='applyuser' 
-  			nickname='applyuser' 
-  			jid='applyuser@skysea.com' />
-  	</join>
+  	<join />
+  	<member username='applyuser' nickname='applyuser' jid='applyuser@skysea.com' />
   </x>
 </message>
 ```
@@ -276,7 +314,7 @@
 #### 例子1.用户查询已加入的圈子列表
 ```
 <iq from='user@skysea.com' to='group.skysea.com' id='v2' type='get'>
-	<action xmlns='http://skysea.com/protocol/member#groups' />
+	<action xmlns='http://skysea.com/protocol/group/member#groups' />
 </iq>
 	
 ```
@@ -285,7 +323,7 @@
 
 ```
 <iq from='group.skysea.com' to='user@skysea.com' id='v2' type='result'>
-	<action xmlns='http://skysea.com/protocol/member#groups'>
+	<action xmlns='http://skysea.com/protocol/group/member#groups'>
 		<x xmlns='jabber:x:data' type='result'>
 			<reported>
 				<field var='id'/>
@@ -318,6 +356,34 @@
 	</action>
 </iq>
 ```
+
+### 发送圈子消息
+
+#### 例子1.圈子成员向圈子发送消息
+
+```
+<message id="v2" from="user@skysea.com" to="1@group.skysea.com" type="groupchat">
+  <body>大家好啊，一起出来喝酒吧！</body>
+</message>
+```
+
+** 注意：message的`type`属性为`groupchat`，说明这是一个圈子聊天消息。 ** 
+
+#### 例子2.服务向所有圈子成员广播消息
+
+```
+<message id="v2" from="1@group.skysea.com/user" type="groupchat">
+  <body>大家好啊，一起出来喝酒吧！</body>
+  <x xmlns="http://skysea.com/protocol/group#message">
+  	<member username="大力水手" />
+  </x>
+</message>
+```
+
+当圈子成员接收到消息时`from`属性已被重写为圈子的`JID`，通过`JID`的`resource`值可知消息的发送者
+用户名为：user。
+
+扩展节点**x** 
 
 ## 圈子所有者用例
 
