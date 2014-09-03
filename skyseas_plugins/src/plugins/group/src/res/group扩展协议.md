@@ -302,7 +302,7 @@
 <message from='123@group.skysea.com' to='user@group.skysea.com'>
   <x xmlns='http://skysea.com/protocol/group#member'>
   	<join />
-  	<member username='applyuser' nickname='applyuser' jid='applyuser@skysea.com' />
+  	<member username='applyuser' nickname='applyuser' />
   </x>
 </message>
 ```
