@@ -101,14 +101,14 @@
 				<field var='id'/>
 				<field var='jid'/>
 		        <field var='name'/>
-		        <field var='num_users' />
+		        <field var='num_members' />
 		        <field var='subject'/>
 	      	</reported>
 			<item>
 				<field var='id'> <value>1</value> </field>
 				<field var='jid'> <value>group1@group.skysea.com</value> </field>
 		        <field var='name'> <value>一起狂欢</value> </field>
-		        <field var='num_users'> <value>100</value> </field>
+		        <field var='num_members'> <value>100</value> </field>
 		        <field var='subject'> <value>开心不开心的请跟我来！</value> </field>
 		    </item>
 		    .
@@ -118,7 +118,7 @@
 				<field var='id'> <value>10</value> </field>
 				<field var='jid'> <value>group10@group.skysea.com</value> </field>
 		        <field var='name'> <value>80后交友</value> </field>
-		        <field var='num_users'> <value>70</value> </field>
+		        <field var='num_members'> <value>70</value> </field>
 		        <field var='subject'> <value>80后的伙伴们，一起hi吧！</value> </field>
 		    </item>
 		</x>

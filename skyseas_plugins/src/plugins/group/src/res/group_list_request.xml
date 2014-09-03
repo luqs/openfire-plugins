@@ -1,21 +1,186 @@
-<iq id="wrg1u-8933" to="my@group.192.168.1.104" type="set">
-    <query xmlns="http://skyseas.com/protocol/group#info">
-        <x xmlns="jabber:x:data" type="submit">
-            <field var="FORM_TYPE" type="hidden">
-                <value>http://jabber.org/protocol/muc#roomconfig</value>
+
+<iq type="result" id="v2" from="group.skysea.com" to="admin@skysea.com/Spark 2.7.0">
+<action xmlns="http://skysea.com/protocol/group#query">
+    <x xmlns="jabber:x:data" type="result">
+        <reported>
+            <field var="id"/>
+            <field var="jid"/>
+            <field var="owner"/>
+            <field var="name"/>
+            <field var="num_members"/>
+            <field var="subject"/>
+        </reported>
+        <item>
+            <field var="owner">
+                <value>admin</value>
             </field>
-            <field var="group#groupconfig_roomname" type="text-single">
-                <value>w我的</value>
+            <field var="id">
+                <value>9</value>
             </field>
-            <field var="muc#roomconfig_roomdesc" type="text-single">
-                <value/>
+            <field var="jid">
+                <value>9@group.skysea.com</value>
             </field>
-            <field var="muc#roomconfig_persistentroom" type="boolean">
+            <field var="num_members">
+                <value>0</value>
+            </field>
+            <field var="subject">
+                <value>i love</value>
+            </field>
+            <field var="name">
+                <value>good day</value>
+            </field>
+        </item>
+        <item>
+            <field var="owner">
+                <value>admin</value>
+            </field>
+            <field var="id">
+                <value>8</value>
+            </field>
+            <field var="jid">
+                <value>8@group.skysea.com</value>
+            </field>
+            <field var="num_members">
+                <value>0</value>
+            </field>
+            <field var="subject"/>
+            <field var="name">
+                <value>圈子名称</value>
+            </field>
+        </item>
+        <item>
+            <field var="owner">
+                <value>admin</value>
+            </field>
+            <field var="id">
+                <value>7</value>
+            </field>
+            <field var="jid">
+                <value>7@group.skysea.com</value>
+            </field>
+            <field var="num_members">
+                <value>0</value>
+            </field>
+            <field var="subject"/>
+            <field var="name">
+                <value>圈子名称</value>
+            </field>
+        </item>
+        <item>
+            <field var="owner">
+                <value>admin</value>
+            </field>
+            <field var="id">
+                <value>6</value>
+            </field>
+            <field var="jid">
+                <value>6@group.skysea.com</value>
+            </field>
+            <field var="num_members">
+                <value>0</value>
+            </field>
+            <field var="subject"/>
+            <field var="name">
+                <value>圈子名称</value>
+            </field>
+        </item>
+        <item>
+            <field var="owner">
+                <value>admin</value>
+            </field>
+            <field var="id">
+                <value>5</value>
+            </field>
+            <field var="jid">
+                <value>5@group.skysea.com</value>
+            </field>
+            <field var="num_members">
+                <value>0</value>
+            </field>
+            <field var="subject"/>
+            <field var="name">
+                <value>圈子名称</value>
+            </field>
+        </item>
+        <item>
+            <field var="owner">
+                <value>admin</value>
+            </field>
+            <field var="id">
+                <value>4</value>
+            </field>
+            <field var="jid">
+                <value>4@group.skysea.com</value>
+            </field>
+            <field var="num_members">
+                <value>0</value>
+            </field>
+            <field var="subject"/>
+            <field var="name">
+                <value>圈子名称</value>
+            </field>
+        </item>
+        <item>
+            <field var="owner">
+                <value>admin</value>
+            </field>
+            <field var="id">
+                <value>3</value>
+            </field>
+            <field var="jid">
+                <value>3@group.skysea.com</value>
+            </field>
+            <field var="num_members">
+                <value>0</value>
+            </field>
+            <field var="subject"/>
+            <field var="name">
+                <value>圈子名称</value>
+            </field>
+        </item>
+        <item>
+            <field var="owner">
+                <value>admin</value>
+            </field>
+            <field var="id">
+                <value>2</value>
+            </field>
+            <field var="jid">
+                <value>2@group.skysea.com</value>
+            </field>
+            <field var="num_members">
+                <value>0</value>
+            </field>
+            <field var="subject"/>
+            <field var="name">
+                <value>圈子名称</value>
+            </field>
+        </item>
+        <item>
+            <field var="owner">
+                <value>admin</value>
+            </field>
+            <field var="id">
                 <value>1</value>
             </field>
-            <field var="muc#roomconfig_roomowners" type="jid-multi">
-                <value>admin@192.168.1.104</value>
+            <field var="jid">
+                <value>1@group.skysea.com</value>
             </field>
-        </x>
-    </query>
+            <field var="num_members">
+                <value>0</value>
+            </field>
+            <field var="subject">
+                <value>测试新的主题</value>
+            </field>
+            <field var="name">
+                <value>圈子新名称</value>
+            </field>
+        </item>
+    </x>
+    <set xmlns="http://jabber.org/protocol/rsm">
+        <count>9</count>
+        <first index="0">9</first>
+        <last>1</last>
+    </set>
+</action>
 </iq>
