@@ -19,7 +19,7 @@ public class GroupIQHandler extends IQHandler {
 	public IQHandlerInfo getInfo() {
 		if(info == null) {
 			info = new IQHandlerInfo("x", "http://skyseas.com/protocol/group#user");
-		}
+		}AlreadyExistsException
 		return info;
 	}
 

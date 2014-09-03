@@ -32,6 +32,7 @@
             <field type='list-single' var='maxsubs'>
                 <value>50</value>
             </field>
+
             <field type='jid-multi' var='invitelist'>
                 <value>juliet@capulet.com</value>
                 <value>benvolio@montague.net</value>
