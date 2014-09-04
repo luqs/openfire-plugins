@@ -13,7 +13,7 @@ CREATE TABLE sky_Group(
 
 
 
-CREATE TABLE sky_GroupMember(
+CREATE TABLE sky_GroupMembers(
   id INT PRIMARY KEY AUTO_INCREMENT,
   groupId INT NOT NULL ,
   userName VARCHAR(50) NOT NULL,
