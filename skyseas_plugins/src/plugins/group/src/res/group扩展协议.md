@@ -72,7 +72,7 @@
 
 ```
 <iq from='user@skysea.com' to='group.skysea.com' id='v2' type='set'>
-	<action xmlns='http://skysea.com/protocol/group#query'>
+	<action xmlns='http://skysea.com/protocol/group#user'>
 		<x xmlns='jabber:x:data' type='submit'>
 			<field var='id' type='text-single'>
 			 <value></value>
