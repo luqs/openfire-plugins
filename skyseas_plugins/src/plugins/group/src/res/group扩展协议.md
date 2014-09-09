@@ -608,7 +608,7 @@ AFFIRM_REQUIRED	| 需要审核
   <x xmlns='http://skysea.com/protocol/group#member'>
   	<kick from='owner@skysea.com'>
   		<member username='user' nickname='userNick' />
-  		<reason>大家太吵了，不好意思，我退了先！</reason>
+  		<reason>抱歉！你总是发送广告信息。</reason>
   	</kick>
   </x>
 </message>
@@ -619,7 +619,7 @@ AFFIRM_REQUIRED	| 需要审核
   <x xmlns='http://skysea.com/protocol/group#member'>
   	<kick from='owner@skysea.com'>
   		<member username='user' nickname='userNick' />
-  		<reason>大家太吵了，不好意思，我退了先！</reason>
+  		<reason>抱歉！你总是发送广告信息。</reason>
   	</kick>
   </x>
 </message>
