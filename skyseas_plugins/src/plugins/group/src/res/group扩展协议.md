@@ -1,12 +1,38 @@
 # 圈子扩展协议
-## 摘要
+
+
+## 目录
+
++ [摘要](#summary)
++ [需求](#requirements)
++ [术语](#terminology)
++ [角色和权限](#roles)
++ [用户用例](#user_usecase)
+	- [查询圈子](#user_query_groups) 
+	- [查询圈子详情](#user_query_group_info)
+	- [查询圈子成员列表](#user_query_group_members)
+	- [申请加入圈子](#user_apply_join_group)
++ [圈子成员用例](#member_usecase)
+	- [查询已加入的圈子列表](#member_query_joined_groups)
+	- [发送圈子消息](#member_send_message)
+	- [修改圈子名片](#member_change_profile)
+	- [退出圈子](#member_exit_group)
++ [圈子所有者用例](#owner_usecase)
+	- [创建圈子](#owner_create_group)
+	- [修改圈子信息](#owner_change_group)
+	- [踢人](#owner_kick_member)
+	- [销毁圈子](#owner_destroy_group)
+	
+<a name="summary"> </a> 
+## 摘要 
 本文定义了一个XMPP扩展协议用于实现持久化的多用户社交圈子功能，即多个XMPP用户可以在同一个圈子中互相交流信息，类似`QQ`的聊天群，用户可以获得自己加入的圈子，创建属于自己的圈子也可以邀请其他用户加入圈子等。
 
 本协议定义了一个简单的圈子控制模型，他保护基本的圈子创建、查询、申请、邀请、踢人等等。
 
 **作者：张智**
 
-## 需求
+<a name="requirements"> </a> 
+## 需求 
 本文描述了XMPP圈子的最小功能集：
 
 1. 	每个圈子被标示为<groupid@service> (例如：<123@group.jabber.org>)，这里的	`groupid`是圈子的唯一标示而`service`是圈子服务运行的主机名。
@@ -24,12 +50,13 @@
 13. 允许圈子所有者将圈子用户踢出圈子。
 14. 允许圈子所有者解散圈子。
 
-## 术语
+<a name="terminology"> </a>
+## 术语  
 
 
 
-
-## 角色和权限
+<a name="roles"> </a>
+## 角色和权限 
 
 #### 以下是已定义的角色：
 
@@ -54,8 +81,10 @@
 踢人					| 否			| 是
 解散圈子				| 否			| 是
 
+<a name="user_usecase"></a>
 ## 用户用例
 
+<a name="user_query_groups"></a>
 ### 查询圈子
 
 #### 例子1.用户提交查询表单
@@ -124,6 +153,7 @@
 </iq>
 ```
 
+<a name="user_query_group_info"></a>
 ### 查询圈子详情
 
 #### 列子1.用户查询圈子详细信息
@@ -154,6 +184,7 @@
 </iq>
 ```
 
+<a name="user_query_group_members"></a>
 ### 查询圈子成员列表
 
 #### 例子1.用户查询特定圈子的成员列表
@@ -193,6 +224,7 @@
 </iq>
 ```
 
+<a name="user_apply_join_group"></a>
 ### 申请加入圈子
 
 #### 例子1.用户申请加入圈子
@@ -326,8 +358,10 @@
 </message>
 ```
 
+<a name="member_usecase"></a>
 ## 圈子成员用例
 
+<a name="member_query_joined_groups"></a>
 ### 查询已加入的圈子列表
 
 #### 例子1.用户查询已加入的圈子列表
@@ -376,6 +410,7 @@
 </iq>
 ```
 
+<a name="member_send_message"></a>
 ### 发送圈子消息
 
 #### 例子1.圈子成员向圈子发送消息
@@ -412,57 +447,13 @@
 当圈子成员接收到消息时`from`属性已被重写为圈子的`JID`，通过`JID`的`resource`值可知消息的发送者
 用户名为：user。扩展元素 **x** 中的`member`元素包含发送者的昵称信息。
 
-### 退出圈子
-
-#### 例子1.圈子成员退出圈子
-
-```
-<iq from='user@skysea.com' to='100@group.skysea.com' id='v7' type='set'>
-  <x xmlns='http://skysea.com/protocol/group#member'>
-  	<exit>
-  		<reason>大家太吵了，不好意思，我退了先！</reason>
-  	</exit>
-  </x>
-</iq>
-```
-
-#### 例子2.服务返回退出成功
-
-```
-<iq from='100@group.skysea.com' to='user@skysea.com' id='v7' type='result' />
-```
-
-#### 例子3.服务向所有圈子成员广播：成员退出
-
-```
-<message from='100@group.skysea.com' to='user1@skysea.com'>
-  <x xmlns='http://skysea.com/protocol/group#member'>
-  	<exit>
-  		<member username='user' nickname='碧眼狐狸' />
-  		<reason>大家太吵了，不好意思，我退了先！</reason>
-  	</exit>
-  </x>
-</message>
-
-...
-
-<message from='100@group.skysea.com' to='user10@skysea.com'>
-  <x xmlns='http://skysea.com/protocol/group#member'>
-  	<exit>
-  		<member username='user' nickname='碧眼狐狸' />
-  		<reason>大家太吵了，不好意思，我退了先！</reason>
-  	</exit>
-  </x>
-</message>
-
-```
-
+<a name="member_change_profile"></a>
 ### 修改圈子名片
 
 #### 例子1.圈子成员修改圈子名片信息
 
 ```
-<iq from='user@skysea.com' to='100@group.skysea.com' id='v8' type='set'>
+<iq from='user@skysea.com' to='100@group.skysea.com' id='v7' type='set'>
   <x xmlns='http://skysea.com/protocol/group#member'>
 	<profile>
 		<nickname>金轮法王</nickname>
@@ -475,7 +466,7 @@
 #### 例子2.服务返回修改成功
 
 ```
-<iq from='100@group.skysea.com' to='user@skysea.com' id='v8' type='result'>
+<iq from='100@group.skysea.com' to='user@skysea.com' id='v7' type='result'>
 </iq>
 ```
 
@@ -505,11 +496,57 @@
 
 ```
 
+<a name="member_exit_group"></a>
+### 退出圈子
+
+#### 例子1.圈子成员退出圈子
+
+```
+<iq from='user@skysea.com' to='100@group.skysea.com' id='v8' type='set'>
+  <x xmlns='http://skysea.com/protocol/group#member'>
+  	<exit>
+  		<reason>大家太吵了，不好意思，我退了先！</reason>
+  	</exit>
+  </x>
+</iq>
+```
+
+#### 例子2.服务返回退出成功
+
+```
+<iq from='100@group.skysea.com' to='user@skysea.com' id='v8' type='result' />
+```
+
+#### 例子3.服务向所有圈子成员广播：成员退出
+
+```
+<message from='100@group.skysea.com' to='user1@skysea.com'>
+  <x xmlns='http://skysea.com/protocol/group#member'>
+  	<exit>
+  		<member username='user' nickname='碧眼狐狸' />
+  		<reason>大家太吵了，不好意思，我退了先！</reason>
+  	</exit>
+  </x>
+</message>
+
+...
+
+<message from='100@group.skysea.com' to='user10@skysea.com'>
+  <x xmlns='http://skysea.com/protocol/group#member'>
+  	<exit>
+  		<member username='user' nickname='碧眼狐狸' />
+  		<reason>大家太吵了，不好意思，我退了先！</reason>
+  	</exit>
+  </x>
+</message>
+
+```
 
 
-
+<a name="owner_usecase"></a>
 ## 圈子所有者用例
 
+<a name="owner_create_group"></a>
 ### 创建圈子
 
 
@@ -569,8 +606,8 @@ AFFIRM_REQUIRED	| 需要审核
 ```
 服务返回表单中`jid`字段显示了服务为圈子自动生成的`jid`，圈子jid是进行圈子通信功能的目标地址。
 
+<a name="owner_create_group"></a>
 ### 修改圈子信息
-
 
 #### 例子1.用户提交修改表单
 
@@ -605,6 +642,7 @@ AFFIRM_REQUIRED	| 需要审核
 </iq>
 ```
 
+<a name="owner_kick_member"></a>
 ### 踢人
 
 #### 例子1.圈子所有者提出踢出成员
@@ -654,7 +692,7 @@ AFFIRM_REQUIRED	| 需要审核
 
 `reason`说明被踢出的原因，但它只对被踢出成员发送。
 
-
+<a name="owner_destroy_group"></a>
 ### 销毁圈子
 
 #### 例子1.圈子所有者提交销毁圈子
