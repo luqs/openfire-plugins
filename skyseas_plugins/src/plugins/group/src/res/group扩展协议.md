@@ -386,7 +386,7 @@
 </message>
 ```
 
-** 注意：message的`type`属性为`groupchat`，说明这是一个圈子聊天消息。 ** 
+**注意：message的`type`属性为`groupchat`，说明这是一个圈子聊天消息。**
 
 #### 例子2.服务向所有圈子成员广播消息
 
@@ -475,12 +475,36 @@
 #### 例子2.服务返回修改成功
 
 ```
-<iq from='100@group.skysea.com' to='owner@skysea.com' id='v8' type='result'>
+<iq from='100@group.skysea.com' to='user@skysea.com' id='v8' type='result'>
 </iq>
 ```
 
 
-#### 例子3.服务向所有圈子成员广播
+#### 例子3.服务向所有圈子成员广播：用户修改了圈子名片
+
+```
+<message from='100@group.skysea.com' to='user1@skysea.com'>
+  <x xmlns='http://skysea.com/protocol/group#member'>
+  	<profile>
+  		<member username='user' />
+  		<nickname>金轮法王</nickname>
+  	</profile>
+  </x>
+</message>
+
+...
+
+<message from='100@group.skysea.com' to='user10@skysea.com'>
+  <x xmlns='http://skysea.com/protocol/group#member'>
+  	<profile>
+  		<member username='user' />
+  		<nickname>金轮法王</nickname>
+  	</profile>
+  </x>
+</message>
+
+```
+
 
 
 
@@ -607,7 +631,7 @@ AFFIRM_REQUIRED	| 需要审核
 <message from='100@group.skysea.com' to='user1@skysea.com'>
   <x xmlns='http://skysea.com/protocol/group#member'>
   	<kick from='owner@skysea.com'>
-  		<member username='user' nickname='userNick' />
+  		<member username='user' nickname='碧眼狐狸' />
   		<reason>抱歉！你总是发送广告信息。</reason>
   	</kick>
   </x>
@@ -618,7 +642,7 @@ AFFIRM_REQUIRED	| 需要审核
 <message from='100@group.skysea.com' to='user10@skysea.com'>
   <x xmlns='http://skysea.com/protocol/group#member'>
   	<kick from='owner@skysea.com'>
-  		<member username='user' nickname='userNick' />
+  		<member username='user' nickname='碧眼狐狸' />
   		<reason>抱歉！你总是发送广告信息。</reason>
   	</kick>
   </x>
