@@ -31,7 +31,7 @@
 
 **作者：张智**
 
-<a name="requirements"> </a> 
+<a id="requirements" name="requirements"> </a> 
 ## 需求 
 本文描述了XMPP圈子的最小功能集：
 
