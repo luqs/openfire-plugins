@@ -181,11 +181,12 @@
 		<field var='subject'> <value>今晚一醉方休！</value> </field>
 		<field var='description'> <value>欢迎80，90，00后的少年们的加入！</value> </field>
 		<field var='openness'> <value>PUBLIC</value> </field>
-		<field var='createTime'> <value>2001-07-04T12:08:56.235-0700</value> </field>
+		<field var='createTime'> <value>2001-07-04T12:08:56Z</value> </field>
 	</x>
   </query>
 </iq>
 ```
+创建时间：`createTime`使用[XEP-0082](http://xmpp.org/extensions/xep-0082.html)定义的***UTC***日期时间格式。
 
 <a name="user_query_group_members"></a>
 ### 查询圈子成员列表
@@ -545,6 +546,23 @@
 
 ```
 
+### 获取圈子历史消息记录
+
+#### 例子1.用户请求获取圈子最新的历史消息记录并限制消息条数
+
+
+```
+<iq from='user@skysea.com' to='100@group.skysea.com' id='v8' type='set'>
+  <x xmlns='http://skysea.com/protocol/group'>
+  	<history>
+  		<max>10</max>
+  	</history>
+  </x>
+</iq>
+```
+
+#### 例子2.用户请求获取指定时间
+
 
 <a name="owner_usecase"></a>
 ## 圈子所有者用例
@@ -747,5 +765,12 @@ AFFIRM_REQUIRED	| 需要审核
 	([中文](http://wiki.jabbercn.org/XEP-0004))
 	
 [XEP-0059: Result Set Management](http://xmpp.org/extensions/xep-0059.html) 
+
+[XEP-0082:XMPP Date and Time Profiles](http://xmpp.org/extensions/xep-0082.html)
+
+[XEP-0055: Jabber Search](http://xmpp.org/extensions/xep-0055.html)
+
+[XEP-0203: Delayed Delivery](http://xmpp.org/extensions/xep-0082.html)
+
 	
 

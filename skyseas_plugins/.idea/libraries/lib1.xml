@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lib1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/plugins/userintegration/bin/userintegration/lib/plugin-userintegration.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/plugins/userintegration/bin/userintegration/lib/plugin-userintegration-jsp.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
