@@ -1,10 +1,7 @@
-package com.skyseas.openfireplugins.group.spi;
+package com.skyseas.openfireplugins.group.iq;
 
 import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.GroupService;
-import com.skyseas.openfireplugins.group.iq.IQHandler;
-import com.skyseas.openfireplugins.group.iq.QueryHandler;
-import com.skyseas.openfireplugins.group.iq.XHandler;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,11 +30,11 @@ final class IQDispatcher {
         if(klass == null) { throw new NullPointerException("klass"); }
 
         if(!IQHandler.class.isAssignableFrom(klass)) {
-            throw new IllegalArgumentException("klass");
+            throw new IllegalArgumentException("class is not IQHandler.");
         }
 
         if(!tryAddQueryHandler(klass) && !tryAddXHandler(klass)) {
-            throw new IllegalArgumentException("klass");
+            throw new IllegalArgumentException("IQHandler lack of definition");
         }
     }
 
@@ -49,17 +46,32 @@ final class IQDispatcher {
         return handlers;
     }
 
-    public void dispatch(Group group,IQ packet) {
+    public void dispatch(IQ packet) {
         assert packet != null;
 
-        IQHandler iqHandler = getHandler(packet);
-        if(iqHandler != null) {
-            process(iqHandler, group, packet);
+        IQHandler handler = getHandler(packet);
+        if(handler != null) {
+            process(handler, packet);
         } else {
             /* 回复客户端IQ不被接受 */
             replyNoAcceptable(packet);
         }
     }
+
+    public void dispatch(IQ packet, Group group) {
+        assert packet != null;
+        assert group != null;
+
+        IQHandler handler = getHandler(packet);
+        if(handler != null) {
+            process((GroupIQHandler)handler, packet, group);
+        } else {
+            /* 回复客户端IQ不被接受 */
+            replyNoAcceptable(packet);
+        }
+    }
+
+
 
     private IQHandler getHandler(IQ packet) {
         Element extElement = packet.getChildElement();
@@ -94,16 +106,21 @@ final class IQDispatcher {
         return false;
     }
 
-    protected void process(IQHandler iqHandler,Group group, IQ packet) {
-        iqHandler.process(group, packet);
+    protected void process(IQHandler handler, IQ packet) {
+        handler.process(packet);
+    }
+
+    protected void process(GroupIQHandler handler, IQ packet, Group group) {
+        handler.process(packet, group);
     }
 
     protected IQHandler createAndInitHandler(Class<?> klass) {
-        IQHandler handler = null;
+        IQHandler handler;
         try {
             handler = (IQHandler)klass.newInstance();
         } catch (Exception e) {
             LOG.error("创建Handler实例失败 class:"+ klass, e);
+            throw new IllegalArgumentException("IQHandler class invalid.",e);
         }
 
         if(handler != null) {
@@ -158,7 +175,7 @@ final class IQDispatcher {
 
                 return
                         str1.equals(other.str1) &&
-                                str2.equals(other.str2);
+                        str2.equals(other.str2);
             }
             return false;
         }

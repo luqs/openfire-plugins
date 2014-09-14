@@ -51,7 +51,14 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="646">
               <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-              <folding />
+              <folding>
+                <marker date="1410446699000" expanded="true" signature="0:323" placeholder="CREATE TABLE..sky_Group..." />
+                <marker date="1410446699000" expanded="true" signature="327:516" placeholder="CREATE TABLE..sky_GroupMembers..." />
+                <marker date="1410446699000" expanded="true" signature="518:615" placeholder="CREATE UNIQU..uidx_groupMember_groupId_and_userName_..." />
+                <marker date="1410446699000" expanded="true" signature="618:838" placeholder="CREATE TABLE..sky_GroupHistoryMessages..." />
+                <marker date="1410446699000" expanded="true" signature="840:925" placeholder="CREATE INDEX..idx_groupHistoryMessages_groupId..." />
+                <marker date="1410446699000" expanded="true" signature="927:1013" placeholder="CREATE INDEX..idx_groupHistoryMessages_sendTime..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -66,21 +73,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HttpHelperTest.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="HttpHelperTest.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/plugins/userintegration/src/test/com/skyseas/openfireplugins/userintegration/HttpHelperTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="612">
+            <state vertical-scroll-proportion="0.70037454" vertical-offset="0" max-vertical-offset="612">
               <caret line="37" column="26" selection-start-line="37" selection-start-column="26" selection-end-line="37" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IQDispatcherTest.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/plugins/group/src/test/com/skyseas/openfireplugins/group/spi/IQDispatcherTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5322896" vertical-offset="0" max-vertical-offset="884">
-              <caret line="25" column="26" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -89,8 +86,8 @@
       <file leaf-file-name="workspace.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="714" max-vertical-offset="23698">
-              <caret line="42" column="10" selection-start-line="42" selection-start-column="10" selection-end-line="42" selection-end-column="10" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="23817">
+              <caret line="39" column="10" selection-start-line="39" selection-start-column="10" selection-end-line="39" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -353,10 +350,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="spi" />
               <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -862,12 +855,12 @@
       <workItem from="1409538381304" duration="1355000" />
       <workItem from="1409558114739" duration="1878000" />
       <workItem from="1409650755897" duration="640000" />
-      <workItem from="1410676606137" duration="43000" />
+      <workItem from="1410676606137" duration="914000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29684000" />
+    <option name="totallyTimeSpent" value="30555000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="820" extended-state="6" />
@@ -892,8 +885,8 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29256082" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22802198" sideWeight="0.75107294" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29256082" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22802198" sideWeight="0.75107294" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -953,7 +946,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="442">
           <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
-          <folding />
+          <folding>
+            <marker date="1410446699000" expanded="true" signature="0:323" placeholder="CREATE TABLE..sky_Group..." />
+            <marker date="1410446699000" expanded="true" signature="327:516" placeholder="CREATE TABLE..sky_GroupMembers..." />
+            <marker date="1410446699000" expanded="true" signature="518:615" placeholder="CREATE UNIQU..uidx_groupMember_groupId_and_userName_..." />
+            <marker date="1410446699000" expanded="true" signature="618:838" placeholder="CREATE TABLE..sky_GroupHistoryMessages..." />
+            <marker date="1410446699000" expanded="true" signature="840:925" placeholder="CREATE INDEX..idx_groupHistoryMessages_groupId..." />
+            <marker date="1410446699000" expanded="true" signature="927:1013" placeholder="CREATE INDEX..idx_groupHistoryMessages_sendTime..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1225,8 +1225,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="714" max-vertical-offset="23698">
-          <caret line="42" column="10" selection-start-line="42" selection-start-column="10" selection-end-line="42" selection-end-column="10" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="23817">
+          <caret line="39" column="10" selection-start-line="39" selection-start-column="10" selection-end-line="39" selection-end-column="10" />
           <folding />
         </state>
       </provider>
@@ -1235,7 +1235,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
           <caret line="22" column="53" selection-start-line="22" selection-start-column="53" selection-end-line="22" selection-end-column="53" />
-          <folding />
+          <folding>
+            <marker date="1410446699000" expanded="true" signature="0:323" placeholder="CREATE TABLE..sky_Group..." />
+            <marker date="1410446699000" expanded="true" signature="327:516" placeholder="CREATE TABLE..sky_GroupMembers..." />
+            <marker date="1410446699000" expanded="true" signature="518:615" placeholder="CREATE UNIQU..uidx_groupMember_groupId_and_userName_..." />
+            <marker date="1410446699000" expanded="true" signature="618:838" placeholder="CREATE TABLE..sky_GroupHistoryMessages..." />
+            <marker date="1410446699000" expanded="true" signature="840:925" placeholder="CREATE INDEX..idx_groupHistoryMessages_groupId..." />
+            <marker date="1410446699000" expanded="true" signature="927:1013" placeholder="CREATE INDEX..idx_groupHistoryMessages_sendTime..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1258,6 +1265,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="187" max-vertical-offset="663">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1287,22 +1295,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="646">
           <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding />
+          <folding>
+            <marker date="1410446699000" expanded="true" signature="0:323" placeholder="CREATE TABLE..sky_Group..." />
+            <marker date="1410446699000" expanded="true" signature="327:516" placeholder="CREATE TABLE..sky_GroupMembers..." />
+            <marker date="1410446699000" expanded="true" signature="518:615" placeholder="CREATE UNIQU..uidx_groupMember_groupId_and_userName_..." />
+            <marker date="1410446699000" expanded="true" signature="618:838" placeholder="CREATE TABLE..sky_GroupHistoryMessages..." />
+            <marker date="1410446699000" expanded="true" signature="840:925" placeholder="CREATE INDEX..idx_groupHistoryMessages_groupId..." />
+            <marker date="1410446699000" expanded="true" signature="927:1013" placeholder="CREATE INDEX..idx_groupHistoryMessages_sendTime..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/plugins/userintegration/src/test/com/skyseas/openfireplugins/userintegration/HttpHelperTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="612">
+        <state vertical-scroll-proportion="0.70037454" vertical-offset="0" max-vertical-offset="612">
           <caret line="37" column="26" selection-start-line="37" selection-start-column="26" selection-end-line="37" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/plugins/group/src/test/com/skyseas/openfireplugins/group/spi/IQDispatcherTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5322896" vertical-offset="0" max-vertical-offset="884">
-          <caret line="25" column="26" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="26" />
           <folding />
         </state>
       </provider>

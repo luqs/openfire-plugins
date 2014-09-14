@@ -32,6 +32,7 @@ public interface Group extends MultiUserChat {
     /**
      * 更新圈子描述
      */
-    void updateGroupInfo(GroupInfo groupInfo);
+    void updateGroupInfo(GroupInfo groupInfo, JID operator)
+            throws NoPermissionException;
 
 }

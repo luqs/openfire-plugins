@@ -12,7 +12,7 @@ public interface GroupManager {
      * 搜索圈子信息列表。
      * @return
      */
-    Paging<GroupInfo> search(GroupQueryObject query);
+    Paging<GroupInfo> search(GroupQueryObject query, int offset, int limit);
 
     /**
      * 创建圈子。
