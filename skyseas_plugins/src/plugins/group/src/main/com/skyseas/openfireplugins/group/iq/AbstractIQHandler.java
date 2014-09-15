@@ -15,7 +15,6 @@ import org.xmpp.packet.PacketError;
  * Created by apple on 14-9-14.
  */
 public abstract class AbstractIQHandler implements IQHandler {
-
     protected RoutingTable routingTable;
     protected PacketRouter packetRouter;
     protected GroupService groupService;
@@ -29,14 +28,28 @@ public abstract class AbstractIQHandler implements IQHandler {
         groupManager = groupService.getGroupManager();
     }
 
+    @Override
+    public void process(IQContext context) {
+        Packet packet = filter(context);
+        if(packet == null) {
+            dispatch(context);
+        }else {
+            routePacket(packet);
+        }
+    }
+    protected abstract void dispatch(IQContext context);
+    protected Packet filter(IQContext context){
+        return null;
+    }
+
     protected void replyError(IQ packet, PacketError.Condition condition) {
         IQ reply = IQ.createResultIQ(packet);
         reply.setError(condition);
-        packetRouter.route(reply);
+        routePacket(reply);
     }
 
     protected void replyOK(IQ packet) {
-        packetRouter.route(IQ.createResultIQ(packet));
+        routePacket(IQ.createResultIQ(packet));
     }
 
     protected void routePacket(Packet packet) {
@@ -47,4 +60,5 @@ public abstract class AbstractIQHandler implements IQHandler {
         Logger logger = LoggerFactory.getLogger(getClass());
         logger.error(String.format(format, args), throwable);
     }
+
 }

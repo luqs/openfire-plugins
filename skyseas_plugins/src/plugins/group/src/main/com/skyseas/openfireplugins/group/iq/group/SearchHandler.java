@@ -1,16 +1,11 @@
 package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.*;
-import com.skyseas.openfireplugins.group.iq.AbstractIQHandler;
-import com.skyseas.openfireplugins.group.iq.DataFormModelBase;
-import com.skyseas.openfireplugins.group.iq.QueryHandler;
-import com.skyseas.openfireplugins.group.iq.RSMPacketExtension;
+import com.skyseas.openfireplugins.group.iq.*;
 import org.dom4j.Element;
-import org.xmpp.forms.DataForm;
 import org.xmpp.packet.IQ;
 import org.xmpp.packet.PacketError;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,7 +13,7 @@ import java.util.List;
  * Created by apple on 14-9-14.
  */
 @QueryHandler(namespace = SearchHandler.SEARCH_NAMESPACE)
-class SearchHandler extends AbstractIQHandler {
+class SearchHandler extends ServiceIQHandler {
     public final static String SEARCH_NAMESPACE = "jabber:iq:search";
 
     @Override
@@ -48,42 +43,6 @@ class SearchHandler extends AbstractIQHandler {
         routePacket(reply);
     }
 
-
-    public static class GroupSummaryProcessDelegate implements DataItemProcessDelegate<GroupInfo> {
-        private final String groupServiceName;
-        private final HashMap<String, Object> dataMap;
-
-        public GroupSummaryProcessDelegate(String groupServiceName) {
-            this.groupServiceName = groupServiceName;
-            this.dataMap = new HashMap<String, Object>(5);
-        }
-
-        @Override
-        public Object getPrimaryProperty(GroupInfo dataItem) {
-            return dataItem.getId();
-        }
-
-        @Override
-        public void beforeProcess(DataForm form) {
-            form.addReportedField("id",         null, null);
-            form.addReportedField("jid",        null, null);
-            form.addReportedField("owner",      null, null);
-            form.addReportedField("name",       null, null);
-            form.addReportedField("num_members",null, null);
-            form.addReportedField("subject",    null, null);
-        }
-
-        @Override
-        public void process(DataForm form, GroupInfo dataItem) {
-            dataMap.put("id", String.valueOf(dataItem.getId()));
-            dataMap.put("jid", dataItem.getJID(groupServiceName));
-            dataMap.put("owner", dataItem.getOwner());
-            dataMap.put("name", dataItem.getName());
-            dataMap.put("num_members", dataItem.getNumberOfMembers());
-            dataMap.put("subject", dataItem.getSubject());
-            form.addItemFields(dataMap);
-        }
-    }
 
     /**
      * 分页的扩展数据包。

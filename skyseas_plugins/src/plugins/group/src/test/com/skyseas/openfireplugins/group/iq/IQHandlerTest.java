@@ -18,7 +18,7 @@ import org.xmpp.packet.JID;
 /**
  * Created by apple on 14-9-14.
  */
-public class IQHandlerTest<T extends IQHandler> extends TestCase {
+public abstract class IQHandlerTest<T extends IQHandler> extends TestCase {
     protected final T handler;
     @Mocked protected GroupService groupService;
     @Mocked protected XMPPServer xmppServer;
@@ -65,6 +65,9 @@ public class IQHandlerTest<T extends IQHandler> extends TestCase {
 
                 group.getChatUserManager();
                 result = userManager;
+
+                group.getOwner();
+                result = new JID("owner@skysea.com");
             }
         };
 

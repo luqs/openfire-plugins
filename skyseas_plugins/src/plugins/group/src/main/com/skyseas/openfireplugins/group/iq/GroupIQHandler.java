@@ -3,14 +3,24 @@ package com.skyseas.openfireplugins.group.iq;
 import com.skyseas.openfireplugins.group.Group;
 import org.xmpp.packet.IQ;
 
+import java.util.HashMap;
+
 /**
  * Created by apple on 14-9-14.
  */
 public abstract class GroupIQHandler extends AbstractIQHandler {
     @Override
-    public void process(IQ packet) {
-        throw new RuntimeException();
+    protected void dispatch(IQContext context) {
+        assert context != null;
+
+        Group group = context.getItem(IQContext.ITEM_GROUP);
+        if(group != null) {
+            process(context.getPacket(), group);
+        }else {
+            throw new IllegalArgumentException("group is null");
+        }
     }
 
     protected abstract void process(IQ packet , Group group);
 }
+

@@ -1,9 +1,6 @@
 package com.skyseas.openfireplugins.group.spi;
 
-import com.skyseas.openfireplugins.group.AbstractMultiUserChat;
-import com.skyseas.openfireplugins.group.ChatUserManager;
-import com.skyseas.openfireplugins.group.Group;
-import com.skyseas.openfireplugins.group.GroupInfo;
+import com.skyseas.openfireplugins.group.*;
 import org.xmpp.packet.JID;
 import org.xmpp.packet.Message;
 import org.xmpp.packet.Packet;
@@ -32,9 +29,10 @@ public class GroupImpl extends AbstractMultiUserChat implements Group {
     }
 
     @Override
-    public void updateGroupInfo(GroupInfo groupInfo) {
-
+    public boolean updateGroupInfo(GroupInfo groupInfo) {
+        return false;
     }
+
 
     @Override
     public void send(Packet packet) {

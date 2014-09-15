@@ -14,5 +14,5 @@ public interface IQHandler {
     public final static String QUERY_ELEMENT_NAME = "query";
 
     void initialize(GroupService groupService);
-    void process(IQ packet);
+    void process(IQContext packet);
 }

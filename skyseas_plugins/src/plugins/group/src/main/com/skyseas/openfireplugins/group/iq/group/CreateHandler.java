@@ -4,6 +4,7 @@ import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.GroupInfo;
 import com.skyseas.openfireplugins.group.iq.AbstractIQHandler;
 import com.skyseas.openfireplugins.group.iq.IQHandler;
+import com.skyseas.openfireplugins.group.iq.ServiceIQHandler;
 import com.skyseas.openfireplugins.group.iq.XHandler;
 import org.dom4j.Element;
 import org.xmpp.forms.DataForm;
@@ -19,12 +20,12 @@ import java.util.Date;
  * Created by apple on 14-9-14.
  */
 @XHandler(namespace = IQHandler.GROUP_NAMESPACE, elementName = "x")
-class CreateHandler extends AbstractIQHandler {
+class CreateHandler extends ServiceIQHandler {
     @Override
     public void process(IQ packet) {
         assert packet != null;
 
-        GroupInfo groupInfo = UpdateHandler.GroupInfoPacket.getGroupInfo(packet.getChildElement());
+        GroupInfo groupInfo = GroupInfoPacket.getGroupInfo(packet.getChildElement());
         groupInfo.setOwner(packet.getFrom().getNode());
         groupInfo.setCreateTime(new Date());
 

@@ -26,7 +26,7 @@ public class IQDispatcherTest extends TestCase {
         dispatcher.installHandler(TestIQHandler2.class);
 
         // Assert
-        GroupIQHandler[] handlers =new GroupIQHandler[2];
+        GroupIQHandler[] handlers = new GroupIQHandler[2];
         dispatcher.getHandlers().toArray(handlers);
         assertEquals(2, handlers.length);
 

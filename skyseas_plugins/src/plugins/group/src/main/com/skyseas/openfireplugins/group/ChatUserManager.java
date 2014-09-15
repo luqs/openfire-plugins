@@ -13,6 +13,14 @@ public interface ChatUserManager {
     Collection<? extends ChatUser> getUsers();
 
     /**
+     * 获得特定用户
+     * @param userName
+     * @return
+     */
+    ChatUser getUser(String userName);
+
+
+    /**
      * 返回当前用户是否是多用户聊天房间用户。
      * @param userName
      * @return
@@ -31,7 +39,7 @@ public interface ChatUserManager {
      * @param userName
      * @return
      */
-    boolean removeUser(String userName);
+    ChatUser removeUser(String userName);
 
     /**
      * 修改用户昵称。
@@ -39,4 +47,5 @@ public interface ChatUserManager {
      * @param nickname
      */
     void changeNickname(String userName, String nickname);
+
 }

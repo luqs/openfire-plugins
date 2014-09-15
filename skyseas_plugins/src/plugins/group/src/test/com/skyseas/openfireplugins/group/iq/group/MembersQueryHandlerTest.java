@@ -1,6 +1,5 @@
 package com.skyseas.openfireplugins.group.iq.group;
 
-import com.skyseas.openfireplugins.group.ChatUser;
 import com.skyseas.openfireplugins.group.iq.IQHandlerTest;
 import mockit.Delegate;
 import mockit.NonStrictExpectations;
@@ -16,27 +15,6 @@ import java.util.ArrayList;
 public class MembersQueryHandlerTest extends IQHandlerTest<MembersQueryHandler> {
     public MembersQueryHandlerTest(){
         super(new MembersQueryHandler());
-    }
-
-    private static class MockChatUser implements ChatUser{
-
-        private final String userName;
-        private final String nickname;
-
-        public MockChatUser(String userName, String nickname) {
-
-            this.userName = userName;
-            this.nickname = nickname;
-        }
-        @Override
-        public String getNickname() {
-            return nickname;
-        }
-
-        @Override
-        public String getUserName() {
-            return userName;
-        }
     }
 
     public void testProcess() throws  Exception {

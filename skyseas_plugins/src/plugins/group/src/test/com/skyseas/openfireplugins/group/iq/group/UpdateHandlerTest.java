@@ -2,11 +2,14 @@ package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.GroupInfo;
 import com.skyseas.openfireplugins.group.NoPermissionException;
+import com.skyseas.openfireplugins.group.iq.IQContext;
 import com.skyseas.openfireplugins.group.iq.IQHandlerTest;
 import mockit.Delegate;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
 import org.xmpp.packet.IQ;
+import org.xmpp.packet.JID;
+import org.xmpp.packet.Packet;
 
 public class UpdateHandlerTest extends IQHandlerTest<UpdateHandler> {
 
@@ -18,7 +21,7 @@ public class UpdateHandlerTest extends IQHandlerTest<UpdateHandler> {
 
     public void setUp() {
         super.setUp();
-        packet = IQ("<iq from='user@skysea.com' to='100@group.skysea.com' id='v1' type='set'>\n" +
+        packet = IQ("<iq from='owner@skysea.com' to='100@group.skysea.com' id='v1' type='set'>\n" +
                         "\t<x xmlns='http://skysea.com/protocol/group'>\n" +
                         "\t\t<x xmlns='jabber:x:data' type='submit'>\n" +
                         "\t\t    <field var='name'  type='text-single'>\n" +
@@ -46,12 +49,7 @@ public class UpdateHandlerTest extends IQHandlerTest<UpdateHandler> {
 
     public void testProcess() throws Exception {
         //Arrange
-
-        // Act
-        handler.process(packet, group);
-
-        // Assert
-        new Verifications(){
+        new NonStrictExpectations(){
             {
                 group.updateGroupInfo(with(new Delegate<GroupInfo>() {
                     public void validate(GroupInfo groupInfo) {
@@ -63,24 +61,9 @@ public class UpdateHandlerTest extends IQHandlerTest<UpdateHandler> {
                         assertEquals(56, groupInfo.getCategory());
                         assertEquals("logo", groupInfo.getLogo());
                     }
-                }), packet.getFrom());
-
-                packetRouter.route(with(new Delegate<IQ>() {
-                    public void validate(IQ packet) {
-                        String expectXml = "<iq type=\"result\" id=\"v1\" from=\"100@group.skysea.com\" to=\"user@skysea.com\"/>";
-                        assertEquals(expectXml, packet.toString().trim());
-                    }
                 }));
-            }
-        };
-    }
-
-    public void testProcess_When_Operator_No_Permission() throws Exception{
-        // Arrange
-        new NonStrictExpectations(){
-            {
-                group.updateGroupInfo(withAny((GroupInfo)null), packet.getFrom());
-                result = new NoPermissionException();
+                result = true;
+                times = 1;
             }
         };
 
@@ -90,20 +73,14 @@ public class UpdateHandlerTest extends IQHandlerTest<UpdateHandler> {
         // Assert
         new Verifications(){
             {
-                packetRouter.route(with(new Delegate<IQ>() {
-                    public void validate(IQ packet) {
-                        String expectXml =
-                                "<iq type=\"error\" id=\"v1\" from=\"100@group.skysea.com\" to=\"user@skysea.com\">\n" +
-                                "  <error code=\"401\" type=\"auth\">\n" +
-                                "    <not-authorized xmlns=\"urn:ietf:params:xml:ns:xmpp-stanzas\"/>\n" +
-                                "  </error>\n" +
-                                "</iq>";
+                packetRouter.route(with(new Delegate<Packet>() {
+                    public void validate(Packet packet) {
+                        String expectXml = "<iq type=\"result\" id=\"v1\" from=\"100@group.skysea.com\" to=\"owner@skysea.com\"/>";
                         assertEquals(expectXml, packet.toString().trim());
                     }
                 }));
-                times = 1;
             }
         };
-
     }
+
 }

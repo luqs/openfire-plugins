@@ -3,6 +3,8 @@ package com.skyseas.openfireplugins.group;
 import org.jivesoftware.util.NotFoundException;
 import org.xmpp.packet.JID;
 
+import java.util.List;
+
 /**
  * Created by apple on 14-9-14.
  */
@@ -30,4 +32,6 @@ public interface GroupManager {
     Group getGroup(String id);
 
     void remove(String groupId, JID operator, String reason) throws NotFoundException;
+
+    List<GroupInfo> getMemberGroups(String userName);
 }

@@ -107,11 +107,13 @@ final class IQDispatcher {
     }
 
     protected void process(IQHandler handler, IQ packet) {
-        handler.process(packet);
+        handler.process(new IQContext(packet));
     }
 
-    protected void process(GroupIQHandler handler, IQ packet, Group group) {
-        handler.process(packet, group);
+    protected void process(IQHandler handler, IQ packet, Group group) {
+        IQContext context = new IQContext(packet);
+        context.setItem(IQContext.ITEM_GROUP, group);
+        handler.process(context);
     }
 
     protected IQHandler createAndInitHandler(Class<?> klass) {
