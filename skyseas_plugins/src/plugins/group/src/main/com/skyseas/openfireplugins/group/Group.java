@@ -19,11 +19,6 @@ public interface Group extends MultiUserChat {
     JID getOwner();
 
     /**
-     * 销毁圈子。
-     */
-    void destroy();
-
-    /**
      * 获得圈子描述信息。
      * @return
      */
@@ -34,4 +29,6 @@ public interface Group extends MultiUserChat {
      */
     boolean updateGroupInfo(GroupInfo groupInfo);
 
+
+    void applyJoin(String userName, String nickname, String reason) throws FullMemberException;
 }

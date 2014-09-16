@@ -32,7 +32,7 @@ public interface ChatUserManager {
      * @param userName
      * @param nickname
      */
-    void addUser(String userName, String nickname);
+    ChatUser addUser(String userName, String nickname) throws FullMemberException;
 
     /**
      * 删除用户。

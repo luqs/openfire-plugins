@@ -18,7 +18,6 @@ public class GroupImpl extends AbstractMultiUserChat implements Group {
         return null;
     }
 
-    @Override
     public void destroy() {
 
     }
@@ -31,6 +30,11 @@ public class GroupImpl extends AbstractMultiUserChat implements Group {
     @Override
     public boolean updateGroupInfo(GroupInfo groupInfo) {
         return false;
+    }
+
+    @Override
+    public void applyJoin(String userName, String nickname, String reason) throws FullMemberException {
+
     }
 
 

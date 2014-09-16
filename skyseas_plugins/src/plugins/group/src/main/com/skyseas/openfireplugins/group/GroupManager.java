@@ -1,7 +1,6 @@
 package com.skyseas.openfireplugins.group;
 
-import org.jivesoftware.util.NotFoundException;
-import org.xmpp.packet.JID;
+import com.skyseas.openfireplugins.group.util.Paging;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ public interface GroupManager {
      */
     Group getGroup(String id);
 
-    void remove(String groupId, JID operator, String reason) throws NotFoundException;
+    boolean remove(Group group);
 
     List<GroupInfo> getMemberGroups(String userName);
 }

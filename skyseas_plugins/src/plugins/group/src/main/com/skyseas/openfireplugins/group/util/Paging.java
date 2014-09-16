@@ -1,4 +1,4 @@
-package com.skyseas.openfireplugins.group;
+package com.skyseas.openfireplugins.group.util;
 
 import java.util.Collections;
 import java.util.List;

@@ -4,7 +4,7 @@ import com.skyseas.openfireplugins.group.ChatUser;
 import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.GroupEventDispatcher;
 import com.skyseas.openfireplugins.group.iq.GroupIQHandler;
-import com.skyseas.openfireplugins.group.iq.ModelPacket;
+import com.skyseas.openfireplugins.group.util.ModelPacket;
 import com.skyseas.openfireplugins.group.util.StringUtils;
 import org.dom4j.Element;
 import org.xmpp.packet.IQ;
@@ -20,8 +20,8 @@ public class ProfileHandler extends GroupIQHandler {
         assert packet != null;
         assert group != null;
 
-        String userName     = packet.getFrom().getNode();
-        String nickname  = new ProfilePacket(packet.getChildElement()).getNickname();
+        String userName = packet.getFrom().getNode();
+        String nickname = new ProfilePacket(packet.getChildElement()).getNickname();
 
         if(StringUtils.isNullOrEmpty(userName)||
            StringUtils.isNullOrEmpty(nickname)) {

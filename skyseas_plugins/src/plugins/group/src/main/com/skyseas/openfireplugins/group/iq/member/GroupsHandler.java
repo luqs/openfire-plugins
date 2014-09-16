@@ -1,6 +1,6 @@
 package com.skyseas.openfireplugins.group.iq.member;
 
-import com.skyseas.openfireplugins.group.DataListPacket;
+import com.skyseas.openfireplugins.group.util.DataListPacket;
 import com.skyseas.openfireplugins.group.GroupInfo;
 import com.skyseas.openfireplugins.group.iq.AbstractIQHandler;
 import com.skyseas.openfireplugins.group.iq.IQHandler;

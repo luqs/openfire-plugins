@@ -1,4 +1,4 @@
-package com.skyseas.openfireplugins.group;
+package com.skyseas.openfireplugins.group.util;
 
 import org.xmpp.forms.DataForm;
 

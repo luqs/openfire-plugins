@@ -1,11 +1,11 @@
-package com.skyseas.openfireplugins.group.iq;
+package com.skyseas.openfireplugins.group.util;
 
 import org.dom4j.Element;
 
 /**
  * Created by zhangzhi on 2014/9/15.
  */
-public abstract class HasReasonPacket extends ModelPacket implements HasReason {
+public abstract class HasReasonPacket extends ModelPacket {
     protected HasReasonPacket(Element extensionRoot, String modelElementName) {
         super(extensionRoot, modelElementName);
     }
@@ -14,8 +14,6 @@ public abstract class HasReasonPacket extends ModelPacket implements HasReason {
         super(name, namespace, modelElementName);
     }
 
-
-    @Override
     public String getReason() {
         return getElementValue("reason", null);
     }

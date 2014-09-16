@@ -30,16 +30,4 @@ class UpdateHandler extends OwnerIQHandler {
         }
 
     }
-
-    /**
-     * 检测用户是否有操作权限
-     *
-     * @param group
-     * @param from
-     * @return
-     */
-    private boolean checkPermission(Group group, JID from) {
-        return from.equals(group.getOwner());
-    }
-
 }

@@ -2,6 +2,7 @@ package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.*;
 import com.skyseas.openfireplugins.group.iq.*;
+import com.skyseas.openfireplugins.group.util.*;
 import org.dom4j.Element;
 import org.xmpp.packet.IQ;
 import org.xmpp.packet.PacketError;

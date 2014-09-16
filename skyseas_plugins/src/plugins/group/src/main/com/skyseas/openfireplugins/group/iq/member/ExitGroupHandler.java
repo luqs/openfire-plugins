@@ -4,7 +4,7 @@ import com.skyseas.openfireplugins.group.ChatUser;
 import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.GroupEventDispatcher;
 import com.skyseas.openfireplugins.group.iq.GroupIQHandler;
-import com.skyseas.openfireplugins.group.iq.HasReasonPacket;
+import com.skyseas.openfireplugins.group.util.HasReasonPacket;
 import com.skyseas.openfireplugins.group.iq.IQHandler;
 import com.skyseas.openfireplugins.group.iq.XHandler;
 import com.skyseas.openfireplugins.group.util.StringUtils;

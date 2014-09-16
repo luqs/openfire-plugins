@@ -52,7 +52,7 @@ public abstract class AbstractIQHandler implements IQHandler {
         routePacket(IQ.createResultIQ(packet));
     }
 
-    protected void routePacket(Packet packet) {
+    public void routePacket(Packet packet) {
         packetRouter.route(packet);
     }
 

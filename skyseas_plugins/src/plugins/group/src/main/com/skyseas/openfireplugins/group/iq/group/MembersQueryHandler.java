@@ -1,8 +1,8 @@
 package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.ChatUser;
-import com.skyseas.openfireplugins.group.DataItemProcessDelegate;
-import com.skyseas.openfireplugins.group.DataListPacket;
+import com.skyseas.openfireplugins.group.util.DataItemProcessDelegate;
+import com.skyseas.openfireplugins.group.util.DataListPacket;
 import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.iq.GroupIQHandler;
 import com.skyseas.openfireplugins.group.iq.IQHandler;

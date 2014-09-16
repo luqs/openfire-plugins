@@ -2,7 +2,7 @@ package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.GroupInfo;
 import com.skyseas.openfireplugins.group.GroupQueryObject;
-import com.skyseas.openfireplugins.group.Paging;
+import com.skyseas.openfireplugins.group.util.Paging;
 import com.skyseas.openfireplugins.group.iq.IQHandlerTest;
 import mockit.Delegate;
 import mockit.NonStrictExpectations;

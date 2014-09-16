@@ -1,7 +1,7 @@
 package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.GroupInfo;
-import com.skyseas.openfireplugins.group.iq.DataFormModelBase;
+import com.skyseas.openfireplugins.group.util.DataFormModelBase;
 import org.dom4j.Element;
 
 /**

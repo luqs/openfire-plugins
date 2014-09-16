@@ -1,4 +1,4 @@
-package com.skyseas.openfireplugins.group.iq;
+package com.skyseas.openfireplugins.group.util;
 
 import org.dom4j.Element;
 import org.dom4j.QName;

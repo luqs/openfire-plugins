@@ -1,6 +1,6 @@
 package com.skyseas.openfireplugins.group.iq.group;
 
-import com.skyseas.openfireplugins.group.DataItemProcessDelegate;
+import com.skyseas.openfireplugins.group.util.DataItemProcessDelegate;
 import com.skyseas.openfireplugins.group.GroupInfo;
 import org.xmpp.forms.DataForm;
 

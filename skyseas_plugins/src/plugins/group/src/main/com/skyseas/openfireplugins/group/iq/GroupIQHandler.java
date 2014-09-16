@@ -3,8 +3,6 @@ package com.skyseas.openfireplugins.group.iq;
 import com.skyseas.openfireplugins.group.Group;
 import org.xmpp.packet.IQ;
 
-import java.util.HashMap;
-
 /**
  * Created by apple on 14-9-14.
  */
