@@ -3,8 +3,8 @@ package com.skyseas.openfireplugins.group.iq.group;
 import com.skyseas.openfireplugins.group.*;
 import com.skyseas.openfireplugins.group.iq.*;
 import com.skyseas.openfireplugins.group.util.*;
-import org.dom4j.Element;
 import org.xmpp.packet.IQ;
+import org.xmpp.packet.Packet;
 import org.xmpp.packet.PacketError;
 
 import java.util.List;
@@ -19,14 +19,14 @@ class SearchHandler extends ServiceIQHandler {
 
     @Override
     public void process(IQ packet) {
-        QueryInfo queryInfo = new QueryInfo(packet.getChildElement());
         Paging<GroupInfo> paging;
         try {
             /* 分页查询圈子数据 */
+            RSMPacketExtension rsm = QueryInfo.getRSM(packet);
             paging = groupManager.search(
-                    queryInfo.getQueryObject(),
-                    queryInfo.getIndex(),
-                    queryInfo.getMax());
+                    QueryInfo.getQuery(packet),
+                    rsm.getIndex(0),
+                    rsm.getMax(10));
         } catch (Exception e) {
             handleException(e, "搜索圈子失败");
             replyError(packet, PacketError.Condition.internal_server_error);
@@ -35,8 +35,7 @@ class SearchHandler extends ServiceIQHandler {
 
         /* 构建分页数据包 */
         PagingPacket pagingPacket = new PagingPacket(
-                SEARCH_NAMESPACE,
-                paging,
+                SEARCH_NAMESPACE, paging,
                 new GroupSummaryProcessDelegate(groupService.getServiceDomain()));
 
         IQ reply = IQ.createResultIQ(packet);
@@ -49,7 +48,6 @@ class SearchHandler extends ServiceIQHandler {
      * 分页的扩展数据包。
      */
     static class PagingPacket<T> extends DataListPacket<T> {
-
         private final Paging<T> pagingData;
 
         public PagingPacket(String namespace,
@@ -58,18 +56,17 @@ class SearchHandler extends ServiceIQHandler {
 
             super(namespace, pagingData.getItems(), dataItemProcessDelegate);
             this.pagingData = pagingData;
-            this.initialize();
+            this.setRSM();
         }
 
-        private void initialize() {
-
+        private void setRSM() {
             RSMPacketExtension pagingInfo = new RSMPacketExtension();
             pagingInfo.setCount(pagingData.getCount());
 
-            if(pagingData.getCount() >0){
+            if (pagingData.getCount() > 0) {
                 List<T> dataItems = pagingData.getItems();
 
-                if(dataItems.size() > 0) {
+                if (dataItems.size() > 0) {
                     pagingInfo.setFirstValue(delegate.getPrimaryProperty(
                             dataItems.get(0)), pagingData.getOffset());
 
@@ -77,7 +74,6 @@ class SearchHandler extends ServiceIQHandler {
                             dataItems.get(dataItems.size() - 1)));
                 }
             }
-
             this.element.add(pagingInfo.getElement());
         }
     }
@@ -85,36 +81,22 @@ class SearchHandler extends ServiceIQHandler {
     /**
      * 圈子查询信息
      */
-    public static class QueryInfo extends DataFormModelBase {
-        private RSMPacketExtension rsm;
-
-        public QueryInfo (Element element) {
-            super(element);
-        }
-
-        public GroupQueryObject getQueryObject() {
+    private final static class QueryInfo {
+        public static GroupQueryObject getQuery(IQ packet) {
+            DataFormExtension form = DataFormExtension.getForm(packet);
             GroupQueryObject query = new GroupQueryObject();
-            query.setName(getFieldValue("name"));
-            query.setGroupId(getIntegerFieldValue("id", 0));
-            query.setCategory(getIntegerFieldValue("category", 0));
+            if(form != null) {
+                query.setName(form.getFirstValue("name"));
+                query.setGroupId(form.getFirstValueAsInt("id", 0));
+                query.setCategory(form.getFirstValueAsInt("category", 0));
+            }
             return query;
         }
 
-        public int getIndex() {
-            return getRSM().getIndex(0);
+        public static RSMPacketExtension getRSM(IQ packet) {
+           RSMPacketExtension rsm = RSMPacketExtension.getRSM(packet);
+           return rsm != null ? rsm : new RSMPacketExtension();
         }
-
-        public int getMax() {
-            return getRSM().getMax(0);
-        }
-
-        public RSMPacketExtension getRSM() {
-            if(rsm == null) {
-                Element ele = element.element(RSMPacketExtension.Q_NAME);
-                rsm = ele != null ? new RSMPacketExtension(ele) : new RSMPacketExtension();
-            }
-            return rsm;
-        }
-
     }
+
 }

@@ -37,6 +37,49 @@ public class ApplyHandler extends OwnerIQHandler {
         replyOK(packet);
     }
 
+    private class ApplyProcessObject2 {
+        private final IQ packet;
+        private final Group group;
+        private final ApplyProcessPacket appPacket;
+        private Exception exp;
+
+        public ApplyProcessObject2(IQ packet, Group group) {
+            this.packet = packet;
+            this.group = group;
+            this.appPacket = new ApplyProcessPacket(packet.getChildElement());
+        }
+
+        public void execute() {
+            if (appPacket.isAgree()) {
+                if (addChatUser()) {
+                    /**
+                     * 通知申请者申请已通过
+                     */
+                    notifyProposer(true);
+                } else {
+                    replyError(packet,
+                            exp instanceof FullMemberException
+                            ? PacketError.Condition.service_unavailable
+                            : PacketError.Condition.internal_server_error);
+                }
+            } else {
+
+                /**
+                 * 通知申请者申请被拒绝
+                 */
+                notifyProposer(false);
+            }
+        }
+
+        private void notifyProposer(boolean b) {
+
+        }
+
+        private boolean addChatUser() {
+            return false;
+        }
+    }
+
     private static class ApplyProcessObject {
         private final Group group;
         private final JID operator;

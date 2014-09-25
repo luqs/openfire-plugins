@@ -47,16 +47,19 @@ import org.xmpp.packet.PacketError;
 
         if(user != null) {
             replyOK(packet);
-
-            ExitGroupPacket exitGroupPacket = new ExitGroupPacket(packet.getChildElement());
-            /* 触发用户退出事件 */
-            GroupEventDispatcher.fireUserExited(
-                    group,
-                    user,
-                    exitGroupPacket.getReason());
+            fireEvent(packet, group, user);
         }else {
             replyError(packet, PacketError.Condition.not_authorized);
         }
+    }
+
+    private void fireEvent(IQ packet, Group group, ChatUser user) {
+        ExitGroupPacket exitGroupPacket = new ExitGroupPacket(packet.getChildElement());
+            /* 触发用户退出事件 */
+        GroupEventDispatcher.fireUserExited(
+                group,
+                user,
+                exitGroupPacket.getReason());
     }
 
     private static class ExitGroupPacket extends HasReasonPacket {

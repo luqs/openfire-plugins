@@ -2,7 +2,6 @@ package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.GroupInfo;
-import com.skyseas.openfireplugins.group.iq.AbstractIQHandler;
 import com.skyseas.openfireplugins.group.iq.IQHandler;
 import com.skyseas.openfireplugins.group.iq.ServiceIQHandler;
 import com.skyseas.openfireplugins.group.iq.XHandler;
@@ -21,20 +20,26 @@ import java.util.Date;
  */
 @XHandler(namespace = IQHandler.GROUP_NAMESPACE, elementName = "x")
 class CreateHandler extends ServiceIQHandler {
+
     @Override
     public void process(IQ packet) {
         assert packet != null;
 
-        GroupInfo groupInfo = GroupInfoPacket.getGroupInfo(packet.getChildElement());
-        groupInfo.setOwner(packet.getFrom().getNode());
-        groupInfo.setCreateTime(new Date());
+        GroupInfo info = getGroupInfo(packet);
+        Group group = createGroup(info);
 
-        Group group = createGroup(groupInfo);
         if(group != null) {
             routePacket(createResultIQ(packet, group.getJid()));
         }else {
             replyError(packet, PacketError.Condition.internal_server_error);
         }
+    }
+
+    private GroupInfo getGroupInfo(IQ packet) {
+        GroupInfo groupInfo = GroupInfoPacket.getGroupInfo(packet);
+        groupInfo.setOwner(packet.getFrom().getNode());
+        groupInfo.setCreateTime(new Date());
+        return groupInfo;
     }
 
     private Group createGroup(GroupInfo groupInfo) {
@@ -55,8 +60,8 @@ class CreateHandler extends ServiceIQHandler {
         FormField jidField = form.addField();
         jidField.setVariable("jid");
         jidField.addValue(jid);
-
         element.add(form.getElement());
+
         return packet;
     }
 }

@@ -6,6 +6,7 @@ import com.skyseas.openfireplugins.group.util.DataListPacket;
 import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.iq.GroupIQHandler;
 import com.skyseas.openfireplugins.group.iq.IQHandler;
+import org.dom4j.Element;
 import org.xmpp.forms.DataForm;
 import org.xmpp.packet.IQ;
 
@@ -25,10 +26,17 @@ class MembersQueryHandler extends GroupIQHandler {
 
         /* 获得圈子用户列表数据包 */
         DataListPacket<ChatUser> dataListPacket = getUserListPacket(group);
-
-        IQ reply = IQ.createResultIQ(packet);
-        reply.setChildElement(dataListPacket.getElement());
+        IQ reply = createReply(packet, dataListPacket);
         routePacket(reply);
+    }
+
+    private IQ createReply(IQ packet, DataListPacket<ChatUser> dataList) {
+        Element dataListEl = dataList.getElement();
+        dataListEl.addAttribute("node", "members");
+
+        packet = IQ.createResultIQ(packet);
+        packet.setChildElement(dataListEl);
+        return packet;
     }
 
     private DataListPacket<ChatUser> getUserListPacket(Group group) {
@@ -37,7 +45,6 @@ class MembersQueryHandler extends GroupIQHandler {
                         IQHandler.GROUP_NAMESPACE,
                         users,
                         new ChatUserProcessDelegate());
-        packet.getElement().addAttribute("node", "members");
         return packet;
     }
 

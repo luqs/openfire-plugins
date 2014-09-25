@@ -2,6 +2,7 @@ package com.skyseas.openfireplugins.group.util;
 
 import org.dom4j.Element;
 import org.dom4j.QName;
+import org.xmpp.packet.IQ;
 import org.xmpp.packet.PacketExtension;
 
 /**
@@ -84,9 +85,12 @@ public class RSMPacketExtension extends PacketExtension {
         if(ele == null){
             ele = this.element.addElement(name);
         }
-
         ele.setText(value);
         return ele;
     }
 
+    public static RSMPacketExtension getRSM(IQ packet) {
+        Element ele = packet.getChildElement().element(RSMPacketExtension.Q_NAME);
+        return ele != null ? new RSMPacketExtension(ele) : null;
+    }
 }

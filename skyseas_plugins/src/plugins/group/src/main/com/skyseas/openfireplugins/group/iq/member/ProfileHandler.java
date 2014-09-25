@@ -21,10 +21,9 @@ public class ProfileHandler extends GroupIQHandler {
         assert group != null;
 
         String userName = packet.getFrom().getNode();
-        String nickname = new ProfilePacket(packet.getChildElement()).getNickname();
+        String newNickname = new ProfilePacket(packet.getChildElement()).getNickname();
 
-        if(StringUtils.isNullOrEmpty(userName)||
-           StringUtils.isNullOrEmpty(nickname)) {
+        if(StringUtils.isNullOrEmpty(newNickname)) {
             replyError(packet, PacketError.Condition.bad_request);
             return;
         }
@@ -36,30 +35,29 @@ public class ProfileHandler extends GroupIQHandler {
         }
 
         String oldNickname = user.getNickname();
-        if(changeNickname(group, userName, nickname)){
+        if(changeNickname(group, userName, newNickname)) {
             replyOK(packet);
 
-            /* 触发用户修改昵称事件。 */
+             /* 触发用户修改昵称事件。 */
             GroupEventDispatcher.fireUserNicknameChanged(
                     group,
                     user,
                     oldNickname,
-                    nickname);
+                    newNickname);
         }else {
             replyError(packet, PacketError.Condition.internal_server_error);
         }
-
     }
 
-    private boolean changeNickname(Group group, String userName, String nickname) {
+    private boolean changeNickname(Group group, String userName, String newNickname) {
         try {
-            group.getChatUserManager().changeNickname(userName, nickname);
+            group.getChatUserManager().changeNickname(userName, newNickname);
             return true;
         }catch (Exception exp) {
-            handleException(exp, "修改用户昵称失败，GroupId:%s, UserName:%s, Nickname:%s",
+            handleException(exp, "修改用户昵称失败，GroupId:%s, UserName:%s, NewNickname:%s",
                     group.getId(),
                     userName,
-                    nickname);
+                    newNickname);
             return false;
         }
     }

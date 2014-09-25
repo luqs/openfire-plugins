@@ -7,6 +7,7 @@ import com.skyseas.openfireplugins.group.iq.IQHandler;
 import com.skyseas.openfireplugins.group.iq.QueryHandler;
 import org.xmpp.forms.DataForm;
 import org.xmpp.packet.IQ;
+import org.xmpp.packet.JID;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -16,22 +17,21 @@ import java.util.TimeZone;
  * Created by apple on 14-9-14.
  */
 @QueryHandler(namespace = IQHandler.GROUP_NAMESPACE, node = "info")
- class InfoQueryHandler extends GroupIQHandler {
+class InfoQueryHandler extends GroupIQHandler {
     @Override
     public void process(IQ packet, Group group) {
         assert packet != null;
         assert group != null;
 
-        IQ reply = createReply(packet, group);
+        IQ reply = createReply(packet, group.getJid(), group.getGroupInfo());
         routePacket(reply);
     }
 
-    private IQ createReply(IQ packet, Group group) {
-        GroupInfo groupInfo = group.getGroupInfo();
+    private IQ createReply(IQ packet, JID jid, GroupInfo groupInfo) {
         packet = IQ.createResultIQ(packet);
         DataForm form = new DataForm(DataForm.Type.result);
         form.addField("id", null, null).addValue(groupInfo.getId());
-        form.addField("jid", null, null).addValue(group.getJid());
+        form.addField("jid", null, null).addValue(jid.toString());
         form.addField("owner", null, null).addValue(groupInfo.getOwner());
         form.addField("name", null, null).addValue(groupInfo.getName());
         form.addField("num_members", null, null).addValue(groupInfo.getNumberOfMembers());

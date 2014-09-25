@@ -1,34 +1,33 @@
 package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.GroupInfo;
-import com.skyseas.openfireplugins.group.util.DataFormModelBase;
+import com.skyseas.openfireplugins.group.util.DataFormExtension;
 import org.dom4j.Element;
+import org.xmpp.packet.IQ;
+import org.xmpp.packet.Packet;
 
 /**
  * 圈子信息扩展协议包
  */
-class GroupInfoPacket extends DataFormModelBase {
-    GroupInfoPacket(Element element) {
-        super(element);
+final class GroupInfoPacket{
+
+    public static GroupInfo getGroupInfo(IQ packet) {
+        DataFormExtension form = DataFormExtension.getForm(packet);
+        return form != null ? getGroupInfo(form) : null;
     }
 
-    public static GroupInfo getGroupInfo(Element element) {
-        GroupInfoPacket pak = new GroupInfoPacket(element);
-        return pak.getGroupInfo();
-    }
-
-    public GroupInfo getGroupInfo() {
+    static GroupInfo getGroupInfo(DataFormExtension form) {
         GroupInfo groupInfo = new GroupInfo();
-        groupInfo.setName(getFieldValue("name"));
-        groupInfo.setSubject(getFieldValue("subject"));
-        groupInfo.setLogo(getFieldValue("logo"));
-        groupInfo.setDescription(getFieldValue("description"));
-        groupInfo.setCategory(getIntegerFieldValue("category", 1));
+        groupInfo.setName(form.getFirstValue("name"));
+        groupInfo.setSubject(form.getFirstValue("subject"));
+        groupInfo.setLogo(form.getFirstValue("logo"));
+        groupInfo.setDescription(form.getFirstValue("description"));
+        groupInfo.setCategory(form.getFirstValueAsInt("category", 1));
 
-        String opennessValue =getFieldValue("openness");
-        if(opennessValue != null) {
+        String opennessValue = form.getFirstValue("openness");
+        if (opennessValue != null) {
             groupInfo.setOpennessType(GroupInfo.OpennessType.valueOf(opennessValue));
-        }else {
+        } else {
             groupInfo.setOpennessType(GroupInfo.OpennessType.PUBLIC);
         }
         return groupInfo;
