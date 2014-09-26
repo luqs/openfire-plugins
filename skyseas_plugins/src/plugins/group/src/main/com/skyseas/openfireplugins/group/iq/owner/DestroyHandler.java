@@ -23,9 +23,8 @@ class DestroyHandler extends OwnerIQHandler {
         if(groupManager.remove(group)){
             replyOK(packet);
 
-            /**
-             * 触发圈子销毁事件。
-             */
+            // TODO: 事件触发移动到内部？
+            /* 触发圈子销毁事件 */
             DestroyPacket destroyPacket = new DestroyPacket(packet.getChildElement());
             GroupEventDispatcher.fireGroupDestroyed(
                     group,

@@ -6,7 +6,6 @@ import com.skyseas.openfireplugins.group.iq.IQHandler;
 import com.skyseas.openfireplugins.group.iq.OwnerIQHandler;
 import com.skyseas.openfireplugins.group.iq.XHandler;
 import org.xmpp.packet.IQ;
-import org.xmpp.packet.JID;
 import org.xmpp.packet.Message;
 import org.xmpp.packet.PacketError;
 
@@ -22,28 +21,17 @@ public class ApplyHandler extends OwnerIQHandler {
         assert group != null;
         assert packet != null;
 
-        ApplyProcessPacket applyPacket = new ApplyProcessPacket(packet.getChildElement());
-        ApplyProcessObject processor = new ApplyProcessObject(group, packet.getFrom(), applyPacket);
-
-        if (applyPacket.isDecline()) {
-            processor.decline();
-        } else if (!processor.agree()) {
-
-            /* 同意申请但添加用户到圈子失败 */
-            replyError(packet, PacketError.Condition.service_unavailable);
-            return;
-        }
-
-        replyOK(packet);
+        ApplyProcessObject processor = new ApplyProcessObject(packet, group);
+        processor.execute();
     }
 
-    private class ApplyProcessObject2 {
+    private final class ApplyProcessObject {
         private final IQ packet;
         private final Group group;
         private final ApplyProcessPacket appPacket;
         private Exception exp;
 
-        public ApplyProcessObject2(IQ packet, Group group) {
+        public ApplyProcessObject(IQ packet, Group group) {
             this.packet = packet;
             this.group = group;
             this.appPacket = new ApplyProcessPacket(packet.getChildElement());
@@ -52,70 +40,45 @@ public class ApplyHandler extends OwnerIQHandler {
         public void execute() {
             if (appPacket.isAgree()) {
                 if (addChatUser()) {
-                    /**
-                     * 通知申请者申请已通过
-                     */
+                    replyOK(packet);
                     notifyProposer(true);
+                    // TODO: 触发事件？
                 } else {
-                    replyError(packet,
-                            exp instanceof FullMemberException
-                            ? PacketError.Condition.service_unavailable
-                            : PacketError.Condition.internal_server_error);
+                    replyErrorToOwner();
                 }
             } else {
-
-                /**
-                 * 通知申请者申请被拒绝
-                 */
+                replyOK(packet);
                 notifyProposer(false);
             }
         }
 
-        private void notifyProposer(boolean b) {
-
-        }
-
         private boolean addChatUser() {
-            return false;
-        }
-    }
-
-    private static class ApplyProcessObject {
-        private final Group group;
-        private final JID operator;
-        private final ApplyProcessPacket appPacket;
-
-        public ApplyProcessObject(Group group, JID operator, ApplyProcessPacket appPacket) {
-            this.group = group;
-            this.operator = operator;
-            this.appPacket = appPacket;
-        }
-
-        public boolean agree() {
             try {
                 group.getChatUserManager().addUser(
                         appPacket.getFrom().getNode(),
                         appPacket.getFrom().getNode());
+                return true;
             } catch (FullMemberException e) {
+                exp = e;
                 return false;
             }
-
-            notifyProposer(true);
-            // TODO: 触发用户加入事件？
-            return true;
         }
 
-        public void decline() {
-            notifyProposer(false);
+        private void replyErrorToOwner() {
+            replyError(packet, exp instanceof FullMemberException
+                            ? PacketError.Condition.service_unavailable
+                            : PacketError.Condition.internal_server_error);
         }
 
         private void notifyProposer(boolean result) {
             /* 被拒绝时向申请者发送消息 */
             Message msg = ApplyProcessPacket.newInstanceForApplyResult(
                     result,
-                    operator.toBareJID(),
+                    packet.getFrom().toBareJID(),
                     appPacket.getReason());
             group.send(appPacket.getFrom(), msg);
         }
     }
+
+
 }

@@ -35,6 +35,7 @@ public class KickHandler extends OwnerIQHandler {
         if (user != null) {
             replyOK(packet);
 
+            // TODO: 移动到内部？
             /* 触发用户被踢出事件 */
             GroupEventDispatcher.fireUserKick(
                     group,

@@ -24,9 +24,10 @@ public class ApplyJoinGroupHandler extends GroupIQHandler {
             return;
         }
 
-        /* 已经是圈子成员则不允许再次申请 */
+        /* 已经是圈子成员 */
         if(group.getChatUserManager().hasUser(userName)) {
-            replyError(packet, PacketError.Condition.not_allowed);
+            replyOK(packet);
+            //replyError(packet, PacketError.Condition.not_allowed);
             return;
         }
 

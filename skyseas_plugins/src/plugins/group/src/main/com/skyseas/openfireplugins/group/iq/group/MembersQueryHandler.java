@@ -30,6 +30,15 @@ class MembersQueryHandler extends GroupIQHandler {
         routePacket(reply);
     }
 
+    private DataListPacket<ChatUser> getUserListPacket(Group group) {
+        Collection<ChatUser> users = (Collection<ChatUser>)group.getChatUserManager().getUsers();
+        DataListPacket<ChatUser> packet = new DataListPacket<ChatUser>(
+                        IQHandler.GROUP_NAMESPACE,
+                        users,
+                        new ChatUserProcessDelegate());
+        return packet;
+    }
+
     private IQ createReply(IQ packet, DataListPacket<ChatUser> dataList) {
         Element dataListEl = dataList.getElement();
         dataListEl.addAttribute("node", "members");
@@ -39,14 +48,6 @@ class MembersQueryHandler extends GroupIQHandler {
         return packet;
     }
 
-    private DataListPacket<ChatUser> getUserListPacket(Group group) {
-        Collection<ChatUser> users = (Collection<ChatUser>)group.getChatUserManager().getUsers();
-        DataListPacket<ChatUser> packet = new DataListPacket<ChatUser>(
-                        IQHandler.GROUP_NAMESPACE,
-                        users,
-                        new ChatUserProcessDelegate());
-        return packet;
-    }
 
     static class ChatUserProcessDelegate implements DataItemProcessDelegate<ChatUser> {
         private final HashMap<String, Object> dataMap;

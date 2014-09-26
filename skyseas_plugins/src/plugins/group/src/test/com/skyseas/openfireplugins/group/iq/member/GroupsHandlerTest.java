@@ -2,11 +2,9 @@ package com.skyseas.openfireplugins.group.iq.member;
 
 import com.skyseas.openfireplugins.group.GroupInfo;
 import com.skyseas.openfireplugins.group.iq.IQHandlerTest;
-import junit.framework.TestCase;
 import mockit.Delegate;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
-import org.dom4j.DocumentHelper;
 import org.xmpp.packet.IQ;
 import org.xmpp.packet.Packet;
 
@@ -27,7 +25,7 @@ public class GroupsHandlerTest extends IQHandlerTest<GroupsHandler> {
         final ArrayList<GroupInfo> items = getGroupInfos();
         new NonStrictExpectations(){
             {
-                groupManager.getMemberGroups("user");
+                groupManager.getMemberJoinedGroups("user");
                 result = items;
                 times = 1;
             }

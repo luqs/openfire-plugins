@@ -2,14 +2,11 @@ package com.skyseas.openfireplugins.group.iq.member;
 
 import com.skyseas.openfireplugins.group.util.DataListPacket;
 import com.skyseas.openfireplugins.group.GroupInfo;
-import com.skyseas.openfireplugins.group.iq.AbstractIQHandler;
 import com.skyseas.openfireplugins.group.iq.IQHandler;
 import com.skyseas.openfireplugins.group.iq.QueryHandler;
 import com.skyseas.openfireplugins.group.iq.ServiceIQHandler;
 import com.skyseas.openfireplugins.group.iq.group.GroupSummaryProcessDelegate;
-import com.skyseas.openfireplugins.group.util.StringUtils;
 import org.xmpp.packet.IQ;
-import org.xmpp.packet.Packet;
 import org.xmpp.packet.PacketError;
 
 import java.util.Collections;
@@ -37,16 +34,11 @@ class GroupsHandler extends ServiceIQHandler {
     }
 
     private List<GroupInfo> getJoinedGroups(String userName) {
-        try {
-            List<GroupInfo> groups = groupManager.getMemberGroups(userName);
-            if (groups != null) {
-                return groups;
-            } else {
-                return Collections.emptyList();
-            }
-        } catch (Exception e) {
-            handleException(e, "获取用户圈子列表失败。UserName:%s", userName);
-            return null;
+        List<GroupInfo> groups = groupManager.getMemberJoinedGroups(userName);
+        if (groups != null) {
+            return groups;
+        } else {
+            return Collections.emptyList();
         }
     }
 

@@ -1,6 +1,7 @@
 package com.skyseas.openfireplugins.group;
 
 import com.skyseas.openfireplugins.group.util.Paging;
+import org.xmpp.packet.JID;
 
 import java.util.List;
 
@@ -22,7 +23,6 @@ public interface GroupManager {
      */
     Group create(GroupInfo groupInfo);
 
-
     /**
      * 获得圈子Id。
      * @param id
@@ -32,5 +32,5 @@ public interface GroupManager {
 
     boolean remove(Group group);
 
-    List<GroupInfo> getMemberGroups(String userName);
+    List<GroupInfo> getMemberJoinedGroups(String userName);
 }
