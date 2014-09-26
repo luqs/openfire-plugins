@@ -84,11 +84,7 @@ public class ApplyJoinGroupHandlerTest extends IQHandlerTest<ApplyJoinGroupHandl
             {
                 handler.routePacket(with(new Delegate<Packet>() {
                     public void validate(Packet p) {
-                        assertEquals("<iq type=\"error\" id=\"v4\" from=\"100@group.skysea.com\" to=\"user@skysea.com\">\n" +
-                                        "  <error code=\"405\" type=\"cancel\">\n" +
-                                        "    <not-allowed xmlns=\"urn:ietf:params:xml:ns:xmpp-stanzas\"/>\n" +
-                                        "  </error>\n" +
-                                        "</iq>",
+                        assertEquals("<iq type=\"result\" id=\"v4\" from=\"100@group.skysea.com\" to=\"user@skysea.com\"/>",
                         p.toString().trim());
                     }
 
