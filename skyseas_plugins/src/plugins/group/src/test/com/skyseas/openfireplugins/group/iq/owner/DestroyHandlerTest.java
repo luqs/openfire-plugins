@@ -1,6 +1,5 @@
 package com.skyseas.openfireplugins.group.iq.owner;
 
-import com.skyseas.openfireplugins.group.GroupEventDispatcher;
 import com.skyseas.openfireplugins.group.iq.IQHandlerTest;
 import mockit.Delegate;
 import mockit.NonStrictExpectations;
@@ -27,7 +26,7 @@ public class DestroyHandlerTest extends IQHandlerTest<DestroyHandler> {
 
         new NonStrictExpectations(){
             {
-                groupManager.remove(group);
+                groupManager.remove(group, packet.getFrom(), "再见了各位！");
                 result = true;
                 times = 1;
             }
@@ -46,12 +45,8 @@ public class DestroyHandlerTest extends IQHandlerTest<DestroyHandler> {
                                 p.toString().trim());
                     }
                 }));
-
-                GroupEventDispatcher.fireGroupDestroyed(
-                        group,
-                        packet.getFrom(),
-                        "再见了各位！");
                 times = 1;
+
             }
         };
     }

@@ -29,8 +29,19 @@ public abstract class AbstractMultiUserChat implements MultiUserChat {
     }
 
     @Override
+    public void send(JID recipients, Message msg) {
+        ContractUtils.requiresNotNull(recipients, "recipients");
+        ContractUtils.requiresNotNull(msg, "msg");
+
+        msg.setFrom(this.jid);
+        msg.setTo(recipients);
+        routePacket(msg);
+    }
+
+    @Override
     public void send(Packet packet) {
         ContractUtils.requiresNotNull(packet, "packet");
+
         if (packet instanceof Message) {
             broadcast((Message) packet);
         } else if (packet instanceof Presence) {
@@ -42,12 +53,20 @@ public abstract class AbstractMultiUserChat implements MultiUserChat {
         }
     }
 
+    @Override
+    public void broadcast(Packet packet) {
+        ContractUtils.requiresNotNull(packet, "packet");
+
+        for (ChatUser user : getChatUserManager().getUsers()) {
+            routePacket(packet, user);
+        }
+    }
+
+
     protected void broadcast(Message message) {
         if (checkMsg(message)) {
             message.setFrom(createGroupUserJid(message.getFrom().getNode()));
-            for (ChatUser user : getChatUserManager().getUsers()) {
-                routePacket(message, user);
-            }
+            broadcast((Packet)message);
         }
     }
 

@@ -84,13 +84,12 @@ class GroupManagerImpl implements GroupManager {
      * 删除圈子。
      */
     @Override
-    public boolean remove(Group group) {
+    public boolean remove(Group group, JID operator, String reason) {
         assert group != null;
 
         /* 从内存中移除圈子对象，并销毁该圈子 */
-        GroupImpl removedGroup = groups.remove(group.getId());
-        if(removedGroup == group) {
-            return removedGroup.destroy();
+        if(groups.remove(group.getId(), group)) {
+            return group.destroy(operator, reason);
         }
         return false;
     }

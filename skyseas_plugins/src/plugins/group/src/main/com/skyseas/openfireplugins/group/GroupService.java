@@ -29,8 +29,4 @@ public interface GroupService {
      * @return
      */
     GroupManager getGroupManager();
-
-
-
-
 }

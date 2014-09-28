@@ -29,6 +29,14 @@ public interface Group extends MultiUserChat {
      */
     boolean updateGroupInfo(GroupInfo groupInfo);
 
-
+    /**
+     * 申请加入圈子。
+     * @param proposer
+     * @param nickname
+     * @param reason
+     * @throws FullMemberException
+     */
     void applyJoin(JID proposer, String nickname, String reason) throws FullMemberException;
+
+    boolean destroy(JID operator, String reason);
 }

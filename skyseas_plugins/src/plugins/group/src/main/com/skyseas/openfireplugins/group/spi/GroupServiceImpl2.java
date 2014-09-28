@@ -50,7 +50,6 @@ public class GroupServiceImpl2 implements GroupService , Component {
 
     @Override
     public void initialize(JID jid, ComponentManager componentManager) throws ComponentException {
-
     }
 
     @Override

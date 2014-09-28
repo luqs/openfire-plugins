@@ -30,7 +30,19 @@ public interface GroupManager {
      */
     Group getGroup(String id);
 
-    boolean remove(Group group);
+    /**
+     * 删除圈子。
+     * @param group
+     * @param operator
+     * @param reason
+     * @return
+     */
+    boolean remove(Group group, JID operator, String reason);
 
+    /**
+     * 获得成员加入过的圈子列表。
+     * @param userName
+     * @return
+     */
     List<GroupInfo> getMemberJoinedGroups(String userName);
 }

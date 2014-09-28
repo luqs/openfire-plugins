@@ -5,7 +5,6 @@ import com.skyseas.openfireplugins.group.util.Paging;
 import junit.framework.TestCase;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
-import mockit.Verifications;
 import org.jivesoftware.openfire.PacketRouter;
 import org.xmpp.packet.JID;
 
@@ -106,6 +105,8 @@ public class GroupManagerImplTest extends TestCase {
     public void testRemoveGroup() throws Exception {
 
         // Arrange
+        final JID owner  = new JID("owner@skysea.com");
+        final String reason = "再见了";
         new NonStrictExpectations(GroupImpl.class) {
             {
                 GroupImpl.load(groupInfo.getId(), persistenceManager, groupService);
@@ -116,7 +117,7 @@ public class GroupManagerImplTest extends TestCase {
 
         new NonStrictExpectations() {
             {
-                group.destroy();
+                group.destroy(owner, reason);
                 result = true;
                 times = 1;
             }
@@ -124,7 +125,7 @@ public class GroupManagerImplTest extends TestCase {
 
         // Act
         Group result1 = groupManager.getGroup(group.getId());
-        boolean result2 = groupManager.remove(result1);
+        boolean result2 = groupManager.remove(result1, owner, reason);
         Group result3 = groupManager.getActivatedGroup(group.getId());
 
         // Assert
@@ -135,7 +136,7 @@ public class GroupManagerImplTest extends TestCase {
 
     public void testRemoveGroup_When_Group_Is_Not_Active() {
         assertNull(groupManager.getActivatedGroup(group.getId()));
-        assertFalse(groupManager.remove(group));
+        assertFalse(groupManager.remove(group, new JID("owner@skysea.com"), "test"));
     }
 
     public void testGetGroup() throws Exception {

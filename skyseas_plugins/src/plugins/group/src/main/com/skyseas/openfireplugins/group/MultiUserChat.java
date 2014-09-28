@@ -41,6 +41,12 @@ public interface MultiUserChat {
     void send(JID jid, Message msg);
 
     /**
+     * 向聊天房间广播数据包。
+     * @param packet
+     */
+    void broadcast(Packet packet);
+
+    /**
      * 获得聊天用户管理器。
      */
     ChatUserManager getChatUserManager();

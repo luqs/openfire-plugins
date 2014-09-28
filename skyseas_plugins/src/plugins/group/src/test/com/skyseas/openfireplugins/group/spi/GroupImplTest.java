@@ -1,9 +1,6 @@
 package com.skyseas.openfireplugins.group.spi;
 
-import com.skyseas.openfireplugins.group.ChatUser;
-import com.skyseas.openfireplugins.group.GroupInfo;
-import com.skyseas.openfireplugins.group.GroupMemberPersistenceManager;
-import com.skyseas.openfireplugins.group.GroupPersistenceManager;
+import com.skyseas.openfireplugins.group.*;
 import junit.framework.TestCase;
 import mockit.Delegate;
 import mockit.Mocked;
@@ -237,7 +234,28 @@ public class GroupImplTest extends TestCase {
         };
     }
 
+    public void testDestroy() throws Exception {
+        // Arrange
+        final String reason = "再见了各位";
+        new NonStrictExpectations(){
+            {
+                groupPersistenceManager.removeGroup(groupInfo.getId());
+                result = true;
+                times = 1;
+            }
+        };
+        new NonStrictExpectations(GroupEventDispatcher.class){
+            {
+                GroupEventDispatcher.fireGroupDestroyed(group, group.getOwner(), reason);
+                times = 1;
+            }
+        };
 
+        // Act
+        group.destroy(group.getOwner(), reason);
+
+        // Assert
+    }
 
     public void testSend_When_Packet_Is_IQ() throws Exception {
         // Arrange
@@ -255,5 +273,34 @@ public class GroupImplTest extends TestCase {
             }
         };
     }
+
+    public void testBroadcast() throws Exception {
+        // Arrange
+        final Packet packet = new Message();
+        for (final ChatUser user : group.getChatUserManager().getUsers()) {
+            new NonStrictExpectations(user) {
+                {
+                    user.send(packetRouter, packet);
+                    times = 1;
+                }
+            };
+        }
+
+        // Act
+        group.broadcast(packet);
+    }
+
+    public void testNumberOfUsersChanged() throws Exception {
+        // Arrange
+        int orgNum = group.getGroupInfo().getNumberOfMembers();
+
+        // Act
+        group.numberOfUsersChanged(100);
+
+        // Assert
+        assertEquals(100, group.getGroupInfo().getNumberOfMembers());
+        assertFalse(orgNum == group.getGroupInfo().getNumberOfMembers());
+    }
+
 
 }

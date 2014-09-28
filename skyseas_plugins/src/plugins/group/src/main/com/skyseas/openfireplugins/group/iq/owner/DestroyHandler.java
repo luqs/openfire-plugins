@@ -20,16 +20,9 @@ class DestroyHandler extends OwnerIQHandler {
         assert packet != null;
         assert group !=null;
 
-        if(groupManager.remove(group)){
+        DestroyPacket destroyPacket = new DestroyPacket(packet.getChildElement());
+        if(groupManager.remove(group, packet.getFrom().asBareJID(), destroyPacket.getReason())){
             replyOK(packet);
-
-            // TODO: 事件触发移动到内部？
-            /* 触发圈子销毁事件 */
-            DestroyPacket destroyPacket = new DestroyPacket(packet.getChildElement());
-            GroupEventDispatcher.fireGroupDestroyed(
-                    group,
-                    packet.getFrom(),
-                    destroyPacket.getReason());
         }else {
             replyError(packet, PacketError.Condition.internal_server_error);
         }

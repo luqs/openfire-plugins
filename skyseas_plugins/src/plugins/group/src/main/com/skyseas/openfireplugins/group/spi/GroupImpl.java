@@ -4,29 +4,31 @@ import com.skyseas.openfireplugins.group.*;
 import org.jivesoftware.openfire.PacketRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xmpp.packet.*;
+import org.xmpp.packet.IQ;
+import org.xmpp.packet.JID;
+import org.xmpp.packet.Packet;
 
 /**
  * Created by apple on 14-9-14.
  */
 final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUsersListener {
     private final static Logger LOG = LoggerFactory.getLogger(GroupImpl.class);
-    private final JID owner;
-    private final GroupPersistenceManager persistenceMgr;
+    private final JID                           owner;
+    private final GroupPersistenceManager       persistenceMgr;
     private final GroupMemberPersistenceManager memberPersistenceMgr;
-    private final String xmppDomain;
-    private final GroupIQDispatcher dispatcher;
-    private volatile GroupInfo groupInfo;
-    private volatile ChatUserManager chatUserManager;
-    private ApplyStrategy applyStrategy;
-    private PacketRouter packetRouter;
+    private final String                        xmppDomain;
+    private final GroupIQDispatcher             dispatcher;
+    private volatile GroupInfo                  groupInfo;
+    private volatile ChatUserManager            chatUserManager;
+    private ApplyStrategy                       applyStrategy;
+    private PacketRouter                        packetRouter;
 
     GroupImpl(JID jid,
-              GroupInfo groupInfo,
-              String xmppDomain,
-              GroupIQDispatcher dispatcher,
-              PacketRouter packetRouter,
-              GroupPersistenceManager persistenceMgr,
+              GroupInfo                     groupInfo,
+              String                        xmppDomain,
+              GroupIQDispatcher             dispatcher,
+              PacketRouter                  packetRouter,
+              GroupPersistenceManager       persistenceMgr,
               GroupMemberPersistenceManager memberPersistenceMgr) {
         super(String.valueOf(groupInfo.getId()), jid);
         assert jid != null;
@@ -36,13 +38,14 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         assert persistenceMgr != null;
         assert memberPersistenceMgr != null;
 
-        this.groupInfo = groupInfo;
-        this.xmppDomain = xmppDomain;
-        this.owner = new JID(groupInfo.getOwner(), xmppDomain, null, true);
-        this.dispatcher = dispatcher;
-        this.packetRouter = packetRouter;
-        this.persistenceMgr = persistenceMgr;
-        this.memberPersistenceMgr = memberPersistenceMgr;
+        this.groupInfo              = groupInfo;
+        this.xmppDomain             = xmppDomain;
+        this.dispatcher             = dispatcher;
+        this.packetRouter           = packetRouter;
+        this.persistenceMgr         = persistenceMgr;
+        this.memberPersistenceMgr   = memberPersistenceMgr;
+        this.owner                  = new JID(groupInfo.getOwner(), xmppDomain, null, true);
+
         setApplyStrategy(groupInfo.getOpennessType());
     }
 
@@ -64,7 +67,7 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
             return false;
         }
 
-        /* 合并更新内存中的Group副本，注意：这和持久化GroupInfo不是原子的。 */
+        /* 合并更新内存中的Group副本，注意：这和持久化GroupInfo不是原子的 */
         combineUpdate(groupInfo);
 
         /* 触发圈子修改 */
@@ -95,13 +98,6 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
     }
 
     @Override
-    public void send(JID recipients, Message msg) {
-        msg.setFrom(this.jid);
-        msg.setTo(recipients);
-        routePacket(msg);
-    }
-
-    @Override
     public ChatUserManager getChatUserManager() {
         if (chatUserManager != null) {
             return chatUserManager;
@@ -115,8 +111,20 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         return chatUserManager;
     }
 
-    public boolean destroy() {
-        return true;
+    @Override
+    public void numberOfUsersChanged(int newNumberOfUsers) {
+        synchronized (this) {
+            groupInfo.setNumberOfMembers(newNumberOfUsers);
+        }
+    }
+
+    @Override
+    public boolean destroy(JID operator, String reason) {
+        if(persistenceDestroy()) {
+            GroupEventDispatcher.fireGroupDestroyed(this, operator, reason);
+            return true;
+        }
+        return false;
     }
 
     private boolean persistenceUpdate(GroupInfo groupInfo) {
@@ -137,6 +145,15 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         }
     }
 
+    private boolean persistenceDestroy() {
+        try {
+            return persistenceMgr.removeGroup(groupInfo.getId());
+        } catch (PersistenceException e) {
+            handleException(e, "删除圈子失败");
+        }
+        return false;
+    }
+
     private void setApplyStrategy(GroupInfo.OpennessType opennessType) {
         applyStrategy = ApplyStrategy.getStrategyFor(opennessType);
     }
@@ -144,13 +161,6 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
     private void handleException(Throwable exp, String format, String... args) {
         LOG.error(String.format(format, args) + ", GroupId:" + id, exp);
     }
-
-
-    @Override
-    public void numberOfUsersChanged(int newNumberOfUsers) {
-
-    }
-
 
     /**
      * 创建一个圈子。
