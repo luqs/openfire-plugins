@@ -1,5 +1,6 @@
 package com.skyseas.openfireplugins.group.iq.group;
 
+import com.skyseas.openfireplugins.group.GroupEventDispatcher;
 import com.skyseas.openfireplugins.group.GroupInfo;
 import com.skyseas.openfireplugins.group.iq.IQHandlerTest;
 import mockit.Delegate;
@@ -41,7 +42,7 @@ public class CreateHandlerTest extends IQHandlerTest<CreateHandler> {
                 "</iq>");
 
 
-        new NonStrictExpectations() {
+        new NonStrictExpectations(GroupEventDispatcher.class) {
             {
                 groupManager.create(with(new Delegate<GroupInfo>() {
                     public void validate(GroupInfo info) {
@@ -57,6 +58,9 @@ public class CreateHandlerTest extends IQHandlerTest<CreateHandler> {
                     }
                 }));
                 result = group;
+
+                GroupEventDispatcher.fireGroupCreated(group);
+                times = 1;
             }
         };
 

@@ -1,7 +1,8 @@
-package com.skyseas.openfireplugins.group.iq;
+package com.skyseas.openfireplugins.group.spi;
 
 import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.GroupService;
+import com.skyseas.openfireplugins.group.iq.*;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,8 @@ import java.util.HashMap;
 /**
  * Created by apple on 14-9-14.
  */
-final class IQDispatcher {
+final class IQDispatcher implements GroupIQDispatcher {
+    public static final GroupIQDispatcher GROUP = null;
     private Logger LOG = LoggerFactory.getLogger(IQDispatcher.class);
     private final HashMap<StringPair, IQHandler> queryHandlers  = new HashMap<StringPair, IQHandler>();
     private final HashMap<StringPair, IQHandler> xHandlers      = new HashMap<StringPair, IQHandler>();
@@ -58,6 +60,7 @@ final class IQDispatcher {
         }
     }
 
+    @Override
     public void dispatch(IQ packet, Group group) {
         assert packet != null;
         assert group != null;

@@ -27,13 +27,12 @@ public class ApplyJoinGroupHandler extends GroupIQHandler {
         /* 已经是圈子成员 */
         if(group.getChatUserManager().hasUser(userName)) {
             replyOK(packet);
-            //replyError(packet, PacketError.Condition.not_allowed);
             return;
         }
 
         ApplyProcessPacket applyPacket = new ApplyProcessPacket(packet.getChildElement());
         try {
-            group.applyJoin(userName, userName, applyPacket.getReason());
+            group.applyJoin(packet.getFrom(), userName, applyPacket.getReason());
             replyOK(packet);
         }catch (FullMemberException exp) {
 

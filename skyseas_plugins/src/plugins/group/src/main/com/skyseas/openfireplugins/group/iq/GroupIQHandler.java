@@ -1,6 +1,8 @@
 package com.skyseas.openfireplugins.group.iq;
 
 import com.skyseas.openfireplugins.group.Group;
+import com.skyseas.openfireplugins.group.iq.AbstractIQHandler;
+import com.skyseas.openfireplugins.group.iq.IQContext;
 import org.xmpp.packet.IQ;
 
 /**

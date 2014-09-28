@@ -1,5 +1,6 @@
 package com.skyseas.openfireplugins.group.iq.owner;
 
+import com.skyseas.openfireplugins.group.ChatUserManager;
 import com.skyseas.openfireplugins.group.GroupEventDispatcher;
 import com.skyseas.openfireplugins.group.iq.IQHandlerTest;
 import com.skyseas.openfireplugins.group.iq.group.MockChatUser;
@@ -7,6 +8,7 @@ import mockit.Delegate;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
 import org.xmpp.packet.IQ;
+import org.xmpp.packet.JID;
 import org.xmpp.packet.Packet;
 
 public class KickHandlerTest extends IQHandlerTest<KickHandler> {
@@ -28,7 +30,7 @@ public class KickHandlerTest extends IQHandlerTest<KickHandler> {
         final MockChatUser user = new MockChatUser("user", "碧眼狐狸");
         new NonStrictExpectations(){
             {
-                userManager.removeUser("user");
+                userManager.removeUser(ChatUserManager.RemoveType.KICK, "user",packet.getFrom(), "抱歉！你总是发送广告信息。" );
                 result = user;
                 times = 1;
             }
@@ -47,13 +49,6 @@ public class KickHandlerTest extends IQHandlerTest<KickHandler> {
                                 packet.toString().trim());
                     }
                 }));
-                times = 1;
-
-                GroupEventDispatcher.fireUserKick(
-                        group,
-                        user,
-                        packet.getFrom(),
-                        "抱歉！你总是发送广告信息。");
                 times = 1;
             }
         };

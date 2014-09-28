@@ -6,6 +6,7 @@ import junit.framework.TestCase;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
+import org.jivesoftware.openfire.PacketRouter;
 import org.xmpp.packet.JID;
 
 import java.util.ArrayList;
@@ -16,6 +17,12 @@ public class GroupManagerImplTest extends TestCase {
     GroupPersistenceManager persistenceManager;
     @Mocked
     GroupService groupService;
+    @Mocked
+    GroupIQDispatcher dispatcher;
+    @Mocked
+    PacketRouter packetRouter;
+
+    @Mocked GroupMemberPersistenceManager groupMemberPersistenceManager;
     GroupManagerImpl groupManager;
 
     GroupInfo groupInfo;
@@ -27,7 +34,14 @@ public class GroupManagerImplTest extends TestCase {
         groupInfo = new GroupInfo();
         groupInfo.setId(22);
         groupInfo.setOwner("zz");
-        group = new GroupImpl(new JID("100@group.skysea.com"), groupInfo, null);
+        group = new GroupImpl(
+                new JID("100@group.skysea.com"),
+                groupInfo,
+                "skysea.com",
+                dispatcher,
+                packetRouter,
+                persistenceManager,
+                groupMemberPersistenceManager);
     }
 
     public void testSearch() throws Exception {

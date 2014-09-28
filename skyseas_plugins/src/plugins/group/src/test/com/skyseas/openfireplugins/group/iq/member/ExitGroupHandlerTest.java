@@ -1,6 +1,7 @@
 package com.skyseas.openfireplugins.group.iq.member;
 
 import com.skyseas.openfireplugins.group.ChatUser;
+import com.skyseas.openfireplugins.group.ChatUserManager;
 import com.skyseas.openfireplugins.group.GroupEventDispatcher;
 import com.skyseas.openfireplugins.group.iq.IQHandlerTest;
 import junit.framework.TestCase;
@@ -35,8 +36,9 @@ public class ExitGroupHandlerTest extends IQHandlerTest<ExitGroupHandler> {
         // Arrange
         new NonStrictExpectations() {
             {
-               userManager.removeUser("user");
+               userManager.removeUser(ChatUserManager.RemoveType.EXIT, "user", packet.getFrom(), "大家太吵了，不好意思，我退了先！");
                result = user;
+               times = 1;
             }
         };
 
@@ -54,9 +56,6 @@ public class ExitGroupHandlerTest extends IQHandlerTest<ExitGroupHandler> {
                         assertEquals(expectXml, packet.toString().trim());
                     }
                 }));
-                times = 1;
-
-                GroupEventDispatcher.fireUserExited(group, user, "大家太吵了，不好意思，我退了先！");
                 times = 1;
             }
         };

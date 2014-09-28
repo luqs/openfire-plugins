@@ -1,6 +1,7 @@
 package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.Group;
+import com.skyseas.openfireplugins.group.GroupEventDispatcher;
 import com.skyseas.openfireplugins.group.GroupInfo;
 import com.skyseas.openfireplugins.group.iq.IQHandler;
 import com.skyseas.openfireplugins.group.iq.ServiceIQHandler;
@@ -30,6 +31,7 @@ class CreateHandler extends ServiceIQHandler {
 
         if(group != null) {
             routePacket(createResultIQ(packet, group.getJid()));
+            GroupEventDispatcher.fireGroupCreated(group);
         }else {
             replyError(packet, PacketError.Condition.internal_server_error);
         }

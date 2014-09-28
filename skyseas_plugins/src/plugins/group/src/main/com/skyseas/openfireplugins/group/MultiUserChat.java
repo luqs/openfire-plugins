@@ -44,6 +44,4 @@ public interface MultiUserChat {
      * 获得聊天用户管理器。
      */
     ChatUserManager getChatUserManager();
-
-
 }

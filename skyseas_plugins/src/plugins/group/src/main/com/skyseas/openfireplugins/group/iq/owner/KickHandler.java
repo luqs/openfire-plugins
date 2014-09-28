@@ -1,6 +1,7 @@
 package com.skyseas.openfireplugins.group.iq.owner;
 
 import com.skyseas.openfireplugins.group.ChatUser;
+import com.skyseas.openfireplugins.group.ChatUserManager;
 import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.GroupEventDispatcher;
 import com.skyseas.openfireplugins.group.util.HasReasonPacket;
@@ -23,25 +24,22 @@ public class KickHandler extends OwnerIQHandler {
         assert group != null;
 
         KickPacket kickPacket = new KickPacket(packet.getChildElement());
-        String kickUserName = kickPacket.getUserName();
 
         /* 所有者不能将自己踢出 */
-        if (group.getOwner().getNode().equals(kickUserName)) {
+        if (group.getOwner().getNode().equals(kickPacket.getUserName())) {
             replyError(packet, PacketError.Condition.not_allowed);
             return;
         }
 
-        ChatUser user = group.getChatUserManager().removeUser(kickUserName);
+        /* 从聊天用户管理器将用户删除 */
+        ChatUser user = group.getChatUserManager().removeUser(
+                ChatUserManager.RemoveType.KICK,
+                kickPacket.getUserName(),
+                packet.getFrom(),
+                kickPacket.getReason());
+
         if (user != null) {
             replyOK(packet);
-
-            // TODO: 移动到内部？
-            /* 触发用户被踢出事件 */
-            GroupEventDispatcher.fireUserKick(
-                    group,
-                    user,
-                    packet.getFrom(),
-                    kickPacket.getReason());
         } else {
             replyError(packet, PacketError.Condition.internal_server_error);
         }

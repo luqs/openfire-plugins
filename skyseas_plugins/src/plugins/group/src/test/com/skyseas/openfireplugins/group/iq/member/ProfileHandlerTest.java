@@ -52,9 +52,6 @@ public class ProfileHandlerTest extends IQHandlerTest<ProfileHandler> {
                     }
                 }));
                 times = 1;
-
-                GroupEventDispatcher.fireUserNicknameChanged(group, user, "碧眼狐狸", "金轮法王");
-                times = 1;
             }
         };
     }

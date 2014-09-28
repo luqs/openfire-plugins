@@ -43,7 +43,7 @@ public class ApplyJoinGroupHandlerTest extends IQHandlerTest<ApplyJoinGroupHandl
         // Assert
         new Verifications(){
             {
-                group.applyJoin("user", "user", "我也是80后，请让我加入吧！");
+                group.applyJoin(packet.getFrom(), "user", "我也是80后，请让我加入吧！");
                 times = 1;
 
                 handler.routePacket(with(new Delegate<Packet>() {
@@ -100,7 +100,7 @@ public class ApplyJoinGroupHandlerTest extends IQHandlerTest<ApplyJoinGroupHandl
                 result = false;
                 times = 1;
 
-                group.applyJoin("user", "user", "我也是80后，请让我加入吧！");
+                group.applyJoin(packet.getFrom(), "user", "我也是80后，请让我加入吧！");
                 result = new FullMemberException("");
             }
         };

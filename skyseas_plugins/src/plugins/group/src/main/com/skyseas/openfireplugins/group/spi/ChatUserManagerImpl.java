@@ -1,9 +1,9 @@
 package com.skyseas.openfireplugins.group.spi;
 
 import com.skyseas.openfireplugins.group.*;
-import com.skyseas.openfireplugins.group.util.ContractUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xmpp.packet.JID;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -20,12 +20,22 @@ final class ChatUserManagerImpl implements ChatUserManager {
     private final ConcurrentHashMap<String, ChatUserImpl> users = new ConcurrentHashMap<String, ChatUserImpl>(32);
     private final GroupMemberPersistenceManager memberPersistenceMgr;
     private final int groupId;
+    private final Group group;
+    private final NumberOfUsersListener numberOfUsersListener;
+    private final String xmppDomain;
 
-    public ChatUserManagerImpl(int groupId, GroupMemberPersistenceManager memberPersistenceMgr) {
-        assert groupId > 0;
+    public ChatUserManagerImpl(Group group,
+                               String xmppDomain,
+                               NumberOfUsersListener numberOfUsersListener,
+                               GroupMemberPersistenceManager memberPersistenceMgr) {
+        assert group != null;
+        assert xmppDomain != null;
         assert memberPersistenceMgr != null;
 
-        this.groupId = groupId;
+        this.groupId = Integer.parseInt(group.getId());
+        this.group = group;
+        this.xmppDomain = xmppDomain;
+        this.numberOfUsersListener = numberOfUsersListener;
         this.memberPersistenceMgr = memberPersistenceMgr;
         initialize();
     }
@@ -50,6 +60,17 @@ final class ChatUserManagerImpl implements ChatUserManager {
     @Override
     public Collection<? extends ChatUser> getUsers() {
         return users.values();
+    }
+
+
+    /**
+     * 获得用户数量。
+     *
+     * @return
+     */
+    @Override
+    public int getNumberOfUsers() {
+        return users.size();
     }
 
     /**
@@ -87,15 +108,26 @@ final class ChatUserManagerImpl implements ChatUserManager {
      */
     @Override
     public ChatUser addUser(String userName, String nickname) throws FullMemberException {
-        ContractUtils.requiresNotEmpty(userName, "userName");
-        ContractUtils.requiresNotEmpty(nickname, "nickname");
+        assert userName != null && userName.length() > 0;
+        assert nickname != null && nickname.length() > 0;
 
-        ChatUser user = null;
+        ChatUser user = getUser(userName);
+        if (user != null) {
+            return user;
+        }
+
         synchronized (this) {
             checkNumOfUsers();
             if (saveUser(userName, nickname)) {
                 user = addUserInternal(userName, nickname);
+                fireNumberOfUserChanged();
+
             }
+        }
+
+        if(user != null) {
+            /* 触发用户加入圈子事件 */
+            GroupEventDispatcher.fireUserJoined(group, user);
         }
 
         return user;
@@ -108,49 +140,66 @@ final class ChatUserManagerImpl implements ChatUserManager {
      * @return
      */
     @Override
-    public ChatUser removeUser(String userName) {
+    public ChatUser removeUser(RemoveType type, String userName, JID from, String reason) {
         assert userName != null;
 
         ChatUser user = null;
         synchronized (this) {
             if (persistenceRemoveUser(userName)) {
                 user = users.remove(userName);
+                fireNumberOfUserChanged();
             }
         }
 
+        if (user != null) {
+            /*触发用户退出、踢出事件 */
+            if (type == RemoveType.EXIT) {
+                GroupEventDispatcher.fireUserExited(group, user, reason);
+            } else {
+                GroupEventDispatcher.fireUserKick(group, user, from, reason);
+            }
+        }
         return user;
     }
 
     /**
      * 修改用户圈子昵称。
+     *
      * @param userName
      * @param nickname
      */
     @Override
     public void changeNickname(String userName, String nickname) {
-        ContractUtils.requiresNotEmpty(userName, "userName");
-        ContractUtils.requiresNotEmpty(nickname, "nickname");
+        assert userName != null && userName.length() > 0;
+        assert nickname != null && nickname.length() > 0;
 
         ChatUserImpl user = getUser(userName);
         if (user == null) {
             throw new IllegalArgumentException("userName");
         }
 
+        String oldNickname = user.getNickname();
         synchronized (user) {
             if (persistenceChangeNickName(userName, nickname)) {
                 user.setNickname(nickname);
             }
         }
+
+        /* 触发昵称修改事件 */
+        GroupEventDispatcher.fireUserNicknameChanged(group, user, oldNickname);
     }
 
+    private void fireNumberOfUserChanged() {
+        if (this.numberOfUsersListener != null) {
+            this.numberOfUsersListener.numberOfUsersChanged(users.size());
+        }
+    }
 
     private void checkNumOfUsers() throws FullMemberException {
         if (users.size() >= MAX_USERS) {
             throw new FullMemberException(String.format("MAX_USERS:%d, now:%d.", MAX_USERS, users.size()));
         }
     }
-
-
 
     /**
      * 从持久化层删除用户。
@@ -197,6 +246,13 @@ final class ChatUserManagerImpl implements ChatUserManager {
         }
     }
 
+    /**
+     * 持久化修改用户昵称。
+     *
+     * @param userName
+     * @param nickname
+     * @return
+     */
     private boolean persistenceChangeNickName(String userName, String nickname) {
         try {
             return memberPersistenceMgr.changeGroupProfile(groupId, userName, nickname);
@@ -205,7 +261,6 @@ final class ChatUserManagerImpl implements ChatUserManager {
             return false;
         }
     }
-
 
     /* 将用户添加到管理器内部内存中 */
     private ChatUserImpl addUserInternal(String userName, String nickName) {
@@ -217,7 +272,9 @@ final class ChatUserManagerImpl implements ChatUserManager {
     /* 创建聊天用户对象实例 */
     private ChatUserImpl createUser(String userName, String nickName) {
         userName = userName.toLowerCase();
-        return new ChatUserImpl(userName, nickName);
+        return new ChatUserImpl(userName,
+                nickName,
+                new JID(userName, xmppDomain, null, true));
     }
 
 }

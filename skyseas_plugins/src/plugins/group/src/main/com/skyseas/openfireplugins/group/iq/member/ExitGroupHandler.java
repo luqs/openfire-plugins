@@ -1,8 +1,8 @@
 package com.skyseas.openfireplugins.group.iq.member;
 
 import com.skyseas.openfireplugins.group.ChatUser;
+import com.skyseas.openfireplugins.group.ChatUserManager;
 import com.skyseas.openfireplugins.group.Group;
-import com.skyseas.openfireplugins.group.GroupEventDispatcher;
 import com.skyseas.openfireplugins.group.iq.GroupIQHandler;
 import com.skyseas.openfireplugins.group.util.HasReasonPacket;
 import com.skyseas.openfireplugins.group.iq.IQHandler;
@@ -36,9 +36,16 @@ import org.xmpp.packet.PacketError;
             return;
         }
 
+        ExitGroupPacket exitGroupPacket = new ExitGroupPacket(packet.getChildElement());
         ChatUser user;
         try {
-            user = group.getChatUserManager().removeUser(exitUserName);
+
+            /*从聊天用户管理器删除用户 */
+            user = group.getChatUserManager().removeUser(
+                    ChatUserManager.RemoveType.EXIT,
+                    exitUserName,
+                    packet.getFrom(),
+                    exitGroupPacket.getReason());
         }catch (Exception exp) {
             handleException(exp, "用户退出圈子失败,GroupId:%s, UserName:%s", group.getId(), exitUserName);
             replyError(packet, PacketError.Condition.internal_server_error);
@@ -47,19 +54,9 @@ import org.xmpp.packet.PacketError;
 
         if(user != null) {
             replyOK(packet);
-            fireEvent(packet, group, user);
         }else {
             replyError(packet, PacketError.Condition.not_authorized);
         }
-    }
-
-    private void fireEvent(IQ packet, Group group, ChatUser user) {
-        ExitGroupPacket exitGroupPacket = new ExitGroupPacket(packet.getChildElement());
-            /* 触发用户退出事件 */
-        GroupEventDispatcher.fireUserExited(
-                group,
-                user,
-                exitGroupPacket.getReason());
     }
 
     private static class ExitGroupPacket extends HasReasonPacket {

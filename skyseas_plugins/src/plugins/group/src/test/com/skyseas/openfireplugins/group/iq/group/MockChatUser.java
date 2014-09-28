@@ -1,6 +1,8 @@
 package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.ChatUser;
+import org.jivesoftware.openfire.PacketRouter;
+import org.xmpp.packet.Packet;
 
 /**
 * Created by zhangzhi on 2014/9/15.
@@ -18,6 +20,15 @@ public class MockChatUser implements ChatUser {
     @Override
     public String getNickname() {
         return nickname;
+    }
+
+    @Override
+    public void send(PacketRouter router, Packet packet) {
+
+    }
+
+    public String getJid() {
+        return null;
     }
 
     @Override

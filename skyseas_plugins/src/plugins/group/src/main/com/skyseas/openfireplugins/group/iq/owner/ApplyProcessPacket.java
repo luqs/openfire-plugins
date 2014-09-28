@@ -74,12 +74,15 @@ public class ApplyProcessPacket extends HasReasonPacket {
      * @param reason
      * @return
      */
-    public static ApplyProcessPacket newInstanceForwardingToOwner(String id, String from, String reason) {
+    public static Message newInstanceForwardingToOwner(String id, String from, String reason) {
         ApplyProcessPacket packet = new ApplyProcessPacket("x", "http://skysea.com/protocol/group#owner");
+        Message message = new Message();
+
         packet.setId(id);
         packet.setFrom(from);
         packet.setReason(reason);
-        return packet;
+        packet.appendTo(message.getElement());
+        return message;
     }
 
 

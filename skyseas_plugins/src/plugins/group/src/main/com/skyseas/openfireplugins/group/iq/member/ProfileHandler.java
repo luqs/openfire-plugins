@@ -2,7 +2,6 @@ package com.skyseas.openfireplugins.group.iq.member;
 
 import com.skyseas.openfireplugins.group.ChatUser;
 import com.skyseas.openfireplugins.group.Group;
-import com.skyseas.openfireplugins.group.GroupEventDispatcher;
 import com.skyseas.openfireplugins.group.iq.GroupIQHandler;
 import com.skyseas.openfireplugins.group.util.ModelPacket;
 import com.skyseas.openfireplugins.group.util.StringUtils;
@@ -37,13 +36,6 @@ public class ProfileHandler extends GroupIQHandler {
         String oldNickname = user.getNickname();
         if(changeNickname(group, userName, newNickname)) {
             replyOK(packet);
-
-             /* 触发用户修改昵称事件。 */
-            GroupEventDispatcher.fireUserNicknameChanged(
-                    group,
-                    user,
-                    oldNickname,
-                    newNickname);
         }else {
             replyError(packet, PacketError.Condition.internal_server_error);
         }

@@ -1,16 +1,41 @@
 package com.skyseas.openfireplugins.group;
 
+import org.xmpp.packet.JID;
+
 import java.util.Collection;
 
 /**
  * Created by apple on 14-9-13.
  */
 public interface ChatUserManager {
+
+    /**
+     * 用户删除类型。
+     */
+    public enum RemoveType {
+
+        /**
+         * 用户是自行退出。
+         */
+        EXIT,
+
+        /**
+         * 用户是被踢出的。
+         */
+        KICK
+    }
+
     /**
      * 获得用户列表。
      * @return
      */
     Collection<? extends ChatUser> getUsers();
+
+    /**
+     * 获得用户数量。
+     * @return
+     */
+    int getNumberOfUsers();
 
     /**
      * 获得特定用户。
@@ -38,7 +63,7 @@ public interface ChatUserManager {
      * @param userName
      * @return
      */
-    ChatUser removeUser(String userName);
+    ChatUser removeUser(RemoveType type, String userName, JID from, String reason);
 
     /**
      * 修改用户昵称。
@@ -46,5 +71,4 @@ public interface ChatUserManager {
      * @param nickname
      */
     void changeNickname(String userName, String nickname);
-
 }

@@ -1,7 +1,10 @@
-package com.skyseas.openfireplugins.group.iq;
+package com.skyseas.openfireplugins.group.spi;
 
 import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.GroupService;
+import com.skyseas.openfireplugins.group.iq.QueryHandler;
+import com.skyseas.openfireplugins.group.iq.XHandler;
+import com.skyseas.openfireplugins.group.iq.GroupIQHandler;
 import junit.framework.TestCase;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
