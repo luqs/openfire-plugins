@@ -17,7 +17,7 @@ import java.util.List;
  * Created by zhangzhi on 2014/9/15.
  */
 @QueryHandler(namespace = IQHandler.MEMBER_NAMESPACE, node = "groups")
-class GroupsHandler extends ServiceIQHandler {
+public class GroupsHandler extends ServiceIQHandler {
     @Override
     public void process(IQ packet) {
         assert packet != null;

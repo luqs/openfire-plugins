@@ -101,8 +101,6 @@ class GroupManagerImpl implements GroupManager {
         return false;
     }
 
-
-
     /**
      * 获得已经在内存中激活的Group对象实例。
      * @param groupId

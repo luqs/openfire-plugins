@@ -3,6 +3,8 @@ package com.skyseas.openfireplugins.group.iq.user;
 import com.skyseas.openfireplugins.group.FullMemberException;
 import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.iq.GroupIQHandler;
+import com.skyseas.openfireplugins.group.iq.IQHandler;
+import com.skyseas.openfireplugins.group.iq.XHandler;
 import com.skyseas.openfireplugins.group.iq.owner.ApplyProcessPacket;
 import com.skyseas.openfireplugins.group.util.StringUtils;
 import org.xmpp.packet.IQ;
@@ -12,6 +14,7 @@ import org.xmpp.packet.PacketError;
  * 申请加入圈子处理程序。
  * Created by apple on 14-9-15.
  */
+@XHandler(namespace = IQHandler.USER_NAMESPACE, elementName = "apply")
 public class ApplyJoinGroupHandler extends GroupIQHandler {
     @Override
     protected void process(IQ packet, Group group) {

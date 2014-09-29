@@ -3,6 +3,8 @@ package com.skyseas.openfireplugins.group.iq.member;
 import com.skyseas.openfireplugins.group.ChatUser;
 import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.iq.GroupIQHandler;
+import com.skyseas.openfireplugins.group.iq.IQHandler;
+import com.skyseas.openfireplugins.group.iq.XHandler;
 import com.skyseas.openfireplugins.group.util.ModelPacket;
 import com.skyseas.openfireplugins.group.util.StringUtils;
 import org.dom4j.Element;
@@ -13,6 +15,7 @@ import org.xmpp.packet.PacketError;
  * 用户个人信息处理程序。
  * Created by zhangzhi on 2014/9/15.
  */
+@XHandler(namespace = IQHandler.MEMBER_NAMESPACE, elementName = "profile")
 public class ProfileHandler extends GroupIQHandler {
     @Override
     protected void process(IQ packet, Group group) {
@@ -33,7 +36,6 @@ public class ProfileHandler extends GroupIQHandler {
             return;
         }
 
-        String oldNickname = user.getNickname();
         if(changeNickname(group, userName, newNickname)) {
             replyOK(packet);
         }else {

@@ -17,7 +17,7 @@ import org.xmpp.packet.PacketError;
  * Created by zhangzhi on 2014/9/15.
  */
 @XHandler(namespace = IQHandler.MEMBER_NAMESPACE, elementName = "exit")
- class ExitGroupHandler extends GroupIQHandler {
+public class ExitGroupHandler extends GroupIQHandler {
     @Override
     protected void process(IQ packet, Group group) {
         assert packet != null;

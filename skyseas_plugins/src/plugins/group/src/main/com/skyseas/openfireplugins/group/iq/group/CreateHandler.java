@@ -20,7 +20,7 @@ import java.util.Date;
  * Created by apple on 14-9-14.
  */
 @XHandler(namespace = IQHandler.GROUP_NAMESPACE, elementName = "x")
-class CreateHandler extends ServiceIQHandler {
+public class CreateHandler extends ServiceIQHandler {
 
     @Override
     public void process(IQ packet) {

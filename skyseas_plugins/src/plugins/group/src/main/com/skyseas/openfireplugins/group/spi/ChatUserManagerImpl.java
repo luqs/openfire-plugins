@@ -155,7 +155,7 @@ final class ChatUserManagerImpl implements ChatUserManager {
             if (type == RemoveType.EXIT) {
                 GroupEventDispatcher.fireUserExited(group, user, reason);
             } else {
-                GroupEventDispatcher.fireUserKick(group, user, from, reason);
+                GroupEventDispatcher.fireUserKicked(group, user, from, reason);
             }
         }
         return user;

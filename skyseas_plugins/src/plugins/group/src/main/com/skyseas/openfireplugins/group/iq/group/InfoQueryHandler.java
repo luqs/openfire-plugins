@@ -17,7 +17,7 @@ import java.util.TimeZone;
  * Created by apple on 14-9-14.
  */
 @QueryHandler(namespace = IQHandler.GROUP_NAMESPACE, node = "info")
-class InfoQueryHandler extends GroupIQHandler {
+public class InfoQueryHandler extends GroupIQHandler {
     @Override
     public void process(IQ packet, Group group) {
         assert packet != null;

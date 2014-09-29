@@ -14,7 +14,7 @@ import org.xmpp.packet.PacketError;
  * Created by apple on 14-9-9.
  */
 @XHandler(namespace = IQHandler.OWNER_NAMESPACE, elementName = "destroy")
-class DestroyHandler extends OwnerIQHandler {
+public class DestroyHandler extends OwnerIQHandler {
     @Override
     public void process(IQ packet, Group group) {
         assert packet != null;

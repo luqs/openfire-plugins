@@ -126,7 +126,7 @@ public class ChatUserManagerImplTest extends TestCase {
                 result = true;
                 times = 1;
 
-                GroupEventDispatcher.fireUserKick(group, user, ownerJid, reason);
+                GroupEventDispatcher.fireUserKicked(group, user, ownerJid, reason);
                 times = 1;
 
                 numberOfUsersListener.numberOfUsersChanged(0);

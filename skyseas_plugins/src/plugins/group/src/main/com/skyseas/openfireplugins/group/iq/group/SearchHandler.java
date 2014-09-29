@@ -14,7 +14,7 @@ import java.util.List;
  * Created by apple on 14-9-14.
  */
 @QueryHandler(namespace = SearchHandler.SEARCH_NAMESPACE)
-class SearchHandler extends ServiceIQHandler {
+public class SearchHandler extends ServiceIQHandler {
     public final static String SEARCH_NAMESPACE = "jabber:iq:search";
 
     @Override

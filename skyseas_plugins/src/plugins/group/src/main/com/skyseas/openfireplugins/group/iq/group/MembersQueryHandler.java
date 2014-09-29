@@ -1,6 +1,7 @@
 package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.ChatUser;
+import com.skyseas.openfireplugins.group.iq.QueryHandler;
 import com.skyseas.openfireplugins.group.util.DataItemProcessDelegate;
 import com.skyseas.openfireplugins.group.util.DataListPacket;
 import com.skyseas.openfireplugins.group.Group;
@@ -17,7 +18,8 @@ import java.util.HashMap;
  * 圈子成员查询处理程序。
  * Created by apple on 14-9-14.
  */
-class MembersQueryHandler extends GroupIQHandler {
+@QueryHandler(namespace = IQHandler.GROUP_NAMESPACE, node = "members")
+public class MembersQueryHandler extends GroupIQHandler {
 
     @Override
     protected void process(IQ packet, Group group) {

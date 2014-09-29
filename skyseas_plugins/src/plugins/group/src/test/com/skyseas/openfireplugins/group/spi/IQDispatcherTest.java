@@ -9,15 +9,23 @@ import junit.framework.TestCase;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import org.dom4j.DocumentHelper;
+import org.jivesoftware.openfire.XMPPServer;
 import org.xmpp.packet.IQ;
 
 public class IQDispatcherTest extends TestCase {
     @Mocked GroupService groupService;
+    @Mocked XMPPServer xmppServer;
     @Mocked Group group;
     private IQDispatcher dispatcher;
 
     @Override
     public void setUp() {
+        new NonStrictExpectations(){
+            {
+                groupService.getServer();
+                result = xmppServer;
+            }
+        };
         dispatcher = new IQDispatcher(groupService);
     }
 
@@ -76,6 +84,7 @@ public class IQDispatcherTest extends TestCase {
         dispatcher.dispatch(iq, group);
 
     }
+
     public void testDispatch_When_Packet_Contains_x_Extension() throws Exception {
         // Arrange
         dispatcher.installHandler(TestIQHandler2.class);
@@ -95,6 +104,23 @@ public class IQDispatcherTest extends TestCase {
         dispatcher.dispatch(iq, group);
 
     }
+
+    public void testServiceIQConfig() {
+        // Act
+        IQDispatcher.serviceIQConfig(dispatcher);
+
+        // Assert
+        assertEquals(3, dispatcher.getHandlers().size());
+    }
+
+    public void testGroupIQConfig() {
+        // Act
+        IQDispatcher.groupIQConfig(dispatcher);
+
+        // Assert
+        assertEquals(9, dispatcher.getHandlers().size());
+    }
+
 
     @QueryHandler(namespace = "test", node = "info")
     public static class TestIQHandler1 extends GroupIQHandler {

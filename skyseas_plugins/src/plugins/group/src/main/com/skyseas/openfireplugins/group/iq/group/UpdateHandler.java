@@ -13,7 +13,7 @@ import org.xmpp.packet.PacketError;
  * Created by apple on 14-9-14.
  */
 @XHandler(namespace = IQHandler.GROUP_NAMESPACE, elementName = "x")
-class UpdateHandler extends OwnerIQHandler {
+public class UpdateHandler extends OwnerIQHandler {
     @Override
     public void process(IQ packet, Group group) {
         assert packet != null;
