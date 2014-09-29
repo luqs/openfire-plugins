@@ -1,4 +1,4 @@
-package com.skyseas.openfireplugins.group;
+package com.skyseas.openfireplugins.group.spi;
 
 /**
  * Created by zhangzhi on 2014/8/27.

@@ -1,4 +1,6 @@
-package com.skyseas.openfireplugins.group;
+package com.skyseas.openfireplugins.group.spi;
+import com.skyseas.openfireplugins.group.GroupInfo;
+import com.skyseas.openfireplugins.group.GroupQueryObject;
 import com.skyseas.openfireplugins.group.util.Paging;
 
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.List;
  * 圈子持久化管理器。
  * Created by zhangzhi on 2014/9/26.
  */
-public interface GroupPersistenceManager {
+interface GroupPersistenceManager {
 
     /**
      * 添加圈子。

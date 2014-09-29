@@ -12,9 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 持久化管理器实现。
  * Created by zhangzhi on 2014/8/27.
  */
-public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMemberPersistenceManager {
+public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMemberPersistenceManager, PersistenceFactory {
     public final static PersistenceManagerImpl INSTANCE = new PersistenceManagerImpl();
 
     private final static Logger LOG = LoggerFactory.getLogger(PersistenceManagerImpl.class);
@@ -56,7 +57,15 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
     private final static String SELECT_EXIST_SPECIFIC_MEMBER =
             "SELECT 1 FROM `sky_GroupMembers` WHERE groupId = ? AND userName = ?";
 
+    @Override
+    public GroupMemberPersistenceManager getGroupMemberPersistenceManager() {
+        return this;
+    }
 
+    @Override
+    public GroupPersistenceManager getGroupPersistenceManager() {
+        return this;
+    }
 
     @Override
     public void addGroup(GroupInfo groupInfo) throws PersistenceException {
@@ -554,6 +563,7 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
         }
         return list;
     }
+
 
     private static class FieldListBuilder {
         private final StringBuffer sqlBuilder;

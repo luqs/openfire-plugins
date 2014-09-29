@@ -9,8 +9,10 @@ import org.xmpp.packet.JID;
 import org.xmpp.packet.Packet;
 
 /**
+ * 圈子实现。
  * Created by apple on 14-9-14.
  */
+
 final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUsersListener {
     private final static Logger LOG = LoggerFactory.getLogger(GroupImpl.class);
     private final JID                           owner;
@@ -23,7 +25,7 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
     private ApplyStrategy                       applyStrategy;
     private PacketRouter                        packetRouter;
 
-    GroupImpl(JID jid,
+    GroupImpl(JID                           jid,
               GroupInfo                     groupInfo,
               String                        xmppDomain,
               GroupIQDispatcher             dispatcher,
@@ -31,11 +33,11 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
               GroupPersistenceManager       persistenceMgr,
               GroupMemberPersistenceManager memberPersistenceMgr) {
         super(String.valueOf(groupInfo.getId()), jid);
-        assert jid != null;
-        assert groupInfo != null;
-        assert xmppDomain != null;
-        assert dispatcher != null;
-        assert persistenceMgr != null;
+        assert jid                  != null;
+        assert groupInfo            != null;
+        assert xmppDomain           != null;
+        assert dispatcher           != null;
+        assert persistenceMgr       != null;
         assert memberPersistenceMgr != null;
 
         this.groupInfo              = groupInfo;
@@ -49,16 +51,29 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         setApplyStrategy(groupInfo.getOpennessType());
     }
 
+    /**
+     * 获得圈子所有者。
+     * @return
+     */
     @Override
     public JID getOwner() {
         return owner;
     }
 
+    /**
+     * 获得圈子信息。
+     * @return
+     */
     @Override
     public GroupInfo getGroupInfo() {
         return groupInfo;
     }
 
+    /**
+     * 更新圈子信息。
+     * @param groupInfo
+     * @return
+     */
     @Override
     public boolean updateGroupInfo(GroupInfo groupInfo) {
         assert groupInfo != null;
@@ -75,6 +90,13 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         return true;
     }
 
+    /**
+     * 申请加入圈子。
+     * @param proposer
+     * @param nickname
+     * @param reason
+     * @throws FullMemberException
+     */
     @Override
     public void applyJoin(JID proposer, String nickname, String reason) throws FullMemberException {
         assert proposer != null;
@@ -82,27 +104,43 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         applyStrategy.applyToJoin(this, proposer, nickname, reason);
     }
 
+    /**
+     * 处理IQ请求。
+     * @param packet
+     */
     @Override
     protected void handle(IQ packet) {
         dispatcher.dispatch(packet, this);
     }
 
+    /**
+     * 将Packet路由到特定用户。
+     * @param packet
+     * @param user
+     */
     @Override
     protected void routePacket(Packet packet, ChatUser user) {
         user.send(packetRouter, packet);
     }
 
+    /**
+     * 路由Packet
+     * @param packet
+     */
     @Override
     protected void routePacket(Packet packet) {
         packetRouter.route(packet);
     }
 
+    /**
+     * 获得聊天用户管理器。
+     * @return
+     */
     @Override
     public ChatUserManager getChatUserManager() {
         if (chatUserManager != null) {
             return chatUserManager;
         }
-
         synchronized (this) {
             if (chatUserManager == null) {
                 chatUserManager = new ChatUserManagerImpl(this, xmppDomain, this, memberPersistenceMgr);
@@ -111,6 +149,10 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         return chatUserManager;
     }
 
+    /**
+     * 监听用户聊天用户人数修改。
+     * @param newNumberOfUsers
+     */
     @Override
     public void numberOfUsersChanged(int newNumberOfUsers) {
         synchronized (this) {
@@ -118,6 +160,12 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         }
     }
 
+    /**
+     * 销毁圈子。
+     * @param operator
+     * @param reason
+     * @return
+     */
     @Override
     public boolean destroy(JID operator, String reason) {
         if(persistenceDestroy()) {
@@ -127,6 +175,11 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         return false;
     }
 
+    /**
+     * 持久化更新圈子信息。
+     * @param groupInfo
+     * @return
+     */
     private boolean persistenceUpdate(GroupInfo groupInfo) {
         try {
             return persistenceMgr.updateGroup(groupInfo);
@@ -136,6 +189,10 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         return false;
     }
 
+    /**
+     * 合并更新内存中的圈子信息。
+     * @param updater
+     */
     private void combineUpdate(GroupInfo updater) {
         synchronized (this) {
             if (updater.getOpennessType() != null) {
@@ -145,6 +202,10 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         }
     }
 
+    /**
+     * 持久化销毁圈子。
+     * @return
+     */
     private boolean persistenceDestroy() {
         try {
             return persistenceMgr.removeGroup(groupInfo.getId());
@@ -179,6 +240,4 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         assert groupService != null;
         return null;
     }
-
-
 }

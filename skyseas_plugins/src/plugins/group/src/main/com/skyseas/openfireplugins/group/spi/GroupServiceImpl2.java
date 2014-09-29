@@ -34,6 +34,11 @@ public class GroupServiceImpl2 implements GroupService , Component {
     }
 
     @Override
+    public JID getGroupJid(String groupId) {
+        return null;
+    }
+
+    @Override
     public String getName() {
         return "myserivce";
     }

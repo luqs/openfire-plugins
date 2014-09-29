@@ -1,4 +1,6 @@
-package com.skyseas.openfireplugins.group;
+package com.skyseas.openfireplugins.group.spi;
+
+import com.skyseas.openfireplugins.group.GroupMemberInfo;
 
 import java.util.List;
 
@@ -6,7 +8,7 @@ import java.util.List;
  * 圈子成员持久化管理器。
  * Created by apple on 14-9-13.
  */
-public interface GroupMemberPersistenceManager {
+interface GroupMemberPersistenceManager {
 
     /**
      * 修改成员的圈子名片。

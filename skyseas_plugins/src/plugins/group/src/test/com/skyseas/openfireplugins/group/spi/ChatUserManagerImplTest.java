@@ -5,7 +5,6 @@ import junit.framework.TestCase;
 import mockit.Delegate;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
-import mockit.Verifications;
 import org.xmpp.packet.JID;
 
 import java.util.ArrayList;

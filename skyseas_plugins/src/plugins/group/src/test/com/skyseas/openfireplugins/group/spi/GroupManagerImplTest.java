@@ -12,35 +12,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroupManagerImplTest extends TestCase {
-    @Mocked
-    GroupPersistenceManager persistenceManager;
-    @Mocked
-    GroupService groupService;
-    @Mocked
-    GroupIQDispatcher dispatcher;
-    @Mocked
-    PacketRouter packetRouter;
-
-    @Mocked GroupMemberPersistenceManager groupMemberPersistenceManager;
     GroupManagerImpl groupManager;
-
     GroupInfo groupInfo;
+    @Mocked
     GroupImpl group;
+    @Mocked
+    GroupFacade facade;
 
     @Override
     public void setUp() {
-        groupManager = new GroupManagerImpl(groupService, persistenceManager);
+        groupManager = new GroupManagerImpl(facade);
         groupInfo = new GroupInfo();
-        groupInfo.setId(22);
+        groupInfo.setId(100);
         groupInfo.setOwner("zz");
-        group = new GroupImpl(
-                new JID("100@group.skysea.com"),
-                groupInfo,
-                "skysea.com",
-                dispatcher,
-                packetRouter,
-                persistenceManager,
-                groupMemberPersistenceManager);
+
+        new NonStrictExpectations() {
+            {
+                group.getId();
+                result = String.valueOf(groupInfo.getId());
+            }
+        };
     }
 
     public void testSearch() throws Exception {
@@ -52,7 +43,7 @@ public class GroupManagerImplTest extends TestCase {
 
         new NonStrictExpectations() {
             {
-                persistenceManager.queryGroups(queryObject, offset, limit);
+                facade.search(queryObject, offset, limit);
                 result = groups;
                 times = 1;
             }
@@ -67,16 +58,16 @@ public class GroupManagerImplTest extends TestCase {
 
     public void testCreate() throws Exception {
         // Arrange
-        new NonStrictExpectations(GroupImpl.class) {
+        new NonStrictExpectations() {
             {
-                GroupImpl.create(groupInfo, persistenceManager, groupService);
+                facade.create(groupInfo);
                 result = group;
                 times = 1;
             }
         };
 
         // Act
-        GroupImpl retGroup = groupManager.create(groupInfo);
+        Group retGroup = groupManager.create(groupInfo);
 
         // Assert
         assertEquals(group, retGroup);
@@ -89,7 +80,7 @@ public class GroupManagerImplTest extends TestCase {
         final List<GroupInfo> groups = new ArrayList<GroupInfo>();
         new NonStrictExpectations() {
             {
-                persistenceManager.getMemberJoinedGroups(username);
+                facade.getMemberJoinedGroups(username);
                 result = groups;
                 times = 1;
             }
@@ -105,11 +96,11 @@ public class GroupManagerImplTest extends TestCase {
     public void testRemoveGroup() throws Exception {
 
         // Arrange
-        final JID owner  = new JID("owner@skysea.com");
+        final JID owner = new JID("owner@skysea.com");
         final String reason = "再见了";
-        new NonStrictExpectations(GroupImpl.class) {
+        new NonStrictExpectations() {
             {
-                GroupImpl.load(groupInfo.getId(), persistenceManager, groupService);
+                facade.load(String.valueOf(groupInfo.getId()));
                 result = group;
                 times = 1;
             }
@@ -141,9 +132,9 @@ public class GroupManagerImplTest extends TestCase {
 
     public void testGetGroup() throws Exception {
         // Arrange
-        new NonStrictExpectations(GroupImpl.class) {
+        new NonStrictExpectations() {
             {
-                GroupImpl.load(groupInfo.getId(), persistenceManager, groupService);
+                facade.load(String.valueOf(groupInfo.getId()));
                 result = group;
                 times = 1;
             }

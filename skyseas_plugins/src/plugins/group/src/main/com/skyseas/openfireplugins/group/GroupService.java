@@ -1,6 +1,8 @@
 package com.skyseas.openfireplugins.group;
 
+import org.jivesoftware.openfire.PacketRouter;
 import org.jivesoftware.openfire.XMPPServer;
+import org.xmpp.packet.JID;
 
 /**
  * Created by apple on 14-9-14.
@@ -29,4 +31,12 @@ public interface GroupService {
      * @return
      */
     GroupManager getGroupManager();
+
+    /**
+     * 获得圈子jid。
+     * @param groupId
+     * @return
+     */
+    JID getGroupJid(String groupId);
+
 }

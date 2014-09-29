@@ -121,7 +121,6 @@ final class ChatUserManagerImpl implements ChatUserManager {
             if (saveUser(userName, nickname)) {
                 user = addUserInternal(userName, nickname);
                 fireNumberOfUserChanged();
-
             }
         }
 

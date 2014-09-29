@@ -16,15 +16,22 @@ import java.util.concurrent.ConcurrentHashMap;
 class GroupManagerImpl implements GroupManager {
     private final static Logger LOG = LoggerFactory.getLogger(GroupManagerImpl.class);
     private final ConcurrentHashMap<String, GroupImpl> groups = new ConcurrentHashMap<String, GroupImpl>(256);
-    private final GroupPersistenceManager persistenceMgr;
-    private final GroupService groupService;
+    private final GroupFacade facade;
 
-    public GroupManagerImpl(GroupService groupService, GroupPersistenceManager persistenceMgr) {
+    GroupManagerImpl(GroupService groupService, GroupIQDispatcher dispatcher) {
         assert groupService != null;
-        assert persistenceMgr != null;
+        assert dispatcher != null;
 
-        this.groupService = groupService;
-        this.persistenceMgr = persistenceMgr;
+        GroupFacade facade = new GroupFacade();
+        facade.setGroupService(groupService);
+        facade.setGroupIQDispatcher(dispatcher);
+        facade.setPersistenceFactory(PersistenceManagerImpl.INSTANCE);
+        this.facade  = facade;
+    }
+
+    GroupManagerImpl(GroupFacade facade) {
+        assert facade != null;
+        this.facade = facade;
     }
 
     /**
@@ -33,28 +40,31 @@ class GroupManagerImpl implements GroupManager {
     @Override
     public Paging<GroupInfo> search(GroupQueryObject query, int offset, int limit) {
         assert query != null;
-        try {
-            return persistenceMgr.queryGroups(query, offset, limit);
-        } catch (PersistenceException exp) {
-            LOG.error("查询圈子列表失败", exp);
-            return new Paging<GroupInfo>();
-        }
+        return facade.search(query, offset, limit);
+    }
+
+    /**
+     * 获得用户加入的圈子列表。
+     * @param userName
+     * @return
+     */
+    @Override
+    public List<GroupInfo> getMemberJoinedGroups(String userName) {
+        assert userName != null && userName.length() > 0;
+        return facade.getMemberJoinedGroups(userName);
     }
 
     /**
      * 创建圈子。
      */
     @Override
-    public GroupImpl create(GroupInfo groupInfo) {
+    public Group create(GroupInfo groupInfo) {
         assert groupInfo != null;
 
-        /* 创建持久化的圈子，并将其激活在内存中 */
-        GroupImpl group = GroupImpl.create(
-                groupInfo,
-                persistenceMgr,
-                groupService);
-
-        if (group != null) { activeGroup(group); }
+        GroupImpl group = facade.create(groupInfo);
+        if(group != null ) {
+            activeGroup(group);
+        }
         return group;
     }
 
@@ -70,10 +80,7 @@ class GroupManagerImpl implements GroupManager {
         if (group != null) { return group; }
 
         /* 从内存获取失败，尝试从持久化层加载，并激活在内存中 */
-        group = GroupImpl.load(Integer.valueOf(groupId),
-                persistenceMgr,
-                groupService);
-
+        group = facade.load(groupId);
         if (group != null) {
             return activeGroup(groupId, group);
         }
@@ -94,16 +101,7 @@ class GroupManagerImpl implements GroupManager {
         return false;
     }
 
-    @Override
-    public List<GroupInfo> getMemberJoinedGroups(String userName) {
-        try {
-            // TODO: 缓存
-            return persistenceMgr.getMemberJoinedGroups(userName);
-        }catch (PersistenceException exp) {
-            LOG.error("获取成员圈子列表失败。", exp);
-            return Collections.emptyList();
-        }
-    }
+
 
     /**
      * 获得已经在内存中激活的Group对象实例。
