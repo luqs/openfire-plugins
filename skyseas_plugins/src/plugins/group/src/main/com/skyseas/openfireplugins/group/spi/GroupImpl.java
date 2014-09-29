@@ -177,12 +177,13 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
 
     /**
      * 持久化更新圈子信息。
-     * @param groupInfo
+     * @param updater
      * @return
      */
-    private boolean persistenceUpdate(GroupInfo groupInfo) {
+    private boolean persistenceUpdate(GroupInfo updater) {
+        updater.setId(groupInfo.getId());
         try {
-            return persistenceMgr.updateGroup(groupInfo);
+            return persistenceMgr.updateGroup(updater);
         } catch (PersistenceException e) {
             handleException(e, "更新圈子到数据库失败");
         }
@@ -198,7 +199,7 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
             if (updater.getOpennessType() != null) {
                 setApplyStrategy(updater.getOpennessType());
             }
-            groupInfo = GroupInfo.combine(updater, groupInfo);
+            groupInfo = GroupInfo.combine(groupInfo, updater);
         }
     }
 

@@ -59,7 +59,9 @@ public final class GroupEventDispatcher {
 
     public static void addEventListener(GroupEventListener listener) {
         if(listener == null){ throw  new NullPointerException("listener"); }
-        listeners.add(listener);
+        if(!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
     }
 
     public static void removeEventListener(GroupEventListener listener) {

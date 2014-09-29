@@ -53,34 +53,37 @@ public class InfoQueryHandlerTest extends IQHandlerTest<InfoQueryHandler> {
 
                         String expectXml =
                                 "<iq type=\"result\" id=\"v3\" from=\"1@group.skysea.com\" to=\"user@skyseas.com\">\n" +
-                                "  <query xmlns=\"http://skysea.com/protocol/group\" node=\"info\">\n" +
-                                "    <x xmlns=\"jabber:x:data\" type=\"result\">\n" +
-                                "      <field var=\"id\">\n" +
-                                "        <value>100</value>\n" +
-                                "      </field>\n" +
-                                "      <field var=\"jid\">\n" +
-                                "        <value>100@group.skysea.com</value>\n" +
-                                "      </field>\n" +
-                                "      <field var=\"owner\">\n" +
-                                "        <value>ok</value>\n" +
-                                "      </field>\n" +
-                                "      <field var=\"name\">\n" +
-                                "        <value>fun</value>\n" +
-                                "      </field>\n" +
-                                "      <field var=\"num_members\">\n" +
-                                "        <value>122</value>\n" +
-                                "      </field>\n" +
-                                "      <field var=\"subject\"/>\n" +
-                                "      <field var=\"description\"/>\n" +
-                                "      <field var=\"openness\">\n" +
-                                "        <value>AFFIRM_REQUIRED</value>\n" +
-                                "      </field>\n" +
-                                "      <field var=\"createTime\">\n" +
-                                "        <value>2014-01-31T17:01:01Z</value>\n" +
-                                "      </field>\n" +
-                                "    </x>\n" +
-                                "  </query>\n" +
-                                "</iq>";
+                                        "  <query xmlns=\"http://skysea.com/protocol/group\" node=\"info\">\n" +
+                                        "    <x xmlns=\"jabber:x:data\" type=\"result\">\n" +
+                                        "      <field var=\"id\">\n" +
+                                        "        <value>100</value>\n" +
+                                        "      </field>\n" +
+                                        "      <field var=\"jid\">\n" +
+                                        "        <value>100@group.skysea.com</value>\n" +
+                                        "      </field>\n" +
+                                        "      <field var=\"owner\">\n" +
+                                        "        <value>ok</value>\n" +
+                                        "      </field>\n" +
+                                        "      <field var=\"name\">\n" +
+                                        "        <value>fun</value>\n" +
+                                        "      </field>\n" +
+                                        "      <field var=\"num_members\">\n" +
+                                        "        <value>122</value>\n" +
+                                        "      </field>\n" +
+                                        "      <field var=\"subject\"/>\n" +
+                                        "      <field var=\"description\"/>\n" +
+                                        "      <field var=\"openness\">\n" +
+                                        "        <value>AFFIRM_REQUIRED</value>\n" +
+                                        "      </field>\n" +
+                                        "      <field var=\"category\">\n" +
+                                        "        <value>23</value>\n" +
+                                        "      </field>\n" +
+                                        "      <field var=\"createTime\">\n" +
+                                        "        <value>2014-01-31T17:01:01Z</value>\n" +
+                                        "      </field>\n" +
+                                        "    </x>\n" +
+                                        "  </query>\n" +
+                                        "</iq>";
                         assertEquals(expectXml, packet.toString().trim());
                     }
                 }));

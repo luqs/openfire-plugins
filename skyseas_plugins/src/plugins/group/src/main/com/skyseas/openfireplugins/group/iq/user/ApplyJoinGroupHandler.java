@@ -35,7 +35,10 @@ public class ApplyJoinGroupHandler extends GroupIQHandler {
 
         ApplyProcessPacket applyPacket = new ApplyProcessPacket(packet.getChildElement());
         try {
-            group.applyJoin(packet.getFrom(), userName, applyPacket.getReason());
+            String nickName = applyPacket.getNickname();
+            nickName = StringUtils.isNullOrEmpty(nickName) ? userName : nickName;
+            group.applyJoin(packet.getFrom(), nickName, applyPacket.getReason());
+
             replyOK(packet);
         }catch (FullMemberException exp) {
 

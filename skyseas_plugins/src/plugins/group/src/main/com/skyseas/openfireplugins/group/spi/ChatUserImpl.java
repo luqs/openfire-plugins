@@ -28,6 +28,11 @@ class ChatUserImpl implements ChatUser {
         return nickname;
     }
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+
     @Override
     public void send(PacketRouter router, Packet packet) {
         assert router != null;
@@ -42,9 +47,6 @@ class ChatUserImpl implements ChatUser {
         return userName;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
 
     public JID getJid(){
         return this.jid;

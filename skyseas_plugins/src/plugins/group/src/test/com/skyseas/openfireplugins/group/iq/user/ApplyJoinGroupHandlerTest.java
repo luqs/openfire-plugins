@@ -21,6 +21,7 @@ public class ApplyJoinGroupHandlerTest extends IQHandlerTest<ApplyJoinGroupHandl
         packet = IQ("<iq from='user@skysea.com' to='100@group.skysea.com' id='v4' type='set'>\n" +
                 "  <x xmlns='http://skysea.com/protocol/group#user'>\n" +
                 "    <apply>\n" +
+                "        <member nickname=\"碧眼狐狸\" /> "+
                 "        <reason>我也是80后，请让我加入吧！</reason>\n" +
                 "    </apply>\n" +
                 "  </x>\n" +
@@ -43,7 +44,7 @@ public class ApplyJoinGroupHandlerTest extends IQHandlerTest<ApplyJoinGroupHandl
         // Assert
         new Verifications(){
             {
-                group.applyJoin(packet.getFrom(), "user", "我也是80后，请让我加入吧！");
+                group.applyJoin(packet.getFrom(), "碧眼狐狸", "我也是80后，请让我加入吧！");
                 times = 1;
 
                 handler.routePacket(with(new Delegate<Packet>() {
@@ -100,8 +101,9 @@ public class ApplyJoinGroupHandlerTest extends IQHandlerTest<ApplyJoinGroupHandl
                 result = false;
                 times = 1;
 
-                group.applyJoin(packet.getFrom(), "user", "我也是80后，请让我加入吧！");
+                group.applyJoin(packet.getFrom(), "碧眼狐狸", "我也是80后，请让我加入吧！");
                 result = new FullMemberException("");
+                times = 1;
             }
         };
 
@@ -122,6 +124,7 @@ public class ApplyJoinGroupHandlerTest extends IQHandlerTest<ApplyJoinGroupHandl
                     }
 
                 }));
+                times = 1;
             }
         };
     }

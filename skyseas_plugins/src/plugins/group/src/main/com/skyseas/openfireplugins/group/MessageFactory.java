@@ -52,13 +52,14 @@ public class MessageFactory {
         return msg;
     }
 
-    public static Message newInstanceForMemberUpdateProfile(String userName, String nickname) {
+    public static Message newInstanceForMemberUpdateProfile(String userName, String nickname, String newNickname) {
         Message msg = new MessageBuilder(ActionType.PROFILE)
                 .setUserName(userName)
+                .setNickName(nickname)
                 .build();
 
         Element profile = msg.getChildElement("x", IQHandler.MEMBER_NAMESPACE);
-        profile.element("profile").addElement("nickname").setText(nickname);
+        profile.element("profile").addElement("nickname").setText(newNickname);
 
         return msg;
     }

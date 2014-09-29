@@ -237,13 +237,14 @@
 <iq from='user@skysea.com' to='100@group.skysea.com' id='v4' type='set'>
   <x xmlns='http://skysea.com/protocol/group#user'>
   	<apply>
+  		<member nickname='碧眼狐狸' />
   		<reason>我也是80后，请让我加入吧！</reason>
   	</apply>
   </x>
 </iq>
 ```
 
-`reason`是可选的附加消息。
+`reason`是可选的附加消息，`nickname`是用户在圈子中使用的昵称。
 
 #### 例子2.服务返回申请成功
 
@@ -268,7 +269,8 @@
 ```
 <message from='100@group.skysea.com' to='owner@skysea.com'>
   <x xmlns='http://skysea.com/protocol/group#owner'>
-  	<apply id='s2fd1' from='user@skysea.com'>
+  	<apply id='s2fd1'>
+  		<member username='user' nickname='碧眼狐狸' />
   		<reason>我也是80后，请让我加入吧！</reason>
   	</apply>
   </x>
@@ -281,8 +283,9 @@
 ```
 <iq from='owner@skysea.com' to='100@group.skysea.com' id='v5' type='set'>
   <x xmlns='http://skysea.com/protocol/group#owner'>
-  	<apply id='s2fd1' from='user@skysea.com' >
+  	<apply id='s2fd1'>
   		<agree />
+  		<member username='user' nickname='碧眼狐狸' />
   		<reason>欢迎加入</reason>
   	</apply>
   </x>
@@ -293,8 +296,9 @@
 ```
 <iq from='owner@skysea.com' to='100@group.skysea.com' id='v5' type='set'>
   <x xmlns='http://skysea.com/protocol/group#owner'>
-  	<apply id='s2fd1' from='user@skysea.com' >
+  	<apply id='s2fd1'>
   		<decline />
+  		<member username='user' nickname='碧眼狐狸' />
   		<reason>目前不考虑新人加入，不好意思！</reason>
   	</apply>
   </x>
@@ -481,7 +485,7 @@
 <message from='100@group.skysea.com' to='user1@skysea.com'>
   <x xmlns='http://skysea.com/protocol/group#member'>
   	<profile>
-  		<member username='user' />
+  		<member username='user' nickname='碧眼狐狸' />
   		<nickname>金轮法王</nickname>
   	</profile>
   </x>
@@ -492,7 +496,7 @@
 <message from='100@group.skysea.com' to='user10@skysea.com'>
   <x xmlns='http://skysea.com/protocol/group#member'>
   	<profile>
-  		<member username='user' />
+  		<member username='user' nickname='碧眼狐狸' />
   		<nickname>金轮法王</nickname>
   	</profile>
   </x>

@@ -89,9 +89,13 @@ public class ApplyStrategyTest extends TestCase {
             {
                 group.send(group.getOwner(), with(new Delegate<Message>() {
                     public void validate(Message msg) {
-                        assertEquals("<message><x xmlns=\"http://skysea.com/protocol/group#owner\">" +
-                                        "<apply id=\"transId_ok\" from=\"user@skysea.com\">" +
-                                        "<reason>我也是80后啊</reason></apply></x></message>",
+                        assertEquals("<message>" +
+                                        "<x xmlns=\"http://skysea.com/protocol/group#owner\">" +
+                                        "<apply id=\"transId_ok\">" +
+                                        "<member username=\"user\" nickname=\"碧眼狐狸\"/>" +
+                                        "<reason>我也是80后啊</reason>" +
+                                        "</apply></x>" +
+                                        "</message>",
                                 msg.toXML().toString());
                     }
                 }));

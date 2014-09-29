@@ -21,21 +21,29 @@ public class ApplyProcessPacket extends HasReasonPacket {
         super(element, "apply");
     }
 
-    public String getReason() {
-        return getElementValue("reason");
-    }
-
     private void setReason(String reason) {
         modeElement.addElement("reason").setText(reason);
     }
 
-
-    public JID getFrom() {
-        return new JID(getAttributeValue("from"));
+    public String getUserName() {
+        Element ele = getMemberElement();
+        return ele == null ? null : ele.attributeValue("username");
     }
 
-    private void setFrom(String from) {
-        modeElement.addAttribute("from", from);
+    public void setUserName(String userName) {
+        Element ele = ensureMemberElement();
+        ele.addAttribute("username", userName);
+    }
+
+    public String getNickname() {
+        Element ele = getMemberElement();
+
+        return ele == null ? null : ele.attributeValue("nickname");
+    }
+
+    public void setNickname(String nickname) {
+        Element ele = ensureMemberElement();
+        ele.addAttribute("nickname", nickname);
     }
 
     public String getId() {
@@ -54,32 +62,47 @@ public class ApplyProcessPacket extends HasReasonPacket {
         return modeElement.element("decline") != null;
     }
 
+    private Element getMemberElement() {
+        return this.modeElement.element("member");
+    }
+    private Element ensureMemberElement() {
+        Element element = getMemberElement();
+        if(element == null) {
+            element = this.modeElement.addElement("member");
+        }
+        return element;
+    }
 
     private String getElementValue(String name) {
         Element ele = this.modeElement.element(name);
-        if(ele == null) { return "";}
+        if (ele == null) {
+            return "";
+        }
         return ele.getStringValue();
     }
 
     private String getAttributeValue(String name) {
         Attribute attr = this.modeElement.attribute(name);
-        if(attr == null) { return ""; }
+        if (attr == null) {
+            return "";
+        }
         return attr.getValue();
     }
 
     /**
      * 创建一个转发给圈子所有者的申请扩展包。
+     *
      * @param id
-     * @param from
      * @param reason
      * @return
      */
-    public static Message newInstanceForwardingToOwner(String id, String from, String reason) {
+    public static Message newInstanceForwardingToOwner(String id, String userName, String nickname, String reason) {
         ApplyProcessPacket packet = new ApplyProcessPacket("x", "http://skysea.com/protocol/group#owner");
         Message message = new Message();
 
         packet.setId(id);
-        packet.setFrom(from);
+        packet.setUserName(userName);
+        packet.setNickname(nickname);
         packet.setReason(reason);
         packet.appendTo(message.getElement());
         return message;
@@ -88,12 +111,13 @@ public class ApplyProcessPacket extends HasReasonPacket {
 
     /**
      * 创建一个反应申请结果的扩展包。
+     *
      * @param result
-     * @param handler
+     * @param from
      * @param reason
      * @return
      */
-    public static Message newInstanceForApplyResult(boolean result, String handler, String reason) {
+    public static Message newInstanceForApplyResult(boolean result, String from, String reason) {
         ApplyProcessPacket packet = new ApplyProcessPacket("x", "http://skysea.com/protocol/group#user");
         Message message = new Message();
 
@@ -101,11 +125,11 @@ public class ApplyProcessPacket extends HasReasonPacket {
                 ? packet.modeElement.addElement("agree")
                 : packet.modeElement.addElement("decline");
 
-        if(!StringUtils.isNullOrEmpty(handler)) {
-            resultEle.addAttribute("from", handler);
+        if (!StringUtils.isNullOrEmpty(from)) {
+            resultEle.addAttribute("from", from);
         }
 
-        if(!StringUtils.isNullOrEmpty(reason)) {
+        if (!StringUtils.isNullOrEmpty(reason)) {
             packet.setReason(reason);
         }
 

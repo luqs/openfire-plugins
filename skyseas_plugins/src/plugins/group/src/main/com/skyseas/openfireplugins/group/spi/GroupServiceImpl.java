@@ -1,6 +1,7 @@
 package com.skyseas.openfireplugins.group.spi;
 
 import com.skyseas.openfireplugins.group.Group;
+import com.skyseas.openfireplugins.group.GroupEventDispatcher;
 import com.skyseas.openfireplugins.group.GroupManager;
 import com.skyseas.openfireplugins.group.GroupService;
 import com.skyseas.openfireplugins.group.util.StringUtils;
@@ -66,6 +67,9 @@ public final class GroupServiceImpl implements GroupService, Component {
 
         /* 初始化圈子IQ处理程序。 */
         IQDispatcher.groupIQConfig(groupIQDispatcher);
+
+        /* 添加圈子事件监听 */
+        GroupEventDispatcher.addEventListener(GroupEventBroadcastListener.INSTANCE);
     }
 
     /**
@@ -127,6 +131,7 @@ public final class GroupServiceImpl implements GroupService, Component {
 
     @Override
     public void shutdown() {
+        GroupEventDispatcher.removeEventListener(GroupEventBroadcastListener.INSTANCE);
         LOG.info("shutdown");
     }
 

@@ -38,6 +38,7 @@ public class InfoQueryHandler extends GroupIQHandler {
         form.addField("subject", null, null).addValue(groupInfo.getSubject());
         form.addField("description", null, null).addValue(groupInfo.getDescription());
         form.addField("openness", null, null).addValue(groupInfo.getOpennessType());
+        form.addField("category", null, null).addValue(String.valueOf(groupInfo.getCategory()));
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         format.setTimeZone(TimeZone.getTimeZone("utc"));
         form.addField("createTime", null, null).addValue(format.format(groupInfo.getCreateTime()));

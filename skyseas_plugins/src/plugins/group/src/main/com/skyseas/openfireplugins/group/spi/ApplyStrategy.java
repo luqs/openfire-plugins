@@ -1,13 +1,11 @@
 package com.skyseas.openfireplugins.group.spi;
 
-import com.skyseas.openfireplugins.group.ChatUser;
 import com.skyseas.openfireplugins.group.FullMemberException;
 import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.GroupInfo;
 import com.skyseas.openfireplugins.group.iq.owner.ApplyProcessPacket;
 import org.xmpp.packet.JID;
 import org.xmpp.packet.Message;
-import org.xmpp.packet.PacketError;
 
 import java.util.Random;
 
@@ -73,7 +71,8 @@ abstract class ApplyStrategy {
             String transId = createApplyTrans(proposer.getNode(), group.getId());
             Message message = ApplyProcessPacket.newInstanceForwardingToOwner(
                     transId,
-                    proposer.toBareJID(),
+                    proposer.getNode(),
+                    nickname,
                     reason);
             group.send(group.getOwner(), message);
         }

@@ -100,13 +100,13 @@ public class MessageFactoryTest extends TestCase {
 
     public void testNewInstanceForMemberUpdateProfile() {
         // Act
-        Message msg = MessageFactory.newInstanceForMemberUpdateProfile("user", "金轮法王");
+        Message msg = MessageFactory.newInstanceForMemberUpdateProfile("user","碧眼狐狸", "金轮法王");
 
         // Assert
         assertEquals("<message type=\"headline\">\n" +
                         "  <x xmlns=\"http://skysea.com/protocol/group#member\">\n" +
                         "    <profile>\n" +
-                        "      <member username=\"user\"/>\n" +
+                        "      <member username=\"user\" nickname=\"碧眼狐狸\"/>\n" +
                         "      <nickname>金轮法王</nickname>\n" +
                         "    </profile>\n" +
                         "  </x>\n" +

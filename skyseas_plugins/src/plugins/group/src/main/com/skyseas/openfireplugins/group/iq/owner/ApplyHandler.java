@@ -42,7 +42,6 @@ public class ApplyHandler extends OwnerIQHandler {
                 if (addChatUser()) {
                     replyOK(packet);
                     notifyProposer(true);
-                    // TODO: 触发事件？
                 } else {
                     replyErrorToOwner();
                 }
@@ -55,8 +54,8 @@ public class ApplyHandler extends OwnerIQHandler {
         private boolean addChatUser() {
             try {
                 group.getChatUserManager().addUser(
-                        appPacket.getFrom().getNode(),
-                        appPacket.getFrom().getNode());
+                        appPacket.getUserName(),
+                        appPacket.getNickname());
                 return true;
             } catch (FullMemberException e) {
                 exp = e;
@@ -76,7 +75,7 @@ public class ApplyHandler extends OwnerIQHandler {
                     result,
                     packet.getFrom().toBareJID(),
                     appPacket.getReason());
-            group.send(appPacket.getFrom(), msg);
+            group.send(groupService.getServer().createJID(appPacket.getUserName(), null), msg);
         }
     }
 
