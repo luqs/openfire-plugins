@@ -3,13 +3,21 @@ package com.skyseas.openfireplugins.group.spi;
 import com.skyseas.openfireplugins.group.ChatUser;
 import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.GroupEventListener;
+import com.skyseas.openfireplugins.group.MessageFactory;
 import org.xmpp.packet.JID;
+import org.xmpp.packet.Message;
 
 /**
  * 圈子事件广播监听器。
  * Created by zhangzhi on 2014/9/29.
  */
 public class GroupEventBroadcastListener implements GroupEventListener {
+    @Override
+    public void userJoined(Group group, ChatUser user) {
+        Message msg = MessageFactory.newInstanceForMemberJoined(user.getUserName(), user.getNickname());
+        group.broadcast(msg);
+    }
+
     @Override
     public void userExited(Group group, ChatUser user, String reason) {
 
@@ -25,10 +33,7 @@ public class GroupEventBroadcastListener implements GroupEventListener {
 
     }
 
-    @Override
-    public void userJoined(Group group, ChatUser user) {
 
-    }
 
     @Override
     public void groupCreated(Group group) {

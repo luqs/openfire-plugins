@@ -33,7 +33,7 @@ class ChatUserImpl implements ChatUser {
         assert router != null;
         assert packet != null;
 
-        packet.setFrom(jid);
+        packet.setTo(jid);
         router.route(packet);
     }
 

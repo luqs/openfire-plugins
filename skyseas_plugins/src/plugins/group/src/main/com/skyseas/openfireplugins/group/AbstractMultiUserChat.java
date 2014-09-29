@@ -57,6 +57,10 @@ public abstract class AbstractMultiUserChat implements MultiUserChat {
     public void broadcast(Packet packet) {
         ContractUtils.requiresNotNull(packet, "packet");
 
+        if(packet.getFrom() == null) {
+            packet.setFrom(this.jid);
+        }
+
         for (ChatUser user : getChatUserManager().getUsers()) {
             routePacket(packet, user);
         }
@@ -64,16 +68,21 @@ public abstract class AbstractMultiUserChat implements MultiUserChat {
 
 
     protected void broadcast(Message message) {
-        if (checkMsg(message)) {
-            message.setFrom(createGroupUserJid(message.getFrom().getNode()));
-            broadcast((Packet)message);
+        ChatUser user = checkMsg(message);
+        if (user != null) {
+            message = MessageFactory.newInstanceForGroupChat(
+                    message.getBody(),
+                    user.getNickname());
+            message.setFrom(createGroupUserJid(user.getUserName()));
+            broadcast((Packet) message);
         }
     }
 
-    private boolean checkMsg(Message message) {
+    private ChatUser checkMsg(Message message) {
         if (message.getType() == Message.Type.groupchat) {
-            if (getChatUserManager().hasUser(message.getFrom().getNode())) {
-                return true;
+            ChatUser user = getChatUserManager().getUser(message.getFrom().getNode());
+            if (user != null) {
+                return user;
             } else {
                 Message errorMsg = new Message();
                 errorMsg.setFrom(jid);
@@ -86,7 +95,7 @@ public abstract class AbstractMultiUserChat implements MultiUserChat {
             errorMsg.setTo(message.getFrom());
             replyNotAcceptable(errorMsg);
         }
-        return false;
+        return null;
     }
 
     protected JID createGroupUserJid(String userName) {

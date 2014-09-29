@@ -139,6 +139,11 @@ public class GroupImplTest extends TestCase {
                     user.send(packetRouter, with(new Delegate<Packet>() {
 
                         public boolean validate(Packet p) {
+                            assertEquals(
+                                    "<message type=\"groupchat\" from=\"100@group.skysea.com/user\">" +
+                                    "<x xmlns=\"http://skysea.com/protocol/group#member\">" +
+                                    "<member nickname=\"用户\"/>" +
+                                    "</x></message>", p.toXML().trim());
                             assertEquals(sender, p.getFrom());
                             return true;
                         }

@@ -147,7 +147,7 @@ public final class GroupServiceImpl implements GroupService, Component {
 
     @Override
     public JID getGroupJid(String groupId) {
-        return new JID(groupId, serviceName, null, true);
+        return new JID(groupId, jid.getDomain(), null, true);
     }
 
     @Override
