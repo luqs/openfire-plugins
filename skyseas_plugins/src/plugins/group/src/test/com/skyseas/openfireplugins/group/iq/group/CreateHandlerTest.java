@@ -59,8 +59,8 @@ public class CreateHandlerTest extends IQHandlerTest<CreateHandler> {
                 }));
                 result = group;
 
-                GroupEventDispatcher.fireGroupCreated(group);
-                times = 1;
+                //GroupEventDispatcher.fireGroupCreated(group);
+                //times = 1;
             }
         };
 

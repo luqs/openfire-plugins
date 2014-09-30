@@ -27,11 +27,10 @@ public class CreateHandler extends ServiceIQHandler {
         assert packet != null;
 
         GroupInfo info = getGroupInfo(packet);
-        Group group = createGroup(info);
+        Group group = groupManager.create(info);
 
         if(group != null) {
             routePacket(createResultIQ(packet, group.getJid()));
-            GroupEventDispatcher.fireGroupCreated(group);
         }else {
             replyError(packet, PacketError.Condition.internal_server_error);
         }
@@ -42,15 +41,6 @@ public class CreateHandler extends ServiceIQHandler {
         groupInfo.setOwner(packet.getFrom().getNode());
         groupInfo.setCreateTime(new Date());
         return groupInfo;
-    }
-
-    private Group createGroup(GroupInfo groupInfo) {
-        try {
-            return groupManager.create(groupInfo);
-        } catch (Exception exp) {
-            handleException(exp, "创建圈子失败");
-            return null;
-        }
     }
 
     private IQ createResultIQ(IQ packet, JID jid) {

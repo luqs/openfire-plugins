@@ -37,7 +37,8 @@ public final class GroupEventBroadcastListener implements GroupEventListener {
 
     @Override
     public void userNicknameChanged(Group group, ChatUser user, String oldNickname) {
-        Message msg = MessageFactory.newInstanceForMemberUpdateProfile(user.getUserName(),oldNickname, user.getNickname());
+        Message msg = MessageFactory.newInstanceForMemberUpdateProfile(
+                user.getUserName(), oldNickname, user.getNickname());
         group.broadcast(msg);
     }
 

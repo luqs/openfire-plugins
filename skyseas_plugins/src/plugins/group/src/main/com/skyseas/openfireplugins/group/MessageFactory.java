@@ -60,7 +60,6 @@ public class MessageFactory {
 
         Element profile = msg.getChildElement("x", IQHandler.MEMBER_NAMESPACE);
         profile.element("profile").addElement("nickname").setText(newNickname);
-
         return msg;
     }
 

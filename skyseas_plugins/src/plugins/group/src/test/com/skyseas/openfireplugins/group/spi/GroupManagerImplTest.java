@@ -1,11 +1,14 @@
 package com.skyseas.openfireplugins.group.spi;
 
-import com.skyseas.openfireplugins.group.*;
+import com.skyseas.openfireplugins.group.Group;
+import com.skyseas.openfireplugins.group.GroupEventDispatcher;
+import com.skyseas.openfireplugins.group.GroupInfo;
+import com.skyseas.openfireplugins.group.GroupQueryObject;
 import com.skyseas.openfireplugins.group.util.Paging;
 import junit.framework.TestCase;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
-import org.jivesoftware.openfire.PacketRouter;
+import mockit.Verifications;
 import org.xmpp.packet.JID;
 
 import java.util.ArrayList;
@@ -62,6 +65,9 @@ public class GroupManagerImplTest extends TestCase {
             {
                 facade.create(groupInfo);
                 result = group;
+                times = 1;
+
+                GroupEventDispatcher.fireGroupCreated(group);
                 times = 1;
             }
         };

@@ -56,7 +56,7 @@ public abstract class AbstractIQHandler implements IQHandler {
         packetRouter.route(packet);
     }
 
-    protected void handleException(Throwable throwable,  String format, String... args) {
+    protected void handleException(Throwable throwable,  String format, Object... args) {
         Logger logger = LoggerFactory.getLogger(getClass());
         logger.error(String.format(format, args), throwable);
     }

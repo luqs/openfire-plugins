@@ -220,25 +220,8 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         applyStrategy = ApplyStrategy.getStrategyFor(opennessType);
     }
 
-    private void handleException(Throwable exp, String format, String... args) {
+    private void handleException(Throwable exp, String format, Object... args) {
         LOG.error(String.format(format, args) + ", GroupId:" + id, exp);
     }
 
-    /**
-     * 创建一个圈子。
-     */
-    static GroupImpl create(GroupInfo groupInfo, GroupPersistenceManager persistenceMgr, GroupService groupService) {
-        assert groupInfo != null;
-        assert groupService != null;
-        return null;
-    }
-
-    /**
-     * 加载一个圈子。
-     */
-    static GroupImpl load(int groupId, GroupPersistenceManager persistenceMgr, GroupService groupService) {
-        assert groupId > 0;
-        assert groupService != null;
-        return null;
-    }
 }

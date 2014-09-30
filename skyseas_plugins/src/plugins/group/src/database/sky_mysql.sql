@@ -18,10 +18,10 @@ CREATE TABLE IF NOT EXISTS sky_GroupMembers(
   userName VARCHAR(50) NOT NULL,
   nickName VARCHAR(50) NOT NULL,
   joinTime DATETIME NOT NULL,
-  UNIQUE uidex_group_and_user (groupId, userName)
+  UNIQUE uidx_group_and_user(groupId, userName)
 ) DEFAULT CHARSET=utf8;
 
-CREATE TABLE sky_GroupHistoryMessages (
+CREATE TABLE IF NOT EXISTS sky_GroupHistoryMessages (
   id INT PRIMARY KEY AUTO_INCREMENT,
   groupId INT NOT NULL,
   sender VARCHAR (100) NOT NULL ,
@@ -29,5 +29,5 @@ CREATE TABLE sky_GroupHistoryMessages (
   body TEXT NOT NULL ,
   inputTime DATETIME NOT NULL,
   INDEX idx_groupId(groupId),
-  INDEX idx_sendTime(sendTime),
+  INDEX idx_sendTime(sendTime)
 ) DEFAULT CHARSET=utf8;

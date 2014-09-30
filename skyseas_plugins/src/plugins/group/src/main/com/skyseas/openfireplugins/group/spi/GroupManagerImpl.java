@@ -63,6 +63,8 @@ class GroupManagerImpl implements GroupManager {
         GroupImpl group = facade.create(groupInfo);
         if(group != null ) {
             activeGroup(group);
+
+            GroupEventDispatcher.fireGroupCreated(group);
         }
         return group;
     }
