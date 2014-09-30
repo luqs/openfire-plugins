@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin>
-    <class>com.skyseas.openfireplugins.userintegration.UserIntegrationPlugin</class>
-    <name>userintegration</name>
-    <description>提供开放的系统消息接口。</description>
+    <class>com.skyseas.openfireplugins.group.GroupPlugin</class>
+    <name>group</name>
+    <description>skysea的多用户聊天XMPP扩展协议实现。</description>
     <author>张智</author>
     <version>1.0.0</version>
-    <date>8/15/2014</date>
+    <date>9/30/2014</date>
     <minServerVersion>3.9.0</minServerVersion>
-    
+    <databaseKey>sky</databaseKey>
     <adminconsole>
         <tab id="tab-server">
             <sidebar id="sidebar-server-manager">
-                <item id="userintegration" name="User Integration"
-                    url="userintegration_setting.jsp"
-                    description="set userintegration parameters." />
+                <item id="skysea_group" name="Skysea Group"
+                    url="group_setting.jsp"
+                    description="set skysea group parameters." />
             </sidebar>
         </tab>
     </adminconsole> 

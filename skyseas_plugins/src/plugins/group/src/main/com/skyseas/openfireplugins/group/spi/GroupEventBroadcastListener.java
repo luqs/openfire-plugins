@@ -26,14 +26,13 @@ public final class GroupEventBroadcastListener implements GroupEventListener {
 
     @Override
     public void userKicked(Group group, ChatUser user, JID from, String reason) {
-        /* 广播到圈子成员时，忽略reason，只有发给被踢出者时才包含reason。*/
+        /* 广播到圈子成员时，忽略reason，只有发给被踢出者时才包含reason */
         Message msg = MessageFactory.newInstanceForMemberKick(user.getUserName(), user.getNickname(), from, null);
         group.broadcast(msg);
 
         msg = MessageFactory.newInstanceForMemberKick(user.getUserName(), user.getNickname(), from, reason);
-        msg.setType(Message.Type.chat); /* 确保可以离线存储。 */
+        msg.setType(null); /* 确保可以离线存储 */
         group.send(((ChatUserImpl)user).getJid(), msg);
-
     }
 
     @Override
@@ -46,7 +45,6 @@ public final class GroupEventBroadcastListener implements GroupEventListener {
     public void groupDestroyed(Group group, JID from, String reason) {
         Message msg = MessageFactory.newInstanceForGroupDestroyed(from, reason);
         group.broadcast(msg);
-        System.out.println("groupDestroyed");
     }
 
     @Override
