@@ -17,10 +17,8 @@ import java.util.List;
 public class GroupManagerImplTest extends TestCase {
     GroupManagerImpl groupManager;
     GroupInfo groupInfo;
-    @Mocked
-    GroupImpl group;
-    @Mocked
-    GroupFacade facade;
+    @Mocked GroupImpl group;
+    @Mocked GroupFacade facade;
 
     @Override
     public void setUp() {
@@ -155,6 +153,48 @@ public class GroupManagerImplTest extends TestCase {
         assertEquals(group, result1);
         assertEquals(group, result2);
         assertEquals(group, result3);
+    }
+
+    @Mocked GroupImpl group1;
+    @Mocked GroupImpl group2;
+    public void testClean() throws Exception {
+        // Arrange
+        new NonStrictExpectations(){
+            {
+                facade.load(String.valueOf(groupInfo.getId()));
+                result = group;
+
+                facade.load("g1");
+                result = group1;
+
+                facade.load("g2");
+                result = group2;
+
+                group.isIdleState();
+                result = false;
+
+                group1.isIdleState();
+                result = true;
+
+                group2.isIdleState();
+                result = true;
+            }
+        };
+
+        assertEquals(group, groupManager.getGroup(String.valueOf(groupInfo.getId())));
+        assertEquals(group1,groupManager.getGroup("g1"));
+        assertEquals(group2,groupManager.getGroup("g2"));
+        assertNotNull(groupManager.getActivatedGroup(String.valueOf(groupInfo.getId())));
+        assertNotNull(groupManager.getActivatedGroup("g1"));
+        assertNotNull(groupManager.getActivatedGroup("g2"));
+
+        // Act
+        groupManager.clean();
+
+        // Assert
+        assertNotNull(groupManager.getActivatedGroup(String.valueOf(groupInfo.getId())));
+        assertNull(groupManager.getActivatedGroup("g1"));
+        assertNull(groupManager.getActivatedGroup("g2"));
     }
 
 

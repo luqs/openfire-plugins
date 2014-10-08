@@ -2,10 +2,7 @@ package com.skyseas.openfireplugins.group.spi;
 
 import com.skyseas.openfireplugins.group.*;
 import junit.framework.TestCase;
-import mockit.Delegate;
-import mockit.Mocked;
-import mockit.NonStrictExpectations;
-import mockit.Verifications;
+import mockit.*;
 import org.jivesoftware.openfire.PacketRouter;
 import org.xmpp.packet.*;
 
@@ -31,7 +28,8 @@ public class GroupImplTest extends TestCase {
         groupInfo.setOwner("owner");
 
         group = new GroupImpl(
-                groupJid, groupInfo,
+                groupJid,
+                groupInfo,
                 "skysea.com",
                 dispatcher,
                 packetRouter,
@@ -141,9 +139,9 @@ public class GroupImplTest extends TestCase {
                         public boolean validate(Packet p) {
                             assertEquals(
                                     "<message type=\"groupchat\" from=\"100@group.skysea.com/user\">" +
-                                    "<x xmlns=\"http://skysea.com/protocol/group#member\">" +
-                                    "<member nickname=\"用户\"/>" +
-                                    "</x></message>", p.toXML().trim());
+                                            "<x xmlns=\"http://skysea.com/protocol/group#member\">" +
+                                            "<member nickname=\"用户\"/>" +
+                                            "</x></message>", p.toXML().trim());
                             assertEquals(sender, p.getFrom());
                             return true;
                         }
@@ -187,7 +185,7 @@ public class GroupImplTest extends TestCase {
         };
     }
 
-    public void testSend_When_Packet_Is_Message_But_Type_Is_Invalid() throws Exception{
+    public void testSend_When_Packet_Is_Message_But_Type_Is_Invalid() throws Exception {
         // Arrange
         final Message msg = new Message();
         msg.setFrom(userJid);
@@ -202,10 +200,10 @@ public class GroupImplTest extends TestCase {
                     public void validate(Packet packet) {
                         assertEquals(
                                 "<message to=\"user@skyaea.com\" type=\"error\" from=\"100@group.skysea.com\">" +
-                                "<error code=\"406\" type=\"modify\">" +
-                                "<not-acceptable xmlns=\"urn:ietf:params:xml:ns:xmpp-stanzas\"/>" +
-                                "</error>" +
-                                "</message>", packet.toXML().trim());
+                                        "<error code=\"406\" type=\"modify\">" +
+                                        "<not-acceptable xmlns=\"urn:ietf:params:xml:ns:xmpp-stanzas\"/>" +
+                                        "</error>" +
+                                        "</message>", packet.toXML().trim());
                     }
                 }));
                 times = 1;
@@ -242,14 +240,14 @@ public class GroupImplTest extends TestCase {
     public void testDestroy() throws Exception {
         // Arrange
         final String reason = "再见了各位";
-        new NonStrictExpectations(){
+        new NonStrictExpectations() {
             {
                 groupPersistenceManager.removeGroup(groupInfo.getId());
                 result = true;
                 times = 1;
             }
         };
-        new NonStrictExpectations(GroupEventDispatcher.class){
+        new NonStrictExpectations(GroupEventDispatcher.class) {
             {
                 GroupEventDispatcher.fireGroupDestroyed(group, group.getOwner(), reason);
                 times = 1;
@@ -305,6 +303,39 @@ public class GroupImplTest extends TestCase {
         // Assert
         assertEquals(100, group.getGroupInfo().getNumberOfMembers());
         assertFalse(orgNum == group.getGroupInfo().getNumberOfMembers());
+    }
+
+    public void testIsIdleState() throws Exception {
+        // Arrange
+        final long currentTime = 100;
+        new NonStrictExpectations(group) {
+            {
+                setField(group, "lastReceivedPacketTime", currentTime);
+            }
+        };
+        new MockUp<System>(){
+            private int idx;
+            private long[] times = new long[] {
+                    currentTime,
+                    currentTime + GroupImpl.IDLE_TIME_OUT - 1,
+                    currentTime + GroupImpl.IDLE_TIME_OUT,
+                    currentTime + GroupImpl.IDLE_TIME_OUT + 1,
+                    currentTime + GroupImpl.IDLE_TIME_OUT + 2,
+                    currentTime + GroupImpl.IDLE_TIME_OUT + 3};
+            @Mock
+            public long currentTimeMillis()
+            {
+                return times[idx++];
+            }
+        };
+
+        // Act && Assert
+        assertFalse(group.isIdleState());
+        assertFalse(group.isIdleState());
+        assertFalse(group.isIdleState());
+        assertTrue(group.isIdleState());
+        group.send(new IQ());
+        assertFalse(group.isIdleState());
     }
 
 

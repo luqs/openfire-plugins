@@ -6,7 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.packet.JID;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -25,7 +28,7 @@ class GroupManagerImpl implements GroupManager {
         facade.setGroupService(groupService);
         facade.setGroupIQDispatcher(dispatcher);
         facade.setPersistenceFactory(PersistenceManagerImpl.INSTANCE);
-        this.facade  = facade;
+        this.facade = facade;
     }
 
     GroupManagerImpl(GroupFacade facade) {
@@ -44,6 +47,7 @@ class GroupManagerImpl implements GroupManager {
 
     /**
      * 获得用户加入的圈子列表。
+     *
      * @param userName
      * @return
      */
@@ -61,7 +65,7 @@ class GroupManagerImpl implements GroupManager {
         assert groupInfo != null;
 
         GroupImpl group = facade.create(groupInfo);
-        if(group != null ) {
+        if (group != null) {
             activeGroup(group);
 
             GroupEventDispatcher.fireGroupCreated(group);
@@ -76,11 +80,12 @@ class GroupManagerImpl implements GroupManager {
     public Group getGroup(String groupId) {
         assert groupId != null;
 
-        /* 首先尝试从内存中获取圈子*/
-        GroupImpl group = groups.get(groupId);
-        if (group != null) { return group; }
-
         /* 从内存获取失败，尝试从持久化层加载，并激活在内存中 */
+        GroupImpl group = groups.get(groupId);
+        if (group != null) {
+            return group;
+        }
+
         group = facade.load(groupId);
         if (group != null) {
             return activeGroup(groupId, group);
@@ -96,7 +101,7 @@ class GroupManagerImpl implements GroupManager {
         assert group != null;
 
         /* 从内存中移除圈子对象，并销毁该圈子 */
-        if(groups.remove(group.getId(), group)) {
+        if (groups.remove(group.getId(), group)) {
             return group.destroy(operator, reason);
         }
         return false;
@@ -104,16 +109,34 @@ class GroupManagerImpl implements GroupManager {
 
     /**
      * 获得已经在内存中激活的Group对象实例。
+     *
      * @param groupId
      * @return
      */
-    public Group getActivatedGroup(String groupId){
+    public Group getActivatedGroup(String groupId) {
         assert groupId != null;
         return groups.get(groupId);
     }
 
     /**
+     * 清理圈子管理器，将空闲状态的圈子从内存中释放出来。
+     *
+     * @return
+     */
+    public void clean() {
+        Iterator<GroupImpl> groupIterator = groups.values().iterator();
+        while (groupIterator.hasNext()) {
+            GroupImpl group = groupIterator.next();
+            if (group.isIdleState()) {
+                groupIterator.remove();
+            }
+        }
+    }
+
+
+    /**
      * 直接将圈子激活在内存中
+     *
      * @param group
      */
     private void activeGroup(GroupImpl group) {
@@ -122,6 +145,7 @@ class GroupManagerImpl implements GroupManager {
 
     /**
      * 激活圈子，并考虑会与内存中相同groupId冲突的情况。
+     *
      * @param groupId
      * @return
      */
@@ -129,7 +153,9 @@ class GroupManagerImpl implements GroupManager {
 
         /* 再次确认圈子不在内存中 */
         Group group = groups.get(groupId);
-        if(group != null ){ return group;}
+        if (group != null) {
+            return group;
+        }
 
         /**
          * 在此我们并没有使用锁定的方式保证内存中Group的唯一性，
@@ -149,4 +175,6 @@ class GroupManagerImpl implements GroupManager {
                 ? newGroup
                 : orgGroup;
     }
+
+
 }

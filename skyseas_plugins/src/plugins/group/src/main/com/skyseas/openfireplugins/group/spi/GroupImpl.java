@@ -15,6 +15,7 @@ import org.xmpp.packet.Packet;
 
 final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUsersListener {
     private final static Logger LOG = LoggerFactory.getLogger(GroupImpl.class);
+    public static final long IDLE_TIME_OUT = 60 * 1000 * 10; /* 空闲超时毫秒数，10分钟 */
     private final JID                           owner;
     private final GroupPersistenceManager       persistenceMgr;
     private final GroupMemberPersistenceManager memberPersistenceMgr;
@@ -24,6 +25,8 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
     private volatile ChatUserManager            chatUserManager;
     private ApplyStrategy                       applyStrategy;
     private PacketRouter                        packetRouter;
+    /* 圈子最后一次收到数据包的时间 */
+    private long                                lastReceivedPacketTime = System.currentTimeMillis();
 
     GroupImpl(JID                           jid,
               GroupInfo                     groupInfo,
@@ -175,6 +178,21 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         return false;
     }
 
+    @Override
+    public void send(Packet packet) {
+        /* 更新最后一次接收数据包的时间 */
+        lastReceivedPacketTime = System.currentTimeMillis();
+        super.send(packet);
+    }
+
+    /**
+     * 返回当前圈子是否处于空闲状态。
+     * @return 10分钟内没有收到任何数据包则返回：{@code true}。
+     */
+    public boolean isIdleState() {
+        return System.currentTimeMillis() - lastReceivedPacketTime > IDLE_TIME_OUT;
+    }
+
     /**
      * 持久化更新圈子信息。
      * @param updater
@@ -223,5 +241,6 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
     private void handleException(Throwable exp, String format, Object... args) {
         LOG.error(String.format(format, args) + ", GroupId:" + id, exp);
     }
+
 
 }
