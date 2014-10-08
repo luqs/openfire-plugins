@@ -31,7 +31,10 @@
 	<target name="main_compile" depends="init">
 	<description> 编译插件代码 </description>
 		<javac destdir="${plugin.main.dist.path}"  failonerror="false"
-				fork="yes"  target="1.6" source="1.6"
+				fork="yes"  
+				encoding="UTF-8"
+				target="1.6" 
+				source="1.6"
 				srcdir="${plugin.main.src.path}/main" 
 				excludes="**/*.smap" >
 				<classpath>
@@ -143,35 +146,29 @@
 		<!-- jsp servlet的web xml 复制到插件目录下 -->
 		<copy file="${plugin.jsp.src.path}/web.xml" todir="${plugin_root}/web/WEB-INF"/>
 		
-		<copy todir="${plugin_root}/database">
-            <fileset dir="${plugin.main.src.path}/database" includes="*" />
-		</copy>
-		<!--
-		<copy todir="${plugin_root}/web">
-			<fileset dir="${plugin.main.src.path}/web">
-				<include name="*"/>
-				<include name="**/*.*"/>
-				<exclude name="**/*.xml"/>
-				<exclude name="**/*.jsp"/>
-			</fileset>
-		</copy>
+		<!-- 拷贝database目录中的sql脚本 -->
+		<antcall target="copy_database" />
 		
-		-->
-
-		<!--
-		<copy todir="${webapp.output.path}/${plugin.name}/web">
-			<fileset dir="${plugin.path}/web" includes="**/*.xml"/>
-		</copy>
-		-->
-		<!-- 将国际化相关资源文件复制到插件目录下 
-        <copy file="${webapp.output.path}/bin/i18n" todir="${webapp.output.path}/${plugin.name}"/>
-        -->
 		<!-- 产生可部署插件包 -->
 		<jar jarfile="${plugin.output.path}/${plugin.name}.jar">
 			<fileset dir="${plugin_root}" includes="**/**"/>
 		</jar>
 			
 	</target>
+	
+	<target name="check_database">		
+		<description>检查database目录是否存在</description>
+		<property name="database_target" value="${plugin.main.src.path}/database" />
+		<available file="${database_target}" property="database_exists" />
+	</target>
+	
+	<target name="copy_database" depends="check_database" if="database_exists" >
+		<description>拷贝database目录</description>				
+		<copy todir="${plugin_root}/database">
+            <fileset dir="${database_target}" includes="*" />
+		</copy>
+	</target>
+	
 	
 	<target name="copy_plugin_refs" if="copy_refs">
 		<copy todir="${todir}">
