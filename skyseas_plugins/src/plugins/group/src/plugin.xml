@@ -9,6 +9,7 @@
     <date>9/30/2014</date>
     <minServerVersion>3.9.0</minServerVersion>
     <databaseKey>sky</databaseKey>
+    <databaseVersion>1</databaseVersion>
     <adminconsole>
         <tab id="tab-server">
             <sidebar id="sidebar-server-manager">

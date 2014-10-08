@@ -143,7 +143,9 @@
 		<!-- jsp servlet的web xml 复制到插件目录下 -->
 		<copy file="${plugin.jsp.src.path}/web.xml" todir="${plugin_root}/web/WEB-INF"/>
 		
-		
+		<copy todir="${plugin_root}/database">
+            <fileset dir="${plugin.main.src.path}/database" includes="*" />
+		</copy>
 		<!--
 		<copy todir="${plugin_root}/web">
 			<fileset dir="${plugin.main.src.path}/web">
