@@ -165,7 +165,7 @@
 	<target name="copy_database" depends="check_database" if="database_exists" >
 		<description>拷贝database目录</description>				
 		<copy todir="${plugin_root}/database">
-            <fileset dir="${database_target}" includes="*" />
+            <fileset dir="${database_target}" includes="**/**" />
 		</copy>
 	</target>
 	
