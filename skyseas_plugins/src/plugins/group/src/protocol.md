@@ -526,7 +526,7 @@
 #### 例子1.圈子成员退出圈子
 
 ```
-<iq from='user@skysea.com' to='100@group.skysea.com' id='v8' type='set'>
+<iq from='user@skysea.com' to='100@group.skysea.com' id='v9' type='set'>
   <x xmlns='http://skysea.com/protocol/group#member'>
   	<exit>
   		<reason>大家太吵了，不好意思，我退了先！</reason>
@@ -538,7 +538,7 @@
 #### 例子2.服务返回退出成功
 
 ```
-<iq from='100@group.skysea.com' to='user@skysea.com' id='v8' type='result' />
+<iq from='100@group.skysea.com' to='user@skysea.com' id='v9' type='result' />
 ```
 
 #### 例子3.服务向所有圈子成员广播：成员退出
@@ -575,7 +575,7 @@
 #### 例子1.用户提交创建表单
 
 ```
-<iq from='user@skysea.com' to='group.skysea.com' id='v9' type='set'>
+<iq from='user@skysea.com' to='group.skysea.com' id='v10' type='set'>
 	<x xmlns='http://skysea.com/protocol/group'>
 		<x xmlns='jabber:x:data' type='submit'>
 		    <field var='name' type='text-single'>
@@ -617,7 +617,7 @@ PRIVATE         | 私有
 #### 例子2.服务返回用户圈子创建成功
 
 ```
-<iq from='group.skysea.com' to='user@skysea.com' id='v9' type='result'>
+<iq from='group.skysea.com' to='user@skysea.com' id='v10' type='result'>
 	<x xmlns='http://skysea.com/protocol/group'>
 		<x xmlns='jabber:x:data' type='result'>
 			<field var='jid'>
@@ -634,7 +634,7 @@ PRIVATE         | 私有
 #### 例子1.用户提交修改表单
 
 ```
-<iq from='user@skysea.com' to='100@group.skysea.com' id='v10' type='set'>
+<iq from='user@skysea.com' to='100@group.skysea.com' id='v11' type='set'>
 	<x xmlns='http://skysea.com/protocol/group'>
 		<x xmlns='jabber:x:data' type='submit'>
 		    <field var='name'  type='text-single'>
@@ -660,7 +660,7 @@ PRIVATE         | 私有
 #### 例子2.服务返回修改成功
 
 ```
-<iq from='100@group.skysea.com' to='user@skysea.com' id='v10' type='result'>
+<iq from='100@group.skysea.com' to='user@skysea.com' id='v11' type='result'>
 </iq>
 ```
 
@@ -670,7 +670,7 @@ PRIVATE         | 私有
 #### 例子1.圈子所有者提出踢出成员
 
 ```
-<iq from='owner@skysea.com' to='100@group.skysea.com' id='v11' type='set'>
+<iq from='owner@skysea.com' to='100@group.skysea.com' id='v12' type='set'>
   <x xmlns='http://skysea.com/protocol/group#owner'>
   	<kick username='user'>
   		<reason>抱歉！你总是发送广告信息。</reason>
@@ -682,7 +682,7 @@ PRIVATE         | 私有
 #### 例子2.服务返回圈子踢出成功
 
 ```
-<iq from='100@group.skysea.com' to='owner@skysea.com' id='v11' type='result'>
+<iq from='100@group.skysea.com' to='owner@skysea.com' id='v12' type='result'>
 </iq>
 ```
 
@@ -720,7 +720,7 @@ PRIVATE         | 私有
 #### 例子1.圈子所有者提交销毁圈子
 
 ```
-<iq from='owner@skysea.com' to='100@group.skysea.com' id='v12' type='set'>
+<iq from='owner@skysea.com' to='100@group.skysea.com' id='v13' type='set'>
   <x xmlns='http://skysea.com/protocol/group#owner'>
   	<destroy>
   		<reason>再见了各位！</reason>
@@ -731,7 +731,7 @@ PRIVATE         | 私有
 #### 例子2.服务返回销毁成功
 
 ```
-<iq from='100@group.skysea.com' to='owner@skysea.com' id='v12' type='result'>
+<iq from='100@group.skysea.com' to='owner@skysea.com' id='v13' type='result'>
 </iq>
 ```
 #### 例子3.服务向圈子成员广播：圈子已被销毁
