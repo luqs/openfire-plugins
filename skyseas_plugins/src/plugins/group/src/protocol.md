@@ -3,27 +3,26 @@
 
 ## 目录
 
-+ [摘要](#summary)
-+ [需求](#requirements)
-+ [术语](#terminology)
-+ [角色和权限](#roles)
-+ [用户用例](#user_usecase)
-	- [查询圈子](#user_query_groups) 
-	- [查询圈子详情](#user_query_group_info)
-	- [查询圈子成员列表](#user_query_group_members)
-	- [查询已加入的圈子列表](#user_query_joined_groups)
-	- [申请加入圈子](#user_apply_join_group)
-+ [圈子成员用例](#member_usecase)
-	- [发送圈子消息](#member_send_message)
-	- [修改圈子名片](#member_change_profile)
-	- [退出圈子](#member_exit_group)
-+ [圈子所有者用例](#owner_usecase)
-	- [创建圈子](#owner_create_group)
-	- [修改圈子信息](#owner_change_group)
-	- [踢人](#owner_kick_member)
-	- [销毁圈子](#owner_destroy_group)
-	
-
++ [摘要] 
++ [需求]
++ [术语]
++ [角色和权限]
++ [用户用例]
+	- [查询圈子]
+	- [查询圈子详情]
+	- [查询圈子成员列表]
+	- [查询已加入的圈子列表]
+	- [申请加入圈子]
++ [圈子成员用例]
+	- [发送圈子消息]
+	- [修改圈子名片]
+	- [邀请用户]
+	- [退出圈子]
++ [圈子所有者用例]
+	- [创建圈子]
+	- [修改圈子信息]
+	- [踢人]
+	- [销毁圈子]
 
 ## 摘要 
 本文定义了一个XMPP扩展协议用于实现持久化的多用户社交圈子功能，即多个XMPP用户可以在同一个圈子中互相交流信息，类似`QQ`的聊天群，用户可以获得自己加入的圈子，创建属于自己的圈子也可以邀请其他用户加入圈子等。
