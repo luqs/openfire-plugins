@@ -33,9 +33,16 @@ abstract class ApplyStrategy {
      * @return
      */
     public static ApplyStrategy getStrategyFor(GroupInfo.OpennessType opennessType) {
-        return opennessType == GroupInfo.OpennessType.AFFIRM_REQUIRED
-                ? FORWARDING_TO_OWNER
-                : IMMEDIATE_PROCESS;
+        if(opennessType == null) { return NOT_ALLOWED; }
+
+        switch (opennessType) {
+            case PUBLIC:
+                return IMMEDIATE_PROCESS;
+            case AFFIRM_REQUIRED:
+                return FORWARDING_TO_OWNER;
+            default:
+                return NOT_ALLOWED;
+        }
     }
 
     /**
@@ -79,6 +86,14 @@ abstract class ApplyStrategy {
 
         private String createApplyTrans(String userName, String groupId) {
             return String.valueOf(Math.abs(new Random().nextInt()));
+        }
+    };
+
+
+    final static ApplyStrategy NOT_ALLOWED = new ApplyStrategy() {
+        @Override
+        public void applyToJoin(Group group, JID proposer, String nickname, String reason){
+            // 当申请加入时什么也不做
         }
     };
 }

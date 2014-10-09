@@ -1,4 +1,4 @@
-package com.skyseas.openfireplugins.group.iq.member;
+package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.util.DataListPacket;
 import com.skyseas.openfireplugins.group.GroupInfo;
@@ -16,8 +16,9 @@ import java.util.List;
  * 用户圈子列表处理程序。
  * Created by zhangzhi on 2014/9/15.
  */
-@QueryHandler(namespace = IQHandler.MEMBER_NAMESPACE, node = "groups")
+@QueryHandler(namespace = IQHandler.USER_NAMESPACE, node = "groups")
 public class GroupsHandler extends ServiceIQHandler {
+
     @Override
     public void process(IQ packet) {
         assert packet != null;
@@ -44,7 +45,7 @@ public class GroupsHandler extends ServiceIQHandler {
 
     private IQ createResultIQ(IQ packet, List<GroupInfo> groups) {
         DataListPacket<GroupInfo> dataListPacket = new DataListPacket<GroupInfo>(
-                IQHandler.MEMBER_NAMESPACE,
+                IQHandler.USER_NAMESPACE,
                 groups,
                 new GroupSummaryProcessDelegate(groupService.getServiceDomain()));
 

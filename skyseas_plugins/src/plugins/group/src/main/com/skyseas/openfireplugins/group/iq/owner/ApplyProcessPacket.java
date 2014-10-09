@@ -37,7 +37,6 @@ public class ApplyProcessPacket extends HasReasonPacket {
 
     public String getNickname() {
         Element ele = getMemberElement();
-
         return ele == null ? null : ele.attributeValue("nickname");
     }
 

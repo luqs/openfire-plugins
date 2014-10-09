@@ -118,7 +118,7 @@ public class IQDispatcherTest extends TestCase {
         IQDispatcher.groupIQConfig(dispatcher);
 
         // Assert
-        assertEquals(9, dispatcher.getHandlers().size());
+        assertEquals(10, dispatcher.getHandlers().size());
     }
 
 

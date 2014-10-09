@@ -5,7 +5,8 @@ import com.skyseas.openfireplugins.group.GroupService;
 import com.skyseas.openfireplugins.group.iq.*;
 import com.skyseas.openfireplugins.group.iq.group.*;
 import com.skyseas.openfireplugins.group.iq.member.ExitGroupHandler;
-import com.skyseas.openfireplugins.group.iq.member.GroupsHandler;
+import com.skyseas.openfireplugins.group.iq.group.GroupsHandler;
+import com.skyseas.openfireplugins.group.iq.member.InviteHandler;
 import com.skyseas.openfireplugins.group.iq.member.ProfileHandler;
 import com.skyseas.openfireplugins.group.iq.owner.ApplyHandler;
 import com.skyseas.openfireplugins.group.iq.owner.DestroyHandler;
@@ -219,6 +220,7 @@ final class IQDispatcher implements GroupIQDispatcher {
         // Member
         dispatcher.installHandler(ExitGroupHandler.class);
         dispatcher.installHandler(ProfileHandler.class);
+        dispatcher.installHandler(InviteHandler.class);
 
         // Owner
         dispatcher.installHandler(ApplyHandler.class);

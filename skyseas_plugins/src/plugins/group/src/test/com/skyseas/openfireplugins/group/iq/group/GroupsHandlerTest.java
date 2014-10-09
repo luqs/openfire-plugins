@@ -1,7 +1,8 @@
-package com.skyseas.openfireplugins.group.iq.member;
+package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.GroupInfo;
 import com.skyseas.openfireplugins.group.iq.IQHandlerTest;
+import com.skyseas.openfireplugins.group.iq.group.GroupsHandler;
 import mockit.Delegate;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
@@ -20,7 +21,7 @@ public class GroupsHandlerTest extends IQHandlerTest<GroupsHandler> {
         //Arrange
         IQ packet = IQ(
                 "<iq from='user@skysea.com' to='group.skysea.com' id='v6' type='get'>\n" +
-                "    <query xmlns='http://skysea.com/protocol/group#member' node='groups' />\n" +
+                "    <query xmlns='http://skysea.com/protocol/group#user' node='groups' />\n" +
                 "</iq>");
         final ArrayList<GroupInfo> items = getGroupInfos();
         new NonStrictExpectations(){
@@ -40,7 +41,7 @@ public class GroupsHandlerTest extends IQHandlerTest<GroupsHandler> {
                 packetRouter.route(with(new Delegate<Packet>() {
                     public void validate(Packet packet){
                         String expectXml = "<iq type=\"result\" id=\"v6\" from=\"group.skysea.com\" to=\"user@skysea.com\">\n" +
-                                "  <query xmlns=\"http://skysea.com/protocol/group#member\" node=\"groups\">\n" +
+                                "  <query xmlns=\"http://skysea.com/protocol/group#user\" node=\"groups\">\n" +
                                 "    <x xmlns=\"jabber:x:data\" type=\"result\">\n" +
                                 "      <reported>\n" +
                                 "        <field var=\"id\"/>\n" +

@@ -20,7 +20,13 @@ public class GroupInfo {
         /**
          * 需要验证的，加入前需要经过圈子所有者验证同意。
          */
-        AFFIRM_REQUIRED
+        AFFIRM_REQUIRED,
+
+
+        /**
+         * 私有圈子。
+         */
+        PRIVATE
     }
 
 

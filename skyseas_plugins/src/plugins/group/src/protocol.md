@@ -11,9 +11,9 @@
 	- [查询圈子](#user_query_groups) 
 	- [查询圈子详情](#user_query_group_info)
 	- [查询圈子成员列表](#user_query_group_members)
+	- [查询已加入的圈子列表](#user_query_joined_groups)
 	- [申请加入圈子](#user_apply_join_group)
 + [圈子成员用例](#member_usecase)
-	- [查询已加入的圈子列表](#member_query_joined_groups)
 	- [发送圈子消息](#member_send_message)
 	- [修改圈子名片](#member_change_profile)
 	- [退出圈子](#member_exit_group)
@@ -23,9 +23,7 @@
 	- [踢人](#owner_kick_member)
 	- [销毁圈子](#owner_destroy_group)
 	
-<a name="summary"> </a> 
 
-<h1 id="summary" />
 
 ## 摘要 
 本文定义了一个XMPP扩展协议用于实现持久化的多用户社交圈子功能，即多个XMPP用户可以在同一个圈子中互相交流信息，类似`QQ`的聊天群，用户可以获得自己加入的圈子，创建属于自己的圈子也可以邀请其他用户加入圈子等。
@@ -34,7 +32,7 @@
 
 **作者：张智**
 
-<a id="requirements" name="requirements"> </a> 
+
 ## 需求 
 本文描述了XMPP圈子的最小功能集：
 
@@ -53,12 +51,12 @@
 13. 允许圈子所有者将圈子用户踢出圈子。
 14. 允许圈子所有者解散圈子。
 
-<a name="terminology"> </a>
+
 ## 术语  
 
 
 
-<a name="roles"> </a>
+
 ## 角色和权限 
 
 #### 以下是已定义的角色：
@@ -84,10 +82,9 @@
 踢人					| 否			| 是
 解散圈子				| 否			| 是
 
-<a name="user_usecase"></a>
+
 ## 用户用例
 
-<a name="user_query_groups"></a>
 ### 查询圈子
 
 #### 例子1.用户提交查询表单
@@ -156,7 +153,9 @@
 </iq>
 ```
 
-<a name="user_query_group_info"></a>
+服务端根据查询条件返回圈子列表，但返回列表中不包括 `PRIVATE` 类型的圈子。
+
+
 ### 查询圈子详情
 
 #### 列子1.用户查询圈子详细信息
@@ -186,9 +185,8 @@
   </query>
 </iq>
 ```
-创建时间：`createTime`使用[XEP-0082](http://xmpp.org/extensions/xep-0082.html)定义的***UTC***日期时间格式。
+创建时间：`createTime`使用[XEP-0082](http://xmpp.org/extensions/xep-0082.html)定义的 **UTC** 日期时间格式。
 
-<a name="user_query_group_members"></a>
 ### 查询圈子成员列表
 
 #### 例子1.用户查询特定圈子的成员列表
@@ -228,13 +226,60 @@
 </iq>
 ```
 
-<a name="user_apply_join_group"></a>
+### 查询已加入的圈子列表
+
+#### 例子1.用户查询已加入的圈子列表
+
+```
+<iq from='user@skysea.com' to='group.skysea.com' id='v4' type='get'>
+	<query xmlns='http://skysea.com/protocol/group#user' node='groups' />
+</iq>
+```
+
+#### 例子2.服务返回用户加入的所有圈子列表
+
+```
+<iq from='group.skysea.com' to='user@skysea.com' id='v4' type='result'>
+	<query xmlns='http://skysea.com/protocol/group#user' node='groups' >
+		<x xmlns='jabber:x:data' type='result'>
+			<reported>
+				<field var='id'/>
+				<field var='jid'/>
+				<field var='owner'/>
+		        <field var='name'/>
+		        <field var='num_members' />
+		        <field var='subject'/>
+	      	</reported>
+			<item>
+				<field var='id'> <value>1</value> </field>
+				<field var='jid'> <value>1@group.skysea.com</value> </field>
+				<field var='owner'> <value>admin</value> </field>
+		        <field var='name'> <value>一起狂欢</value> </field>
+		        <field var='num_members'> <value>100</value> </field>
+		        <field var='subject'> <value>开心不开心的请跟我来！</value> </field>
+		    </item>
+		    .
+		    [more items]
+		    .
+		    <item>
+		    	<field var='id'> <value>10</value> </field>
+				<field var='jid'> <value>10@group.skysea.com</value> </field>
+				<field var='owner'> <value>admin</value> </field>
+		        <field var='name'> <value>80后交友</value> </field>
+		        <field var='num_members'> <value>70</value> </field>
+		        <field var='subject'> <value>80后的伙伴们，一起hi吧！</value> </field>
+		    </item>
+		</x>
+	</query>
+</iq>
+```
+
 ### 申请加入圈子
 
 #### 例子1.用户申请加入圈子
 
 ```
-<iq from='user@skysea.com' to='100@group.skysea.com' id='v4' type='set'>
+<iq from='user@skysea.com' to='100@group.skysea.com' id='v5' type='set'>
   <x xmlns='http://skysea.com/protocol/group#user'>
   	<apply>
   		<member nickname='碧眼狐狸' />
@@ -249,7 +294,7 @@
 #### 例子2.服务返回申请成功
 
 ```
-<iq from='100@group.skysea.com' to='user@skysea.com' id='v4' type='result' />
+<iq from='100@group.skysea.com' to='user@skysea.com' id='v5' type='result' />
 ```
 
 用户发起申请之后服务会根据圈子的开放程度决定是直接将用户加入圈子，还是将申请转发给圈子所有者，由圈子所有者决定。
@@ -257,7 +302,7 @@
 #### 例子3.服务返回申请失败：人数已经达到最大上限
 
 ```
-<iq from='100@group.skysea.com' to='user@skysea.com' id='v4' type='error'>
+<iq from='100@group.skysea.com' to='user@skysea.com' id='v5' type='error'>
 	<error type='wait'>
     	<service-unavailable xmlns='urn:ietf:params:xml:ns:xmpp-stanzas'/>
 	</error>
@@ -281,7 +326,7 @@
 #### 例子5.圈子所有者处理申请：同意用户加入
 
 ```
-<iq from='owner@skysea.com' to='100@group.skysea.com' id='v5' type='set'>
+<iq from='owner@skysea.com' to='100@group.skysea.com' id='v6' type='set'>
   <x xmlns='http://skysea.com/protocol/group#owner'>
   	<apply id='s2fd1'>
   		<agree />
@@ -294,7 +339,7 @@
 #### 例子6.圈子所有者处理申请：拒绝用户加入
 
 ```
-<iq from='owner@skysea.com' to='100@group.skysea.com' id='v5' type='set'>
+<iq from='owner@skysea.com' to='100@group.skysea.com' id='v6' type='set'>
   <x xmlns='http://skysea.com/protocol/group#owner'>
   	<apply id='s2fd1'>
   		<decline />
@@ -309,7 +354,7 @@
 #### 例子7.服务向所有者返回处理申请成功
 
 ```
-<iq from='100@group.skysea.com' to='owner@skysea.com' id='v5' type='result' />
+<iq from='100@group.skysea.com' to='owner@skysea.com' id='v6' type='result' />
 ```
 
 #### 例子8.服务向申请者转发：所有者已同意申请
@@ -366,59 +411,11 @@
 </message>
 ```
 
-<a name="member_usecase"></a>
+
 ## 圈子成员用例
 
-<a name="member_query_joined_groups"></a>
-### 查询已加入的圈子列表
 
-#### 例子1.用户查询已加入的圈子列表
 
-```
-<iq from='user@skysea.com' to='group.skysea.com' id='v6' type='get'>
-	<query xmlns='http://skysea.com/protocol/group#member' node='groups' />
-</iq>
-```
-
-#### 例子2.服务返回用户加入的所有圈子列表
-
-```
-<iq from='group.skysea.com' to='user@skysea.com' id='v6' type='result'>
-	<query xmlns='http://skysea.com/protocol/group#member' node='groups' >
-		<x xmlns='jabber:x:data' type='result'>
-			<reported>
-				<field var='id'/>
-				<field var='jid'/>
-				<field var='owner'/>
-		        <field var='name'/>
-		        <field var='num_members' />
-		        <field var='subject'/>
-	      	</reported>
-			<item>
-				<field var='id'> <value>1</value> </field>
-				<field var='jid'> <value>1@group.skysea.com</value> </field>
-				<field var='owner'> <value>admin</value> </field>
-		        <field var='name'> <value>一起狂欢</value> </field>
-		        <field var='num_members'> <value>100</value> </field>
-		        <field var='subject'> <value>开心不开心的请跟我来！</value> </field>
-		    </item>
-		    .
-		    [more items]
-		    .
-		    <item>
-		    	<field var='id'> <value>10</value> </field>
-				<field var='jid'> <value>10@group.skysea.com</value> </field>
-				<field var='owner'> <value>admin</value> </field>
-		        <field var='name'> <value>80后交友</value> </field>
-		        <field var='num_members'> <value>70</value> </field>
-		        <field var='subject'> <value>80后的伙伴们，一起hi吧！</value> </field>
-		    </item>
-		</x>
-	</query>
-</iq>
-```
-
-<a name="member_send_message"></a>
 ### 发送圈子消息
 
 #### 例子1.圈子成员向圈子发送消息
@@ -455,7 +452,7 @@
 当圈子成员接收到消息时`from`属性已被重写为圈子的`JID`，通过`JID`的`resource`值可知消息的发送者
 用户名为：user。扩展元素 **x** 中的`member`元素包含发送者的昵称信息。
 
-<a name="member_change_profile"></a>
+
 ### 修改圈子名片
 
 #### 例子1.圈子成员修改圈子名片信息
@@ -504,7 +501,26 @@
 
 ```
 
-<a name="member_exit_group"></a>
+### 邀请用户
+
+#### 例子1.圈子成员邀请用户加入圈子
+
+```
+<iq from='user@skysea.com' to='100@group.skysea.com' id='v8' type='set'>
+  <x xmlns='http://skysea.com/protocol/group#member'>
+  	<invite>
+  		<member username='user100' nickname='独孤求败' />
+  	</invite>
+  </x>
+</iq>
+```
+
+#### 例子2.服务返回邀请成功
+
+```
+<iq from='100@group.skysea.com' to='user@skysea.com' id='v8' type='result' />
+```
+
 ### 退出圈子
 
 #### 例子1.圈子成员退出圈子
@@ -550,28 +566,9 @@
 
 ```
 
-### 获取圈子历史消息记录
-
-#### 例子1.用户请求获取圈子最新的历史消息记录并限制消息条数
-
-
-```
-<iq from='user@skysea.com' to='100@group.skysea.com' id='v8' type='set'>
-  <x xmlns='http://skysea.com/protocol/group'>
-  	<history>
-  		<max>10</max>
-  	</history>
-  </x>
-</iq>
-```
-
-#### 例子2.用户请求获取指定时间
-
-
-<a name="owner_usecase"></a>
 ## 圈子所有者用例
 
-<a name="owner_create_group"></a>
+
 ### 创建圈子
 
 
@@ -615,6 +612,7 @@
 ---------------	|-----------
 PUBLIC			| 完全开放
 AFFIRM_REQUIRED	| 需要审核
+PRIVATE         | 私有
 
 #### 例子2.服务返回用户圈子创建成功
 
@@ -631,7 +629,6 @@ AFFIRM_REQUIRED	| 需要审核
 ```
 服务返回表单中`jid`字段显示了服务为圈子自动生成的`jid`，圈子jid是进行圈子通信功能的目标地址。
 
-<a name="owner_create_group"></a>
 ### 修改圈子信息
 
 #### 例子1.用户提交修改表单
@@ -667,7 +664,7 @@ AFFIRM_REQUIRED	| 需要审核
 </iq>
 ```
 
-<a name="owner_kick_member"></a>
+
 ### 踢人
 
 #### 例子1.圈子所有者提出踢出成员
@@ -717,7 +714,7 @@ AFFIRM_REQUIRED	| 需要审核
 
 `reason`说明被踢出的原因，但它只对被踢出成员发送。
 
-<a name="owner_destroy_group"></a>
+
 ### 销毁圈子
 
 #### 例子1.圈子所有者提交销毁圈子
@@ -758,9 +755,6 @@ AFFIRM_REQUIRED	| 需要审核
   </x>
 </message>
 ```
-
-
-
 
 
 ## 参考资料

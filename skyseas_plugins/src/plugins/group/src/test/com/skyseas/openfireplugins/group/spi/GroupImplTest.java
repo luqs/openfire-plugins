@@ -26,6 +26,7 @@ public class GroupImplTest extends TestCase {
         groupInfo = new GroupInfo();
         groupInfo.setId(100);
         groupInfo.setOwner("owner");
+        groupInfo.setOpennessType(GroupInfo.OpennessType.PUBLIC);
 
         group = new GroupImpl(
                 groupJid,
@@ -337,6 +338,4 @@ public class GroupImplTest extends TestCase {
         group.send(new IQ());
         assertFalse(group.isIdleState());
     }
-
-
 }

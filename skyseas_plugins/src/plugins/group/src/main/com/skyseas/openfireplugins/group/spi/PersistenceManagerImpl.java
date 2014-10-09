@@ -107,26 +107,24 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
         Connection          con             = null;
         PreparedStatement   pstmt           = null;
         ResultSet           rs              = null;
-        ArrayList<Object>   parameters      = new ArrayList(2);
-        String              whereCondition  = "";
+        ArrayList<Object>   parameters      = null;
+        String              whereCondition  = null;
 
 
-        if(queryObject.hasValue()) {
+        FieldListBuilder fieldListBuilder = new FieldListBuilder("AND")
+                .addField(true, "openness", 2, "<") // 2代表PRIVATE的圈子
 
-            String name = queryObject.getName();
-            FieldListBuilder fieldListBuilder = new FieldListBuilder("AND")
-                    .addField(queryObject.getGroupId() > 0,
-                            "id", queryObject.getGroupId())
+                .addField(queryObject.getGroupId() > 0,
+                        "id", queryObject.getGroupId())
 
-                    .addField(queryObject.getCategory() > 0,
-                            "category", queryObject.getCategory())
+                .addField(queryObject.getCategory() > 0,
+                        "category", queryObject.getCategory())
 
-                    .addField(name != null && name.length() > 0,
-                            "name", "%" + name + "%", "LIKE");
+                .addField(!StringUtils.isNullOrEmpty(queryObject.getName()),
+                        "name", "%" + queryObject.getName() + "%", "LIKE");
 
-            parameters = fieldListBuilder.getParameters();
-            whereCondition = " WHERE " + fieldListBuilder.getSql();
-        }
+        parameters = fieldListBuilder.getParameters();
+        whereCondition = " WHERE " + fieldListBuilder.getSql();
         try {
 
             int count = 0;
