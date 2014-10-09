@@ -28,8 +28,7 @@
 	</target>
 
 
-	<target name="main_compile" depends="init">
-	<description> 编译插件代码 </description>
+	<target name="main_compile" depends="init" description="编译插件代码">
 		<javac destdir="${plugin.main.dist.path}"  failonerror="false"
 				fork="yes"  
 				encoding="UTF-8"
@@ -49,9 +48,8 @@
 		<jar jarfile="${plugin.main.jar}" basedir="${plugin.main.dist.path}" />
 	</target>
 	
-	<target name="jsp_compile" depends="jspc">
-		<description> 将编译好的jsp文件，编译为class </description>
-	
+	<target name="jsp_compile" depends="jspc" description="将编译好的jsp文件，编译为class">
+
 		<javac destdir="${plugin.jsp.dist.path}" 
             encoding="UTF-8" debug="on" failonerror="false"
 			fork="yes"         
@@ -88,8 +86,7 @@
 		<jar jarfile="${plugin.jsp.jar}" basedir="${plugin.jsp.dist.path}" />
 	</target>
 
-	<target name="jspc">
-	<description> 编译插件jsp文件 </description>
+	<target name="jspc" description="编译插件jsp文件">
 		<taskdef classname="org.apache.jasper.JspC" name="jasper2">
 			<classpath id="jspc.classpath">
 				<pathelement location="${java.home}/../lib/tools.jar" />
@@ -118,9 +115,8 @@
 	</target>
 	
 	
-	<target name="plugin_jar"  depends="main_compile,jsp_compile" >
-		<description> 打包可部署的插件jar文件 </description>
-		
+	<target name="plugin_jar"  depends="main_compile,jsp_compile" description="打包可部署的插件jar文件">
+
 		<property name="plugin_root" value="${plugin.output.path}/plugin" />
 		<property name="lib" value="${plugin_root}/lib" />
 		
@@ -156,14 +152,12 @@
 			
 	</target>
 	
-	<target name="check_database">		
-		<description>检查database目录是否存在</description>
+	<target name="check_database" description="检查database目录是否存在">
 		<property name="database_target" value="${plugin.main.src.path}/database" />
 		<available file="${database_target}" property="database_exists" />
 	</target>
 	
-	<target name="copy_database" depends="check_database" if="database_exists" >
-		<description>拷贝database目录</description>				
+	<target name="copy_database" depends="check_database" if="database_exists" description="拷贝database目录" >
 		<copy todir="${plugin_root}/database">
             <fileset dir="${database_target}" includes="**/**" />
 		</copy>
