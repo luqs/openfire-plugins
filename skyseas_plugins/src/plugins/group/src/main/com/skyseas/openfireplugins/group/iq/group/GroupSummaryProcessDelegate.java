@@ -25,22 +25,22 @@ public class GroupSummaryProcessDelegate implements DataItemProcessDelegate<Grou
 
     @Override
     public void beforeProcess(DataForm form) {
-        form.addReportedField("id",         null, null);
-        form.addReportedField("jid",        null, null);
-        form.addReportedField("owner",      null, null);
-        form.addReportedField("name",       null, null);
-        form.addReportedField("num_members",null, null);
-        form.addReportedField("subject",    null, null);
+        form.addReportedField("jid",            null, null);
+        form.addReportedField("openness_type",  null, null);
+        form.addReportedField("owner",          null, null);
+        form.addReportedField("name",           null, null);
+        form.addReportedField("num_members",    null, null);
+        form.addReportedField("subject",        null, null);
     }
 
     @Override
     public void process(DataForm form, GroupInfo dataItem) {
-        dataMap.put("id", String.valueOf(dataItem.getId()));
-        dataMap.put("jid", dataItem.getJID(groupServiceName));
-        dataMap.put("owner", dataItem.getOwner());
-        dataMap.put("name", dataItem.getName());
-        dataMap.put("num_members", dataItem.getNumberOfMembers());
-        dataMap.put("subject", dataItem.getSubject());
+        dataMap.put("jid",                      dataItem.getJID(groupServiceName));
+        dataMap.put("openness_type",            String.valueOf(dataItem.getOpennessType()));
+        dataMap.put("owner",                    dataItem.getOwner());
+        dataMap.put("name",                     dataItem.getName());
+        dataMap.put("num_members",              dataItem.getNumberOfMembers());
+        dataMap.put("subject",                  dataItem.getSubject());
         form.addItemFields(dataMap);
     }
 }

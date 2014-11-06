@@ -20,7 +20,7 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
 
     private final static Logger LOG = LoggerFactory.getLogger(PersistenceManagerImpl.class);
     private final static String SELECT_GROUP =
-            "SELECT `id`,`owner`,`name`,`numberOfMembers`,`subject` FROM `sky_Group` %1$s ORDER BY `id` DESC LIMIT ?,?;";
+            "SELECT `id`, `owner`,`name`,`numberOfMembers`,`subject`,`openness` FROM `sky_Group` %1$s ORDER BY `id` DESC LIMIT ?,?;";
     private final static String SELECT_GROUP_COUNT =
             "SELECT COUNT(*) FROM `sky_Group` %1$s;";
     private final static  String INSERT_GROUP =
@@ -45,7 +45,7 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
              "FROM `sky_Group` WHERE id = ?";
 
     private final static String SELECT_MEMBER_ALL_GROUPS =
-            "SELECT `id`,`owner`,`name`,`numberOfMembers`,`subject` " +
+            "SELECT  `id`,`owner`,`name`,`numberOfMembers`,`subject`, `openness` " +
                     "FROM `sky_Group` WHERE ID IN(SELECT `groupid` FROM sky_GroupMembers WHERE `userName` = ?)";
 
     private final static String SELECT_GROUP_ALL_MEMBERS =
@@ -552,11 +552,12 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
         ArrayList<GroupInfo> list = new ArrayList<GroupInfo>(rs.getFetchSize());
         while (rs.next()){
             GroupInfo groupInfo = new GroupInfo();
-            groupInfo.setId(                rs.getInt(1));
+            groupInfo.setId(rs.getInt(1));
             groupInfo.setOwner(rs.getString(2));
             groupInfo.setName(rs.getString(3));
             groupInfo.setNumberOfMembers(rs.getInt(4));
             groupInfo.setSubject(rs.getString(5));
+            groupInfo.setOpennessType(GroupInfo.OpennessType.values()[rs.getInt(6)]);
             list.add(groupInfo);
         }
         return list;

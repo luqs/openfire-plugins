@@ -64,7 +64,7 @@
 -------------------	|------------------------------------
 用户	(User)			| 普通的XMPP用户
 圈子成员(Member)		| 已经加入圈子的XMPP用户
-圈子所有者(Owner)		| 创建圈子的XMPP用户，同事也是圈子成员
+圈子所有者(Owner)		| 创建圈子的XMPP用户，同时也是圈子成员
 
 
 #### 以下是角色相关的权限列表：
@@ -77,7 +77,6 @@
 处理用户的加入申请		| 否			| 是
 修改自己的圈子昵称		| 是			| 是
 修改圈子资料			| 否			| 是
-出席消息广播到房间		| 是			| 是
 踢人					| 否			| 是
 解散圈子				| 否			| 是
 
@@ -116,16 +115,16 @@
 	<query xmlns='jabber:iq:search'>
 		<x xmlns='jabber:x:data' type='result'>
 			<reported>
-				<field var='id'/>
 				<field var='jid'/>
+				<field var='openness_type'/>
 				<field var='owner'/>
 		        <field var='name'/>
 		        <field var='num_members' />
 		        <field var='subject'/>
 	      	</reported>
 			<item>
-				<field var='id'> <value>1</value> </field>
 				<field var='jid'> <value>1@group.skysea.com</value> </field>
+				<field var='openness_type'> <value>PUBLIC</value> </field>
 				<field var='owner'> <value>admin</value> </field>
 		        <field var='name'> <value>一起狂欢</value> </field>
 		        <field var='num_members'> <value>100</value> </field>
@@ -135,8 +134,8 @@
 		    [8 more items]
 		    .
 		    <item>
-		    	<field var='id'> <value>10</value> </field>
 				<field var='jid'> <value>10@group.skysea.com</value> </field>
+		    	<field var='openness_type'> <value>AFFIRM_REQUIRED</value> </field>
 				<field var='owner'> <value>admin</value> </field>
 		        <field var='name'> <value>80后交友</value> </field>
 		        <field var='num_members'> <value>70</value> </field>
@@ -205,12 +204,10 @@
 			<reported>
 				<field var='username'/>
 				<field var='nickname'/>
-		        <field var='status'/>
 	      	</reported>
 			<item>
 				<field var='username'> <value>user1</value> </field>
 				<field var='nickname'> <value>小李飞刀</value> </field>
-		        <field var='status'> <value>online</value> </field>
 		    </item>
 		    .
 		    [more items]
@@ -218,7 +215,6 @@
 		    <item>
 				<field var='username'> <value>user10</value> </field>
 				<field var='nickname'> <value>大刀关胜</value> </field>
-		        <field var='status'> <value>offline</value> </field>
 		    </item>
 	</x>
   </query>
@@ -240,35 +236,35 @@
 ```
 <iq from='group.skysea.com' to='user@skysea.com' id='v4' type='result'>
 	<query xmlns='http://skysea.com/protocol/group#user' node='groups' >
-		<x xmlns='jabber:x:data' type='result'>
-			<reported>
-				<field var='id'/>
-				<field var='jid'/>
-				<field var='owner'/>
-		        <field var='name'/>
-		        <field var='num_members' />
-		        <field var='subject'/>
-	      	</reported>
-			<item>
-				<field var='id'> <value>1</value> </field>
-				<field var='jid'> <value>1@group.skysea.com</value> </field>
-				<field var='owner'> <value>admin</value> </field>
-		        <field var='name'> <value>一起狂欢</value> </field>
-		        <field var='num_members'> <value>100</value> </field>
-		        <field var='subject'> <value>开心不开心的请跟我来！</value> </field>
-		    </item>
-		    .
-		    [more items]
-		    .
-		    <item>
-		    	<field var='id'> <value>10</value> </field>
-				<field var='jid'> <value>10@group.skysea.com</value> </field>
-				<field var='owner'> <value>admin</value> </field>
-		        <field var='name'> <value>80后交友</value> </field>
-		        <field var='num_members'> <value>70</value> </field>
-		        <field var='subject'> <value>80后的伙伴们，一起hi吧！</value> </field>
-		    </item>
-		</x>
+        <x xmlns='jabber:x:data' type='result'>
+            <reported>
+                <field var='jid'/>
+                <field var='openness_type'/>
+                <field var='owner'/>
+                <field var='name'/>
+                <field var='num_members' />
+                <field var='subject'/>
+            </reported>
+            <item>
+                <field var='jid'> <value>1@group.skysea.com</value> </field>
+                <field var='openness_type'> <value>PUBLIC</value> </field>
+                <field var='owner'> <value>admin</value> </field>
+                <field var='name'> <value>一起狂欢</value> </field>
+                <field var='num_members'> <value>100</value> </field>
+                <field var='subject'> <value>开心不开心的请跟我来！</value> </field>
+            </item>
+            .
+            [8 more items]
+            .
+            <item>
+                <field var='jid'> <value>10@group.skysea.com</value> </field>
+                <field var='openness_type'> <value>AFFIRM_REQUIRED</value> </field>
+                <field var='owner'> <value>admin</value> </field>
+                <field var='name'> <value>80后交友</value> </field>
+                <field var='num_members'> <value>70</value> </field>
+                <field var='subject'> <value>80后的伙伴们，一起hi吧！</value> </field>
+            </item>
+        </x>
 	</query>
 </iq>
 ```
