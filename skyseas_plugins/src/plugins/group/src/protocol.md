@@ -116,7 +116,7 @@
 		<x xmlns='jabber:x:data' type='result'>
 			<reported>
 				<field var='jid'/>
-				<field var='openness_type'/>
+				<field var='openness'/>
 				<field var='owner'/>
 		        <field var='name'/>
 		        <field var='num_members' />
@@ -124,7 +124,7 @@
 	      	</reported>
 			<item>
 				<field var='jid'> <value>1@group.skysea.com</value> </field>
-				<field var='openness_type'> <value>PUBLIC</value> </field>
+				<field var='openness'> <value>PUBLIC</value> </field>
 				<field var='owner'> <value>admin</value> </field>
 		        <field var='name'> <value>一起狂欢</value> </field>
 		        <field var='num_members'> <value>100</value> </field>
@@ -135,7 +135,7 @@
 		    .
 		    <item>
 				<field var='jid'> <value>10@group.skysea.com</value> </field>
-		    	<field var='openness_type'> <value>AFFIRM_REQUIRED</value> </field>
+		    	<field var='openness'> <value>AFFIRM_REQUIRED</value> </field>
 				<field var='owner'> <value>admin</value> </field>
 		        <field var='name'> <value>80后交友</value> </field>
 		        <field var='num_members'> <value>70</value> </field>
@@ -239,7 +239,7 @@
         <x xmlns='jabber:x:data' type='result'>
             <reported>
                 <field var='jid'/>
-                <field var='openness_type'/>
+                <field var='openness'/>
                 <field var='owner'/>
                 <field var='name'/>
                 <field var='num_members' />
@@ -247,7 +247,7 @@
             </reported>
             <item>
                 <field var='jid'> <value>1@group.skysea.com</value> </field>
-                <field var='openness_type'> <value>PUBLIC</value> </field>
+                <field var='openness'> <value>PUBLIC</value> </field>
                 <field var='owner'> <value>admin</value> </field>
                 <field var='name'> <value>一起狂欢</value> </field>
                 <field var='num_members'> <value>100</value> </field>
@@ -258,7 +258,7 @@
             .
             <item>
                 <field var='jid'> <value>10@group.skysea.com</value> </field>
-                <field var='openness_type'> <value>AFFIRM_REQUIRED</value> </field>
+                <field var='openness'> <value>AFFIRM_REQUIRED</value> </field>
                 <field var='owner'> <value>admin</value> </field>
                 <field var='name'> <value>80后交友</value> </field>
                 <field var='num_members'> <value>70</value> </field>

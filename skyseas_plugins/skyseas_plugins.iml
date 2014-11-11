@@ -22,6 +22,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src/plugins/userintegration/src/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/plugins/group/src/main" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/plugins/group/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/plugins/push/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/plugins/push/src/main" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />

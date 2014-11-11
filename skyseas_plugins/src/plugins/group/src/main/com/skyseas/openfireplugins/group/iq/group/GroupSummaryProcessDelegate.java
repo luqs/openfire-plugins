@@ -36,7 +36,7 @@ public class GroupSummaryProcessDelegate implements DataItemProcessDelegate<Grou
     @Override
     public void process(DataForm form, GroupInfo dataItem) {
         dataMap.put("jid",                      dataItem.getJID(groupServiceName));
-        dataMap.put("openness_type",            String.valueOf(dataItem.getOpennessType()));
+        dataMap.put("openness",                 String.valueOf(dataItem.getOpennessType()));
         dataMap.put("owner",                    dataItem.getOwner());
         dataMap.put("name",                     dataItem.getName());
         dataMap.put("num_members",              dataItem.getNumberOfMembers());

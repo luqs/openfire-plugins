@@ -8,7 +8,7 @@
     <version>1.0.0</version>
     <date>7/4/2014</date>
     <minServerVersion>3.9.0</minServerVersion>
-    
+
     <adminconsole>
           <tab id="tab-users">
             <sidebar id="sidebar-users">
@@ -17,6 +17,6 @@
                     description="set userintegration parameters." />
             </sidebar>
         </tab>
-    </adminconsole> 
-    
+    </adminconsole>
+
 </plugin>
