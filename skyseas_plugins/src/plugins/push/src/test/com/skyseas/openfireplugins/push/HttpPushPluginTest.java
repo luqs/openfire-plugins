@@ -4,10 +4,10 @@ import junit.framework.TestCase;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
+import org.jivesoftware.admin.AuthCheckFilter;
 import org.jivesoftware.openfire.container.PluginManager;
 import org.jivesoftware.openfire.container.PluginServlet;
 
-import javax.servlet.GenericServlet;
 import java.io.File;
 
 public class HttpPushPluginTest extends TestCase {
@@ -29,7 +29,8 @@ public class HttpPushPluginTest extends TestCase {
     public void testInitializePlugin() throws Exception {
 
         // Arrange
-
+        new NonStrictExpectations(AuthCheckFilter.class){ };
+        new NonStrictExpectations(PluginServlet.class){ };
 
         // Act
         plugin.initializePlugin(pluginManager, null);
@@ -41,7 +42,10 @@ public class HttpPushPluginTest extends TestCase {
                         pluginManager,
                         plugin,
                         withAny((PushServlet)null),
-                        HttpPushPlugin.PATH);
+                        HttpPushPlugin.PUSH_SERVLET_REL_PATH);
+                times = 1;
+
+                AuthCheckFilter.addExclude(plugin.PLUGIN_NAME + "/packet");
                 times = 1;
             }
         };
@@ -49,6 +53,7 @@ public class HttpPushPluginTest extends TestCase {
 
     public void testDestroyPlugin() throws Exception {
         // Arrange
+        new NonStrictExpectations(AuthCheckFilter.class){};
         plugin.initializePlugin(pluginManager, null);
 
         // Act
@@ -57,7 +62,10 @@ public class HttpPushPluginTest extends TestCase {
         // Assert
         new Verifications(){
             {
-                PluginServlet.unregisterServlet(plugin, HttpPushPlugin.PATH);
+                PluginServlet.unregisterServlet(plugin, HttpPushPlugin.PUSH_SERVLET_REL_PATH);
+                times = 1;
+
+                AuthCheckFilter.removeExclude(plugin.PLUGIN_NAME + "/packet");
                 times = 1;
             }
         };

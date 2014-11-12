@@ -1,5 +1,6 @@
 <%@ page import="org.jivesoftware.openfire.*" %>
 <%@ page import="com.skyseas.openfireplugins.push.HttpPushPlugin" %>
+<%@ page import="com.skyseas.openfireplugins.push.PushServlet" %>
 
 <%
     HttpPushPlugin plugin = (HttpPushPlugin) XMPPServer.getInstance().getPluginManager().getPlugin(HttpPushPlugin.PLUGIN_NAME);
@@ -30,6 +31,12 @@
 &lt;body&gt;hi! all.&lt;/body&gt;
 &lt;/message&gt;
             </textarea>
+        </li>
+
+        <li>
+            you current ip: <%= request.getRemoteAddr()%>. <br />
+            you must add your ip to global property(<%= PushServlet.ALLOW_IP_LIST_KEY %>),
+            eg. 192.168.1.3;192.168.1.2
         </li>
         <li>
             <input type="submit" value="save" name="save"/>

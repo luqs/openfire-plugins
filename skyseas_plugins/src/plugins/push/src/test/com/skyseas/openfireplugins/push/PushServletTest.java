@@ -7,6 +7,10 @@ import mockit.Delegate;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
+import org.jivesoftware.util.JiveGlobals;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.xmpp.packet.Packet;
 
 import javax.servlet.ServletInputStream;
@@ -15,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 public class PushServletTest extends TestCase {
     @Mocked
@@ -40,7 +45,7 @@ public class PushServletTest extends TestCase {
 
     public void testDoPost_When_Content_Is_Empty() throws Exception {
         // Arrange
-
+        new NonStrictExpectations(servlet){};
 
         // Act
         servlet.doPost(request, response);
@@ -48,13 +53,7 @@ public class PushServletTest extends TestCase {
         // Assert
         new Verifications() {
             {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                times = 1;
-
-                writer.write("invalid xmpp data.");
-                times = 1;
-
-                writer.close();
+                servlet.finish(response, HttpServletResponse.SC_BAD_REQUEST, "invalid xmpp data.");
                 times = 1;
             }
         };
@@ -107,7 +106,7 @@ public class PushServletTest extends TestCase {
 
     public void testDoPost_When_Content_Is_Invalid_Packet() throws Exception {
         // Arrange
-        new NonStrictExpectations() {
+        new NonStrictExpectations(servlet) {
             {
                 request.getParameter(PushServlet.PACKET_CONTENT_PARAMETER_NAME);
                 result = "<x from='skysea.com/event' to='user@skysea.com' id='v2'>\n" +
@@ -127,14 +126,29 @@ public class PushServletTest extends TestCase {
         // Assert
         new Verifications() {
             {
-
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                servlet.finish(response, HttpServletResponse.SC_BAD_REQUEST, "invalid xmpp data.");
                 times = 1;
+            }
+        };
+    }
 
-                writer.write("invalid xmpp data.");
+    public void testService_When_Check_Fail() throws Exception {
+        // Arrange
+        new NonStrictExpectations(servlet) {
+            {
+                servlet.doCheck(request);
+                result = false;
                 times = 1;
+            }
+        };
 
-                writer.close();
+        // Act
+        servlet.service(request, response);
+
+        // Assert
+        new Verifications() {
+            {
+                servlet.finish(response, HttpServletResponse.SC_UNAUTHORIZED, "unauthorized");
                 times = 1;
             }
         };
@@ -142,10 +156,10 @@ public class PushServletTest extends TestCase {
 
     public void testDoPost_When_Send_Fail() throws Exception {
         // Arrange
-        new NonStrictExpectations() {
+        new NonStrictExpectations(servlet) {
             {
                 request.getParameter(PushServlet.PACKET_CONTENT_PARAMETER_NAME);
-                result =  "<iq from='skysea.com/event' type='set' id='v2'>\n" +
+                result = "<iq from='skysea.com/event' type='set' id='v2'>\n" +
                         "  <x xmlns='http://skysea.com/protocol/event'>\n" +
                         "    <x xmlns='jabber:x:data' type='result'>\n" +
                         "        <field var='EVENT_NAME'> <value>activity_deleted</value> </field>\n" +
@@ -165,11 +179,27 @@ public class PushServletTest extends TestCase {
         // Assert
         new Verifications() {
             {
+                servlet.finish(response, HttpServletResponse.SC_BAD_REQUEST, "invalid xmpp data.");
+                times = 1;
+            }
+        };
+    }
 
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    public void testFinish() throws  Exception{
+        // Arrange
+        int status = HttpServletResponse.SC_BAD_REQUEST;
+        final String message = "ok";
+
+        // Act
+        servlet.finish(response, status, message);
+
+        // Assert
+        new Verifications(){
+            {
+                writer.write(message);
                 times = 1;
 
-                writer.write("invalid xmpp data.");
+                writer.flush();
                 times = 1;
 
                 writer.close();
@@ -178,28 +208,4 @@ public class PushServletTest extends TestCase {
         };
     }
 
-
-    public static class TestServletInputStream extends ServletInputStream {
-        private final byte[] data;
-        private int position;
-
-        public TestServletInputStream(String content) {
-            this.data = content.getBytes(Charset.forName("utf-8"));
-            this.position = 0;
-        }
-
-        @Override
-        public int read() throws IOException {
-            if (position < data.length) {
-                return data[position++] & 0xFF;
-            } else {
-                return -1;
-            }
-        }
-
-        public int length() {
-            return data.length;
-
-        }
-    }
 }
