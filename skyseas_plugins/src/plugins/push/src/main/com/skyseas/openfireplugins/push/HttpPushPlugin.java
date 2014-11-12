@@ -16,8 +16,8 @@ import java.io.File;
  */
 public class HttpPushPlugin implements Plugin {
     public final static String PLUGIN_NAME          = "push";
-    final static String PUSH_SERVLET_REL_PATH       = "/packet";
-    final static String PUSH_SERVLET_PATH           = PLUGIN_NAME + PUSH_SERVLET_REL_PATH;
+    final static String PUSH_SERVLET_REL_PATH = "/packet";
+    final static String PUSH_SERVLET_PATH           = "/" + PLUGIN_NAME + PUSH_SERVLET_REL_PATH;
     private static Logger LOGGER = LoggerFactory.getLogger(HttpPushPlugin.class);
     private PushServlet servlet;
     private String servletUrl;
