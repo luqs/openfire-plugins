@@ -9,4 +9,8 @@ public final class StringUtils {
     public static boolean isNullOrEmpty(String str) {
         return str == null || str.length() == 0;
     }
+
+    public static String ifNullReturnEmpty(String str) {
+        return str != null ? str : "";
+    }
 }

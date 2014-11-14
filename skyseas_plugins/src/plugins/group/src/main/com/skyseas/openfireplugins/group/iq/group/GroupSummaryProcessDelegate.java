@@ -26,7 +26,7 @@ public class GroupSummaryProcessDelegate implements DataItemProcessDelegate<Grou
     @Override
     public void beforeProcess(DataForm form) {
         form.addReportedField("jid",            null, null);
-        form.addReportedField("openness_type",  null, null);
+        form.addReportedField("openness",       null, null);
         form.addReportedField("owner",          null, null);
         form.addReportedField("name",           null, null);
         form.addReportedField("num_members",    null, null);

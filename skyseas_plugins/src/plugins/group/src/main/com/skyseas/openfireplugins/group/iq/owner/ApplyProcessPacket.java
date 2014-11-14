@@ -22,7 +22,7 @@ public class ApplyProcessPacket extends HasReasonPacket {
     }
 
     private void setReason(String reason) {
-        modeElement.addElement("reason").setText(reason);
+        modeElement.addElement("reason").setText(StringUtils.ifNullReturnEmpty(reason));
     }
 
     public String getUserName() {
@@ -32,7 +32,7 @@ public class ApplyProcessPacket extends HasReasonPacket {
 
     public void setUserName(String userName) {
         Element ele = ensureMemberElement();
-        ele.addAttribute("username", userName);
+        ele.addAttribute("username", StringUtils.ifNullReturnEmpty(userName));
     }
 
     public String getNickname() {
@@ -42,7 +42,7 @@ public class ApplyProcessPacket extends HasReasonPacket {
 
     public void setNickname(String nickname) {
         Element ele = ensureMemberElement();
-        ele.addAttribute("nickname", nickname);
+        ele.addAttribute("nickname", StringUtils.ifNullReturnEmpty(nickname));
     }
 
     public String getId() {
@@ -50,7 +50,7 @@ public class ApplyProcessPacket extends HasReasonPacket {
     }
 
     private void setId(String id) {
-        modeElement.addAttribute("id", id);
+        modeElement.addAttribute("id", StringUtils.ifNullReturnEmpty(id));
     }
 
     public boolean isAgree() {

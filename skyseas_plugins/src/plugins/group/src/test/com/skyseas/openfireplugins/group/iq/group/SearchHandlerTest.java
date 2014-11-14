@@ -67,17 +67,19 @@ public class SearchHandlerTest extends IQHandlerTest<SearchHandler> {
                                 "  <query xmlns=\"jabber:iq:search\">\n" +
                                 "    <x xmlns=\"jabber:x:data\" type=\"result\">\n" +
                                 "      <reported>\n" +
-                                "        <field var=\"id\"/>\n" +
                                 "        <field var=\"jid\"/>\n" +
+                                "        <field var=\"openness\"/>\n" +
                                 "        <field var=\"owner\"/>\n" +
                                 "        <field var=\"name\"/>\n" +
                                 "        <field var=\"num_members\"/>\n" +
                                 "        <field var=\"subject\"/>\n" +
                                 "      </reported>\n" +
                                 "      <item>\n" +
-                                "        <field var=\"owner\"/>\n" +
-                                "        <field var=\"id\">\n" +
-                                "          <value>1</value>\n" +
+                                "        <field var=\"owner\">\n" +
+                                "          <value>owner1</value>\n" +
+                                "        </field>\n" +
+                                "        <field var=\"openness\">\n" +
+                                "          <value>AFFIRM_REQUIRED</value>\n" +
                                 "        </field>\n" +
                                 "        <field var=\"jid\">\n" +
                                 "          <value>1@group.skysea.com</value>\n" +
@@ -93,9 +95,11 @@ public class SearchHandlerTest extends IQHandlerTest<SearchHandler> {
                                 "        </field>\n" +
                                 "      </item>\n" +
                                 "      <item>\n" +
-                                "        <field var=\"owner\"/>\n" +
-                                "        <field var=\"id\">\n" +
-                                "          <value>2</value>\n" +
+                                "        <field var=\"owner\">\n" +
+                                "          <value>owner2</value>\n" +
+                                "        </field>\n" +
+                                "        <field var=\"openness\">\n" +
+                                "          <value>PUBLIC</value>\n" +
                                 "        </field>\n" +
                                 "        <field var=\"jid\">\n" +
                                 "          <value>2@group.skysea.com</value>\n" +
@@ -139,14 +143,18 @@ public class SearchHandlerTest extends IQHandlerTest<SearchHandler> {
 
         GroupInfo group = new GroupInfo();
         group.setId(1);
+        group.setOpennessType(GroupInfo.OpennessType.AFFIRM_REQUIRED);
         group.setName("我的1");
         group.setSubject("主题1");
+        group.setOwner("owner1");
         groups.getItems().add(group);
 
         GroupInfo group2 = new GroupInfo();
         group2.setId(2);
+        group2.setOpennessType(GroupInfo.OpennessType.PUBLIC);
         group2.setName("我的2");
         group2.setSubject("主题2");
+        group2.setOwner("owner2");
         groups.getItems().add(group2);
         return groups;
     }
