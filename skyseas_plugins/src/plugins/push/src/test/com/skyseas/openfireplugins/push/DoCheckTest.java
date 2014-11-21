@@ -11,6 +11,9 @@ import org.junit.runners.Parameterized;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -48,7 +51,6 @@ public class DoCheckTest {
 
     @Test
     public void testDoCheck() {
-
         // Arrange
         PushServlet pushServlet = new PushServlet(sender);
         new NonStrictExpectations(JiveGlobals.class) {
