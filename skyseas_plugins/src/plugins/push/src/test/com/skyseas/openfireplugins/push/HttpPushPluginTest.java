@@ -12,8 +12,8 @@ import java.io.File;
 
 public class HttpPushPluginTest extends TestCase {
     private HttpPushPlugin plugin;
-    @Mocked PluginManager pluginManager;
     @Mocked PushServlet pushServlet;
+    @Mocked PluginManager pluginManager;
 
     @Override
     protected void setUp() {

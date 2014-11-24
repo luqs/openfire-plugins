@@ -15,7 +15,7 @@
             <sidebar id="sidebar-server-manager">
                 <item id="upload_resource" name="ResourceUpload"
                       url="upload_test.jsp"
-                      description="dfdf" />
+                      description="upload testing" />
             </sidebar>
         </tab>
     </adminconsole>
