@@ -103,11 +103,8 @@ public class ChatLogsPlugin implements PacketInterceptor, Plugin {
 				//直接插入数据库
 				//logsManager.add(this.get(packet, incoming, session));
 				//将聊天记录发到消息队列
-				//new Gson().toJson()
+				
 				ChatLogs chatLogs = this.get(packet, incoming, session);
-				
-				System.out.println(new Gson().toJson(chatLogs));
-				
 				jedis.lpush("chatlogs", new Gson().toJson(chatLogs));
 				
 				// 群聊天，多人模式
