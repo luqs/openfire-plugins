@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -30,7 +31,7 @@ import org.xmpp.packet.Presence;
 import redis.clients.jedis.Jedis;
 
 import com.google.gson.Gson;
-import com.skyseas.openfireplugins.chatlogs.ChatLogs.ChatLogsConstants;
+import com.skyseas.openfireplugins.chatlogs.OfChatLogs.ChatLogsConstants;
 
 /**
  * function: 聊天记录插件
@@ -104,7 +105,7 @@ public class ChatLogsPlugin implements PacketInterceptor, Plugin {
 				//logsManager.add(this.get(packet, incoming, session));
 				//将聊天记录发到消息队列
 				
-				ChatLogs chatLogs = this.get(packet, incoming, session);
+				OfChatLogs chatLogs = this.get(packet, incoming, session);
 				jedis.lpush("chatlogs", new Gson().toJson(chatLogs));
 				
 				// 群聊天，多人模式
@@ -149,9 +150,9 @@ public class ChatLogsPlugin implements PacketInterceptor, Plugin {
 	 *            当前用户session
 	 * @return 聊天实体
 	 */
-	private ChatLogs get(Packet packet, boolean incoming, Session session) {
+	private OfChatLogs get(Packet packet, boolean incoming, Session session) {
 		Message message = (Message) packet;
-		ChatLogs logs = new ChatLogs();
+		OfChatLogs logs = new OfChatLogs();
 		JID jid = session.getAddress();
 		if (incoming) { // 发送者
 			logs.setSender(jid.getNode());
@@ -159,14 +160,14 @@ public class ChatLogsPlugin implements PacketInterceptor, Plugin {
 			logs.setReceiver(recipient.getNode());
 		}
 		logs.setContent(message.getBody());
-		logs.setCreateDate(new Timestamp(new Date().getTime()));
+		logs.setCreatedate(new SimpleDateFormat().format(new Date()));
 		logs.setDetail(message.toXML().replaceAll("\"", "\\\""));
 		logs.setLength(logs.getContent().length());
 		logs.setState(0);
-		logs.setSessionJID(jid.toString());
+		logs.setSessionjid(jid.toString());
 		// 生成主键id，利用序列生成器
 		long messageID = SequenceManager.nextID(ChatLogsConstants.CHAT_LOGS);
-		logs.setMessageId(messageID);
+		logs.setMessageid(messageID);
 		return logs;
 	}
 
