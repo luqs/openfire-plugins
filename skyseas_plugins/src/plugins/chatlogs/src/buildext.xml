@@ -3,8 +3,8 @@
   <patternset id="plugin_refs">
     <include name="jackson-core-asl-1.9.4.jar"/>
     <include name="jackson-mapper-asl-1.9.4.jar"/>
-  	<include name="jedis-2.1.0.jar"/>
+  	<include name="jedis-2.6.0.jar"/>
   	<include name="gson-2.2.4.jar"/>
-  	<include name="commons-pool-1.4.jar"/>
+  	<include name="commons-pool2-2.2.jar"/>
   </patternset>
 </project>
