@@ -21,11 +21,9 @@ public class JedisManager {
 			throw new IllegalArgumentException(
 					"cannot find the SignVerProp.properties");
 		}
-		
 		JedisPoolConfig config = new JedisPoolConfig();
-		config.setMaxActive(Integer.valueOf(properties.getProperty("redis.pool.maxActive")));
+		config.setMaxTotal(Integer.valueOf(properties.getProperty("redis.pool.maxActive")));
 		config.setMaxIdle(Integer.valueOf(properties.getProperty("redis.pool.maxIdle")));
-		config.setMaxWait(Integer.valueOf(properties.getProperty("redis.pool.maxWait")));
 		pool = new JedisPool(config, properties.getProperty("redis.host"),
 				Integer.valueOf(properties.getProperty("redis.port")));
 	}
