@@ -91,9 +91,6 @@
 <iq from='user@skysea.com' to='group.skysea.com' id='v1' type='set'>
 	<query xmlns='jabber:iq:search'>
 		<x xmlns='jabber:x:data' type='submit'>
-			<field var='id' type='text-single'>
-			 <value></value>
-		    </field>
 		    <field var='name'  type='text-single'>
 		      <value>圈子名称</value>
 		    </field>
@@ -119,7 +116,7 @@
 				<field var='openness'/>
 				<field var='owner'/>
 		        <field var='name'/>
-		        <field var='num_members' />
+		        <field var='memberCount' />
 		        <field var='subject'/>
 	      	</reported>
 			<item>
@@ -127,7 +124,7 @@
 				<field var='openness'> <value>PUBLIC</value> </field>
 				<field var='owner'> <value>admin</value> </field>
 		        <field var='name'> <value>一起狂欢</value> </field>
-		        <field var='num_members'> <value>100</value> </field>
+		        <field var='memberCount'> <value>100</value> </field>
 		        <field var='subject'> <value>开心不开心的请跟我来！</value> </field>
 		    </item>
 		    .
@@ -138,7 +135,7 @@
 		    	<field var='openness'> <value>AFFIRM_REQUIRED</value> </field>
 				<field var='owner'> <value>admin</value> </field>
 		        <field var='name'> <value>80后交友</value> </field>
-		        <field var='num_members'> <value>70</value> </field>
+		        <field var='memberCount'> <value>70</value> </field>
 		        <field var='subject'> <value>80后的伙伴们，一起hi吧！</value> </field>
 		    </item>
 		</x>
@@ -170,11 +167,11 @@
 <iq from='100@group.skysea.com' to='user@skysea.com' id='v2' type='result'>
   <query xmlns='http://skysea.com/protocol/group' node='info'>
   	<x xmlns='jabber:x:data' type='result'>
-		<field var='id'> <value>100</value> </field>
 		<field var='jid'> <value>100@group.skysea.com</value> </field>
 		<field var='owner'> <value>admin</value> </field>
+		<field var='logo'> <value>logo.jpg</value> </field>
 		<field var='name'> <value>一起狂欢</value> </field>
-		<field var='num_members'> <value>100</value> </field>
+		<field var='memberCount'> <value>100</value> </field>
 		<field var='subject'> <value>今晚一醉方休！</value> </field>
 		<field var='description'> <value>欢迎80，90，00后的少年们的加入！</value> </field>
 		<field var='openness'> <value>PUBLIC</value> </field>
@@ -239,30 +236,15 @@
         <x xmlns='jabber:x:data' type='result'>
             <reported>
                 <field var='jid'/>
-                <field var='openness'/>
-                <field var='owner'/>
-                <field var='name'/>
-                <field var='num_members' />
-                <field var='subject'/>
             </reported>
             <item>
                 <field var='jid'> <value>1@group.skysea.com</value> </field>
-                <field var='openness'> <value>PUBLIC</value> </field>
-                <field var='owner'> <value>admin</value> </field>
-                <field var='name'> <value>一起狂欢</value> </field>
-                <field var='num_members'> <value>100</value> </field>
-                <field var='subject'> <value>开心不开心的请跟我来！</value> </field>
             </item>
             .
             [8 more items]
             .
             <item>
                 <field var='jid'> <value>10@group.skysea.com</value> </field>
-                <field var='openness'> <value>AFFIRM_REQUIRED</value> </field>
-                <field var='owner'> <value>admin</value> </field>
-                <field var='name'> <value>80后交友</value> </field>
-                <field var='num_members'> <value>70</value> </field>
-                <field var='subject'> <value>80后的伙伴们，一起hi吧！</value> </field>
             </item>
         </x>
 	</query>
@@ -576,6 +558,9 @@
 		    <field var='name' type='text-single'>
 		      <value>圈子名称</value>
 		    </field>
+		    <field var='logo' type='text-single'>
+              <value>圈子logo图片</value>
+            </field>
 		    <field var='category' type='list-single'>
 		      <value>1</value>
 		    </field>
@@ -635,6 +620,9 @@ PRIVATE         | 私有
 		    <field var='name'  type='text-single'>
 		      <value>圈子名称</value>
 		    </field>
+            <field var='logo' type='text-single'>
+              <value>圈子logo图片</value>
+            </field>
 		    <field var='category' type='list-single'>
 		      <value>23</value>
 		    </field>

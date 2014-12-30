@@ -29,7 +29,7 @@ public class GroupSummaryProcessDelegate implements DataItemProcessDelegate<Grou
         form.addReportedField("openness",       null, null);
         form.addReportedField("owner",          null, null);
         form.addReportedField("name",           null, null);
-        form.addReportedField("num_members",    null, null);
+        form.addReportedField("memberCount",    null, null);
         form.addReportedField("subject",        null, null);
     }
 
@@ -39,7 +39,7 @@ public class GroupSummaryProcessDelegate implements DataItemProcessDelegate<Grou
         dataMap.put("openness",                 String.valueOf(dataItem.getOpennessType()));
         dataMap.put("owner",                    dataItem.getOwner());
         dataMap.put("name",                     dataItem.getName());
-        dataMap.put("num_members",              dataItem.getNumberOfMembers());
+        dataMap.put("memberCount",              dataItem.getNumberOfMembers());
         dataMap.put("subject",                  dataItem.getSubject());
         form.addItemFields(dataMap);
     }

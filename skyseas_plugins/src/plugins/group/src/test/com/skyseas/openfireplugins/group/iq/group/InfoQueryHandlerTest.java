@@ -18,11 +18,11 @@ public class InfoQueryHandlerTest extends IQHandlerTest<InfoQueryHandler> {
     }
 
     public void testProcess() throws Exception {
-
         // Arrange
         final GroupInfo groupInfo = new GroupInfo();
         groupInfo.setId(100);
         groupInfo.setOwner("ok");
+        groupInfo.setLogo("test.jpg");
         groupInfo.setName("fun");
         groupInfo.setNumberOfMembers(122);
         groupInfo.setOpennessType(GroupInfo.OpennessType.AFFIRM_REQUIRED);
@@ -55,9 +55,6 @@ public class InfoQueryHandlerTest extends IQHandlerTest<InfoQueryHandler> {
                                 "<iq type=\"result\" id=\"v3\" from=\"1@group.skysea.com\" to=\"user@skyseas.com\">\n" +
                                         "  <query xmlns=\"http://skysea.com/protocol/group\" node=\"info\">\n" +
                                         "    <x xmlns=\"jabber:x:data\" type=\"result\">\n" +
-                                        "      <field var=\"id\">\n" +
-                                        "        <value>100</value>\n" +
-                                        "      </field>\n" +
                                         "      <field var=\"jid\">\n" +
                                         "        <value>100@group.skysea.com</value>\n" +
                                         "      </field>\n" +
@@ -67,7 +64,10 @@ public class InfoQueryHandlerTest extends IQHandlerTest<InfoQueryHandler> {
                                         "      <field var=\"name\">\n" +
                                         "        <value>fun</value>\n" +
                                         "      </field>\n" +
-                                        "      <field var=\"num_members\">\n" +
+                                        "      <field var=\"logo\">\n" +
+                                        "        <value>test.jpg</value>\n" +
+                                        "      </field>\n" +
+                                        "      <field var=\"memberCount\">\n" +
                                         "        <value>122</value>\n" +
                                         "      </field>\n" +
                                         "      <field var=\"subject\"/>\n" +

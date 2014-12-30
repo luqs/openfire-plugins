@@ -45,46 +45,15 @@ public class GroupsHandlerTest extends IQHandlerTest<GroupsHandler> {
                                 "    <x xmlns=\"jabber:x:data\" type=\"result\">\n" +
                                 "      <reported>\n" +
                                 "        <field var=\"jid\"/>\n" +
-                                "        <field var=\"openness\"/>\n" +
-                                "        <field var=\"owner\"/>\n" +
-                                "        <field var=\"name\"/>\n" +
-                                "        <field var=\"num_members\"/>\n" +
-                                "        <field var=\"subject\"/>\n" +
                                 "      </reported>\n" +
                                 "      <item>\n" +
-                                "        <field var=\"owner\"/>\n" +
-                                "        <field var=\"openness\">\n" +
-                                "          <value>PUBLIC</value>\n" +
-                                "        </field>\n" +
                                 "        <field var=\"jid\">\n" +
                                 "          <value>1@group.skysea.com</value>\n" +
                                 "        </field>\n" +
-                                "        <field var=\"num_members\">\n" +
-                                "          <value>0</value>\n" +
-                                "        </field>\n" +
-                                "        <field var=\"subject\">\n" +
-                                "          <value>主题1</value>\n" +
-                                "        </field>\n" +
-                                "        <field var=\"name\">\n" +
-                                "          <value>我的1</value>\n" +
-                                "        </field>\n" +
                                 "      </item>\n" +
                                 "      <item>\n" +
-                                "        <field var=\"owner\"/>\n" +
-                                "        <field var=\"openness\">\n" +
-                                "          <value>null</value>\n" +
-                                "        </field>\n" +
                                 "        <field var=\"jid\">\n" +
                                 "          <value>2@group.skysea.com</value>\n" +
-                                "        </field>\n" +
-                                "        <field var=\"num_members\">\n" +
-                                "          <value>0</value>\n" +
-                                "        </field>\n" +
-                                "        <field var=\"subject\">\n" +
-                                "          <value>主题2</value>\n" +
-                                "        </field>\n" +
-                                "        <field var=\"name\">\n" +
-                                "          <value>我的2</value>\n" +
                                 "        </field>\n" +
                                 "      </item>\n" +
                                 "    </x>\n" +
@@ -113,6 +82,7 @@ public class GroupsHandlerTest extends IQHandlerTest<GroupsHandler> {
         group.setOpennessType(GroupInfo.OpennessType.PUBLIC);
         group2.setName("我的2");
         group2.setSubject("主题2");
+        group2.setNumberOfMembers(100);
         items.add(group2);
         return items;
     }

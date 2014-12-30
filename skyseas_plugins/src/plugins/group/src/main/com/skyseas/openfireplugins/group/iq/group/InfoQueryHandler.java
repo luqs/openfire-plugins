@@ -30,11 +30,11 @@ public class InfoQueryHandler extends GroupIQHandler {
     private IQ createReply(IQ packet, JID jid, GroupInfo groupInfo) {
         packet = IQ.createResultIQ(packet);
         DataForm form = new DataForm(DataForm.Type.result);
-        form.addField("id", null, null).addValue(groupInfo.getId());
         form.addField("jid", null, null).addValue(jid.toString());
         form.addField("owner", null, null).addValue(groupInfo.getOwner());
         form.addField("name", null, null).addValue(groupInfo.getName());
-        form.addField("num_members", null, null).addValue(groupInfo.getNumberOfMembers());
+        form.addField("logo", null, null).addValue(groupInfo.getLogo());
+        form.addField("memberCount", null, null).addValue(groupInfo.getNumberOfMembers());
         form.addField("subject", null, null).addValue(groupInfo.getSubject());
         form.addField("description", null, null).addValue(groupInfo.getDescription());
         form.addField("openness", null, null).addValue(groupInfo.getOpennessType());
