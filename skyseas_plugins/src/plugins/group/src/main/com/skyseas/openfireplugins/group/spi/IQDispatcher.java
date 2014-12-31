@@ -181,7 +181,8 @@ final class IQDispatcher implements GroupIQDispatcher {
     }
 
     private IQHandler getQueryHandler(IQ packet, Element extElement) {
-        StringPair key = new StringPair(extElement.getNamespaceURI(),
+        StringPair key = new StringPair(
+                extElement.getNamespaceURI(),
                 extElement.attributeValue("node"));
         return queryHandlers.get(key);
     }

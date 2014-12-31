@@ -105,15 +105,12 @@ public final class GroupServiceImpl implements GroupService, Component {
          * 否则就地处理。
          */
         if (!StringUtils.isNullOrEmpty(to.getNode())) {
-            processPacket(to.getNode(), packet);
+            processGroupPacket(to.getNode(), packet);
         } else {
-            if (packet instanceof IQ) {
-                iqDispatcher.dispatch((IQ) packet);
-            } else {
-                replyError(packet, PacketError.Condition.not_acceptable);
-            }
+            processServicePacket(packet);
         }
     }
+
 
     private void replyError(Packet packet, PacketError.Condition condition) {
         Packet reply;
@@ -130,12 +127,20 @@ public final class GroupServiceImpl implements GroupService, Component {
         routePacket(reply);
     }
 
-    private void processPacket(String groupId, Packet packet) {
+    private void processGroupPacket(String groupId, Packet packet) {
         Group group = groupManager.getGroup(groupId);
         if (group != null) {
             group.send(packet);
         } else {
             replyError(packet, PacketError.Condition.item_not_found);
+        }
+    }
+
+    private void processServicePacket(Packet packet) {
+        if (packet instanceof IQ) {
+            iqDispatcher.dispatch((IQ) packet);
+        } else {
+            replyError(packet, PacketError.Condition.not_acceptable);
         }
     }
 
