@@ -116,6 +116,7 @@
 				<field var='openness'/>
 				<field var='owner'/>
 		        <field var='name'/>
+		        <field var='logo'/>
 		        <field var='memberCount' />
 		        <field var='subject'/>
 	      	</reported>
@@ -124,6 +125,7 @@
 				<field var='openness'> <value>PUBLIC</value> </field>
 				<field var='owner'> <value>admin</value> </field>
 		        <field var='name'> <value>一起狂欢</value> </field>
+		        <field var='logo'> <value>test.jpg</value> </field>
 		        <field var='memberCount'> <value>100</value> </field>
 		        <field var='subject'> <value>开心不开心的请跟我来！</value> </field>
 		    </item>
@@ -135,6 +137,7 @@
 		    	<field var='openness'> <value>AFFIRM_REQUIRED</value> </field>
 				<field var='owner'> <value>admin</value> </field>
 		        <field var='name'> <value>80后交友</value> </field>
+		        <field var='logo'> <value>test2.jpg</value> </field>
 		        <field var='memberCount'> <value>70</value> </field>
 		        <field var='subject'> <value>80后的伙伴们，一起hi吧！</value> </field>
 		    </item>
