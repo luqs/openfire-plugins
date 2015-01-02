@@ -71,7 +71,7 @@ public class GroupImplTest extends TestCase {
         };
 
         // Act
-        group.updateGroupInfo(updater);
+        group.updateGroupInfo(userJid, updater);
 
         // Assert
         assertFalse(group.getGroupInfo() == updater);
@@ -111,7 +111,7 @@ public class GroupImplTest extends TestCase {
                 times = 1;
             }
         };
-        group.updateGroupInfo(updater);
+        group.updateGroupInfo(userJid, updater);
 
         // Act
         group.applyJoin(userJid, nickName, reason);

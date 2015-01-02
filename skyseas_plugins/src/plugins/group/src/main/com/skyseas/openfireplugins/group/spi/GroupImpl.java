@@ -74,11 +74,13 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
 
     /**
      * 更新圈子信息。
+     *
+     * @param operator
      * @param groupInfo
      * @return
      */
     @Override
-    public boolean updateGroupInfo(GroupInfo groupInfo) {
+    public boolean updateGroupInfo(JID operator, GroupInfo groupInfo) {
         assert groupInfo != null;
 
         if (!persistenceUpdate(groupInfo)) {
@@ -89,7 +91,7 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
         combineUpdate(groupInfo);
 
         /* 触发圈子修改 */
-        GroupEventDispatcher.fireGroupInfoChanged(this);
+        GroupEventDispatcher.fireGroupInfoChanged(this, operator);
         return true;
     }
 

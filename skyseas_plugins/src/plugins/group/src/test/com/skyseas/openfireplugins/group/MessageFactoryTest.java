@@ -16,10 +16,10 @@ public class MessageFactoryTest extends TestCase {
 
     public void testNewInstanceForMemberJoined() {
         // Act
-        Message msg = MessageFactory.newInstanceForMemberJoined(userName, nickName);
+        Message msg = MessageFactory.newInstanceForMemberJoin(userName, nickName);
 
         // Assert
-        assertEquals("<message type=\"headline\">\n" +
+        assertEquals("<message>\n" +
                         "  <x xmlns=\"http://skysea.com/protocol/group#member\">\n" +
                         "    <join>\n" +
                         "      <member username=\"user\" nickname=\"碧眼狐狸\"/>\n" +
@@ -30,9 +30,9 @@ public class MessageFactoryTest extends TestCase {
     }
 
 
-    public void  testNewInstanceForGroupDestroyed() {
+    public void testNewInstanceForGroupDestroyed() {
         // Act
-        Message msg = MessageFactory.newInstanceForGroupDestroyed(ownerJid, "再见了各位！");
+        Message msg = MessageFactory.newInstanceForGroupDestroy(ownerJid, "再见了各位！");
 
         // Assert
         assertEquals("<message>\n" +
@@ -40,6 +40,19 @@ public class MessageFactoryTest extends TestCase {
                         "    <destroy from=\"owner@skysea.com\">\n" +
                         "      <reason>再见了各位！</reason>\n" +
                         "    </destroy>\n" +
+                        "  </x>\n" +
+                        "</message>",
+                msg.toString().trim());
+    }
+
+    public void testNewInstanceForGroupChanged() {
+        // Act
+        Message msg = MessageFactory.newInstanceForGroupInfoChange(ownerJid);
+
+        // Assert
+        assertEquals("<message>\n" +
+                        "  <x xmlns=\"http://skysea.com/protocol/group\">\n" +
+                        "    <change from=\"owner@skysea.com\"/>\n" +
                         "  </x>\n" +
                         "</message>",
                 msg.toString().trim());
@@ -53,7 +66,7 @@ public class MessageFactoryTest extends TestCase {
                 "大家太吵了，不好意思，我退了先！");
 
         // Assert
-        assertEquals("<message type=\"headline\">\n" +
+        assertEquals("<message>\n" +
                         "  <x xmlns=\"http://skysea.com/protocol/group#member\">\n" +
                         "    <exit>\n" +
                         "      <member username=\"user\" nickname=\"碧眼狐狸\"/>\n" +
@@ -73,7 +86,7 @@ public class MessageFactoryTest extends TestCase {
                 "抱歉！你总是发送广告信息。");
 
         // Assert
-        assertEquals("<message type=\"headline\">\n" +
+        assertEquals("<message>\n" +
                         "  <x xmlns=\"http://skysea.com/protocol/group#member\">\n" +
                         "    <kick from=\"owner@skysea.com\">\n" +
                         "      <member username=\"user\" nickname=\"碧眼狐狸\"/>\n" +
@@ -100,10 +113,10 @@ public class MessageFactoryTest extends TestCase {
 
     public void testNewInstanceForMemberUpdateProfile() {
         // Act
-        Message msg = MessageFactory.newInstanceForMemberUpdateProfile("user","碧眼狐狸", "金轮法王");
+        Message msg = MessageFactory.newInstanceForMemberUpdateProfile("user", "碧眼狐狸", "金轮法王");
 
         // Assert
-        assertEquals("<message type=\"headline\">\n" +
+        assertEquals("<message>\n" +
                         "  <x xmlns=\"http://skysea.com/protocol/group#member\">\n" +
                         "    <profile>\n" +
                         "      <member username=\"user\" nickname=\"碧眼狐狸\"/>\n" +
@@ -113,5 +126,6 @@ public class MessageFactoryTest extends TestCase {
                         "</message>",
                 msg.toString().trim());
     }
+
 
 }

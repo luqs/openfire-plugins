@@ -59,5 +59,5 @@ public interface GroupEventListener {
      * 当圈子信息已更新。
      * @param group
      */
-    void groupInfoChanged(Group group);
+    void groupInfoChanged(Group group, JID from);
 }

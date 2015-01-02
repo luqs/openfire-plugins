@@ -1,8 +1,6 @@
 package com.skyseas.openfireplugins.group.spi;
 
-import com.skyseas.openfireplugins.group.ChatUser;
 import com.skyseas.openfireplugins.group.Group;
-import com.skyseas.openfireplugins.group.iq.group.MockChatUser;
 import junit.framework.TestCase;
 import mockit.Delegate;
 import mockit.Mocked;
@@ -26,7 +24,7 @@ public class GroupEventBroadcastListenerTest extends TestCase {
 
                     public void validate(Packet packet) {
                         assertEquals(
-                                "<message type=\"headline\">" +
+                                "<message>" +
                                         "<x xmlns=\"http://skysea.com/protocol/group#member\"><exit>" +
                                         "<member username=\"user\" nickname=\"碧眼狐狸\"/>" +
                                 "<reason>reason</reason></exit></x></message>", packet.toXML().trim());
@@ -47,7 +45,7 @@ public class GroupEventBroadcastListenerTest extends TestCase {
                 group.broadcast(with(new Delegate<Packet>() {
                     public void validate(Packet packet) {
                         assertEquals(
-                                "<message type=\"headline\">" +
+                                "<message>" +
                                         "<x xmlns=\"http://skysea.com/protocol/group#member\"><join>" +
                                         "<member username=\"user\" nickname=\"碧眼狐狸\"/>" +
                                         "</join></x></message>", packet.toXML().trim());
@@ -69,7 +67,7 @@ public class GroupEventBroadcastListenerTest extends TestCase {
 
                     public void validate(Packet packet) {
                         assertEquals(
-                                "<message type=\"headline\">" +
+                                "<message>" +
                                         "<x xmlns=\"http://skysea.com/protocol/group#member\">" +
                                         "<kick from=\"owner@skysea.com\">" +
                                         "<member username=\"user\" nickname=\"碧眼狐狸\"/>" +
@@ -106,7 +104,7 @@ public class GroupEventBroadcastListenerTest extends TestCase {
                 group.broadcast(with(new Delegate<Packet>() {
                     public void validate(Packet packet) {
                         assertEquals(
-                                "<message type=\"headline\">" +
+                                "<message>" +
                                         "<x xmlns=\"http://skysea.com/protocol/group#member\">" +
                                         "<profile>" +
                                         "<member username=\"user\" nickname=\"old\"/>" +
@@ -139,7 +137,27 @@ public class GroupEventBroadcastListenerTest extends TestCase {
                 times = 1;
             }
         };
+    }
 
+    public void testGroupChanged() throws Exception {
+
+        // Act
+        GroupEventBroadcastListener.INSTANCE.groupInfoChanged(group, new JID("owner@skysea.com"));
+
+        // Assert
+        new Verifications(){
+            {
+                group.broadcast(with(new Delegate<Packet>() {
+                    public void validate(Packet packet) {
+                        assertEquals(
+                                "<message><x xmlns=\"http://skysea.com/protocol/group\">" +
+                                        "<change from=\"owner@skysea.com\"/>" +
+                                        "</x></message>", packet.toXML().trim());
+                    }
+                }));
+                times = 1;
+            }
+        };
     }
 
 

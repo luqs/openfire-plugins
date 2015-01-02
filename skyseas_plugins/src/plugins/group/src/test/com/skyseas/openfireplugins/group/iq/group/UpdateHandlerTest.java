@@ -1,14 +1,11 @@
 package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.GroupInfo;
-import com.skyseas.openfireplugins.group.NoPermissionException;
-import com.skyseas.openfireplugins.group.iq.IQContext;
 import com.skyseas.openfireplugins.group.iq.IQHandlerTest;
 import mockit.Delegate;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
 import org.xmpp.packet.IQ;
-import org.xmpp.packet.JID;
 import org.xmpp.packet.Packet;
 
 public class UpdateHandlerTest extends IQHandlerTest<UpdateHandler> {
@@ -51,7 +48,7 @@ public class UpdateHandlerTest extends IQHandlerTest<UpdateHandler> {
         //Arrange
         new NonStrictExpectations(){
             {
-                group.updateGroupInfo(with(new Delegate<GroupInfo>() {
+                group.updateGroupInfo(packet.getFrom(), with(new Delegate<GroupInfo>() {
                     public void validate(GroupInfo groupInfo) {
                         //assertEquals(0, groupInfo.getId());
                         assertEquals("圈子名称", groupInfo.getName());

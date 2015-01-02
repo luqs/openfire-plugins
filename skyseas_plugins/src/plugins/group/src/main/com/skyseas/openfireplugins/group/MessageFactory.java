@@ -10,14 +10,15 @@ import org.xmpp.packet.Message;
 */
 public class MessageFactory {
 
-    public static Message newInstanceForMemberJoined(String userName, String nickname) {
+    public static Message newInstanceForMemberJoin(String userName, String nickname) {
        return new MessageBuilder(ActionType.JOIN)
                 .setUserName(userName)
                 .setNickName(nickname)
                 .build();
     }
 
-    public static Message newInstanceForGroupDestroyed(JID operator, String reason) {
+
+    public static Message newInstanceForGroupDestroy(JID operator, String reason) {
         return new MessageBuilder(ActionType.DESTROY)
                 .setReason(reason)
                 .setOperatorFrom(operator.asBareJID())
@@ -63,9 +64,16 @@ public class MessageFactory {
         return msg;
     }
 
+    public static Message newInstanceForGroupInfoChange(JID ownerJid) {
+        return new MessageBuilder(ActionType.CHANGE)
+                .setOperatorFrom(ownerJid)
+                .setNamespace(IQHandler.GROUP_NAMESPACE)
+                .build();
+    }
+
 
     private enum ActionType{
-        JOIN("join"), EXIT("exit"), KICK("kick"),DESTROY("destroy"), PROFILE("profile"), MESSAGE("");
+        JOIN("join"), EXIT("exit"), KICK("kick"),DESTROY("destroy"), PROFILE("profile"), CHANGE("change"), MESSAGE("");
 
         private final String eleName;
         ActionType(String eleName) {
@@ -166,11 +174,8 @@ public class MessageFactory {
                 extElement.addElement("reason").setText(reason);
             }
 
-            if(type == ActionType.DESTROY) {
-            }else if(type == ActionType.MESSAGE) {
+            if(type == ActionType.MESSAGE) {
                 msg.setType(Message.Type.groupchat);
-            }else {
-                msg.setType(Message.Type.headline);
             }
 
             return msg;

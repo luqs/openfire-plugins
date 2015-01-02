@@ -20,7 +20,7 @@ public class UpdateHandler extends OwnerIQHandler {
         assert group != null;
 
         GroupInfo updateInfo = GroupInfoPacket.getGroupInfo(packet);
-        if (group.updateGroupInfo(updateInfo)) {
+        if (group.updateGroupInfo(packet.getFrom(), updateInfo)) {
             replyOK(packet);
         } else {
             replyError(packet, PacketError.Condition.internal_server_error);

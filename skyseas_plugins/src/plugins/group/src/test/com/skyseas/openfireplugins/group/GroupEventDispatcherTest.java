@@ -148,13 +148,13 @@ public class GroupEventDispatcherTest extends TestCase {
         for (final GroupEventListener listener : listeners) {
             new NonStrictExpectations() {
                 {
-                    listener.groupInfoChanged(group);
+                    listener.groupInfoChanged(group,from );
                     times = 1;
                 }
             };
         }
 
         // Act
-        GroupEventDispatcher.fireGroupInfoChanged(group);
+        GroupEventDispatcher.fireGroupInfoChanged(group, from);
     }
 }

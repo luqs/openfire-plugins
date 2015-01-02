@@ -27,7 +27,7 @@ public interface Group extends MultiUserChat {
     /**
      * 更新圈子描述
      */
-    boolean updateGroupInfo(GroupInfo groupInfo);
+    boolean updateGroupInfo(JID operator, GroupInfo groupInfo);
 
     /**
      * 申请加入圈子。

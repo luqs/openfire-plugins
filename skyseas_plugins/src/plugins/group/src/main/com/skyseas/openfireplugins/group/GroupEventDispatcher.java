@@ -51,9 +51,9 @@ public final class GroupEventDispatcher {
         }
     }
 
-    public static void fireGroupInfoChanged(Group group) {
+    public static void fireGroupInfoChanged(Group group,  JID from) {
         for (GroupEventListener listener : listeners) {
-            listener.groupInfoChanged(group);
+            listener.groupInfoChanged(group, from);
         }
     }
 

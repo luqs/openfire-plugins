@@ -490,6 +490,8 @@
   <x xmlns='http://skysea.com/protocol/group#member'>
   	<invite>
   		<member username='user100' nickname='独孤求败' />
+  		<member username='user101' nickname='东邪' />
+  		<member username='user102' nickname='西毒' />
   	</invite>
   </x>
 </iq>
@@ -499,6 +501,33 @@
 
 ```
 <iq from='100@group.skysea.com' to='user@skysea.com' id='v8' type='result' />
+```
+
+#### 例子3.所有圈子成员收到用户被邀请的广播
+
+```
+<message from='100@group.skysea.com' to='user1@skysea.com'>
+  <x xmlns='http://skysea.com/protocol/group#member'>
+  	<invite from='user@skysea.com'>
+  		<member username='user100' nickname='独孤求败' />
+  		<member username='user101' nickname='雁过留声' />
+  		<member username='user102' nickname='圆月弯刀' />
+  	</invite>
+  </x>
+</message>
+
+...
+
+<message from='100@group.skysea.com' to='user10@skysea.com'>
+  <x xmlns='http://skysea.com/protocol/group#member'>
+  	<invite from='user@skysea.com'>
+  		<member username='user100' nickname='独孤求败' />
+  		<member username='user101' nickname='雁过留声' />
+  		<member username='user102' nickname='圆月弯刀' />
+  	</invite>
+  </x>
+</message>
+
 ```
 
 ### 退出圈子
@@ -648,6 +677,25 @@ PRIVATE         | 私有
 ```
 <iq from='100@group.skysea.com' to='user@skysea.com' id='v11' type='result'>
 </iq>
+```
+
+#### 例子3.圈子成员收到圈子信息被修改的广播
+
+```
+<message from='100@group.skysea.com' to='user1@skysea.com'>
+  <x xmlns='http://skysea.com/protocol/group'>
+  	<change from='user@skysea.com' />
+  </x>
+</message>
+
+...
+
+<message from='100@group.skysea.com' to='user10@skysea.com'>
+  <x xmlns='http://skysea.com/protocol/group'>
+  	<change from='user@skysea.com' />
+  </x>
+</message>
+
 ```
 
 

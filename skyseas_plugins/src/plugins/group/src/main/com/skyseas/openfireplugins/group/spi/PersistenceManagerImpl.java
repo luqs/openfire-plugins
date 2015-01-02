@@ -555,9 +555,10 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
             groupInfo.setId(rs.getInt(1));
             groupInfo.setOwner(rs.getString(2));
             groupInfo.setName(rs.getString(3));
-            groupInfo.setNumberOfMembers(rs.getInt(4));
-            groupInfo.setSubject(rs.getString(5));
-            groupInfo.setOpennessType(GroupInfo.OpennessType.values()[rs.getInt(6)]);
+            groupInfo.setLogo(rs.getString(4));
+            groupInfo.setNumberOfMembers(rs.getInt(5));
+            groupInfo.setSubject(rs.getString(6));
+            groupInfo.setOpennessType(GroupInfo.OpennessType.values()[rs.getInt(7)]);
             list.add(groupInfo);
         }
         return list;

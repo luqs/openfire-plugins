@@ -14,7 +14,7 @@ public final class GroupEventBroadcastListener implements GroupEventListener {
 
     @Override
     public void userJoined(Group group, ChatUser user) {
-        Message msg = MessageFactory.newInstanceForMemberJoined(user.getUserName(), user.getNickname());
+        Message msg = MessageFactory.newInstanceForMemberJoin(user.getUserName(), user.getNickname());
         group.broadcast(msg);
     }
 
@@ -44,7 +44,7 @@ public final class GroupEventBroadcastListener implements GroupEventListener {
 
     @Override
     public void groupDestroyed(Group group, JID from, String reason) {
-        Message msg = MessageFactory.newInstanceForGroupDestroyed(from, reason);
+        Message msg = MessageFactory.newInstanceForGroupDestroy(from, reason);
         group.broadcast(msg);
     }
 
@@ -55,7 +55,8 @@ public final class GroupEventBroadcastListener implements GroupEventListener {
 
 
     @Override
-    public void groupInfoChanged(Group group) {
-
+    public void groupInfoChanged(Group group, JID from) {
+        Message msg = MessageFactory.newInstanceForGroupInfoChange(from);
+        group.broadcast(msg);
     }
 }
