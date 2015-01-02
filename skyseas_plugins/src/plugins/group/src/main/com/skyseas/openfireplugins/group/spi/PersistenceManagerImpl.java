@@ -307,22 +307,21 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
     }
 
     @Override
-    public boolean addMember(int groupId, String userName, String nickName) throws PersistenceException {
-        Connection          con = null;
-        PreparedStatement   pstmt = null;
-        boolean success = false;
+    public boolean addMembers(int groupId, List<GroupMemberInfo> members) throws PersistenceException{
+        Connection          con     = null;
+        PreparedStatement   pstmt   = null;
+        boolean success             = false;
 
         try {
             con = DbConnectionManager.getConnection();
             con.setAutoCommit(false);
 
-            pstmt = con.prepareStatement(INSERT_GROUP_MEMBER);
-            pstmt.setInt(           1, groupId);
-            pstmt.setString(        2, userName);
-            pstmt.setString(        3, nickName);
-            pstmt.setTimestamp(     4, new Timestamp(new java.util.Date().getTime()));
-            success = pstmt.executeUpdate() > 0 && updateNumOfMembers(con, groupId, 1);
-
+            for(GroupMemberInfo member : members) {
+                if(!addMember(con, groupId, member)) {
+                    return false;
+                }
+            }
+            success = updateNumOfMembers(con, groupId, members.size());
         } catch (SQLException e) {
             LOG.error("添加圈子成员到数据库失败", e);
             throw new PersistenceException(e);
@@ -347,6 +346,15 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
         }
 
         return success;
+    }
+
+    private boolean addMember(Connection con, int groupId, GroupMemberInfo memberInfo) throws SQLException{
+        PreparedStatement   pstmt = con.prepareStatement(INSERT_GROUP_MEMBER);
+        pstmt.setInt(           1, groupId);
+        pstmt.setString(        2, memberInfo.getUserName());
+        pstmt.setString(        3, memberInfo.getNickName());
+        pstmt.setTimestamp(     4, new Timestamp(new java.util.Date().getTime()));
+        return pstmt.executeUpdate() > 0;
     }
 
     private boolean updateNumOfMembers(Connection con, int groupId, int num) {

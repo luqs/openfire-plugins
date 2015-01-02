@@ -12,6 +12,13 @@ public class GroupMemberInfo {
     private String nickName;
     private Date joinTime;
 
+    public GroupMemberInfo(){}
+
+    public GroupMemberInfo(String userName, String nickName) {
+        this.userName = userName;
+        this.nickName = nickName;
+    }
+
     public int getId() {
         return id;
     }

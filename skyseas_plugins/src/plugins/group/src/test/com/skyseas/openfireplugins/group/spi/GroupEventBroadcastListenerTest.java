@@ -18,6 +18,7 @@ public class GroupEventBroadcastListenerTest extends TestCase {
         GroupEventBroadcastListener.INSTANCE.userExited(group, user, "reason");
 
         // Assert
+        Thread.sleep(100);
         new Verifications(){
             {
                 group.broadcast(with(new Delegate<Packet>() {
@@ -40,6 +41,7 @@ public class GroupEventBroadcastListenerTest extends TestCase {
         GroupEventBroadcastListener.INSTANCE.userJoined(group, user);
 
         // Assert
+        Thread.sleep(100);
         new Verifications(){
             {
                 group.broadcast(with(new Delegate<Packet>() {
@@ -61,6 +63,7 @@ public class GroupEventBroadcastListenerTest extends TestCase {
         GroupEventBroadcastListener.INSTANCE.userKicked(group, user, new JID("owner@skysea.com"), "reason");
 
         // Assert
+        Thread.sleep(100);
         new Verifications(){
             {
                 group.broadcast(with(new Delegate<Packet>() {
@@ -99,6 +102,7 @@ public class GroupEventBroadcastListenerTest extends TestCase {
         GroupEventBroadcastListener.INSTANCE.userNicknameChanged(group, user, "old");
 
         // Assert
+        Thread.sleep(100);
         new Verifications(){
             {
                 group.broadcast(with(new Delegate<Packet>() {
@@ -123,6 +127,7 @@ public class GroupEventBroadcastListenerTest extends TestCase {
         GroupEventBroadcastListener.INSTANCE.groupDestroyed(group, new JID("owner@skysea.com"), "reason");
 
         // Assert
+        Thread.sleep(100);
         new Verifications(){
             {
                 group.broadcast(with(new Delegate<Packet>() {
@@ -145,6 +150,7 @@ public class GroupEventBroadcastListenerTest extends TestCase {
         GroupEventBroadcastListener.INSTANCE.groupInfoChanged(group, new JID("owner@skysea.com"));
 
         // Assert
+        Thread.sleep(100);
         new Verifications(){
             {
                 group.broadcast(with(new Delegate<Packet>() {

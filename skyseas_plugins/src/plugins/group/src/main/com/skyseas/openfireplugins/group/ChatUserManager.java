@@ -3,6 +3,7 @@ package com.skyseas.openfireplugins.group;
 import org.xmpp.packet.JID;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by apple on 14-9-13.
@@ -57,6 +58,14 @@ public interface ChatUserManager {
      * @param nickname
      */
     ChatUser addUser(String userName, String nickname) throws FullMemberException;
+
+    /**
+     * 批量添加用户。
+     * @param memberInfoList
+     * @return
+     * @throws FullMemberException
+     */
+    List<ChatUser> addUsers(List<GroupMemberInfo> memberInfoList) throws FullMemberException;
 
     /**
      * 删除用户。

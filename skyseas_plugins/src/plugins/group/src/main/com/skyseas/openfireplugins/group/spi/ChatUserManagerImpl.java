@@ -5,9 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.packet.JID;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -111,25 +109,62 @@ final class ChatUserManagerImpl implements ChatUserManager {
         assert userName != null && userName.length() > 0;
         assert nickname != null && nickname.length() > 0;
 
-        ChatUser user = getUser(userName);
-        if (user != null) {
-            return user;
-        }
+        GroupMemberInfo memberInfo = new GroupMemberInfo();
+        memberInfo.setUserName(userName);
+        memberInfo.setNickName(nickname);
+
+        addUsers(Arrays.asList(memberInfo));
+        return getUser(userName);
+    }
+
+    /**
+     * 批量添加聊天用户。
+     *
+     * @param memberInfoList
+     * @return 实际添加的用户。
+     * @throws FullMemberException
+     */
+    @Override
+    public List<ChatUser> addUsers(List<GroupMemberInfo> memberInfoList) throws FullMemberException {
+        assert memberInfoList != null && memberInfoList.size() > 0;
+
+        ArrayList<ChatUser> newUsers = new ArrayList<ChatUser>(memberInfoList.size());
+        ArrayList<GroupMemberInfo> newMembers = new ArrayList<GroupMemberInfo>(memberInfoList.size());
 
         synchronized (this) {
-            checkNumOfUsers();
-            if (saveUser(userName, nickname)) {
-                user = addUserInternal(userName, nickname);
-                fireNumberOfUserChanged();
+
+            /* 排除已经存在的用户 */
+            for (GroupMemberInfo memberInfo : memberInfoList) {
+                if (!hasUser(memberInfo.getUserName())) {
+                    newMembers.add(memberInfo);
+                }
+            }
+
+            if (newMembers.size() > 0) {
+            /* 检测圈子人数限制，并将成员列表添加到圈子 */
+                checkNumOfUsers(newMembers.size());
+                if (saveUsers(newMembers)) {
+                    for (GroupMemberInfo memberInfo : newMembers) {
+                        newUsers.add(addUserInternal(
+                                memberInfo.getUserName(),
+                                memberInfo.getNickName()));
+                    }
+                }else {
+                    throw new RuntimeException("add users fail.");
+                }
             }
         }
 
-        if(user != null) {
+        if (newUsers.size() > 0) {
+            fireNumberOfUserChanged();
+
             /* 触发用户加入圈子事件 */
-            GroupEventDispatcher.fireUserJoined(group, user);
+            for (ChatUser user : newUsers) {
+                GroupEventDispatcher.fireUserJoined(group, user);
+            }
         }
 
-        return user;
+        return newUsers;
     }
 
     /**
@@ -194,8 +229,8 @@ final class ChatUserManagerImpl implements ChatUserManager {
         }
     }
 
-    private void checkNumOfUsers() throws FullMemberException {
-        if (users.size() >= MAX_USERS) {
+    private void checkNumOfUsers(int num) throws FullMemberException {
+        if ((MAX_USERS - users.size()) < num) {
             throw new FullMemberException(String.format("MAX_USERS:%d, now:%d.", MAX_USERS, users.size()));
         }
     }
@@ -229,16 +264,22 @@ final class ChatUserManagerImpl implements ChatUserManager {
         }
     }
 
+    private boolean saveUser(String userName, String nickName) {
+        GroupMemberInfo memberInfo = new GroupMemberInfo();
+        memberInfo.setUserName(userName);
+        memberInfo.setNickName(nickName);
+        return saveUsers(Arrays.asList(memberInfo));
+    }
+
     /**
      * 保存用户到持久化层。
      *
-     * @param userName
-     * @param nickname
+     * @param users
      * @return
      */
-    private boolean saveUser(String userName, String nickname) {
+    private boolean saveUsers(List<GroupMemberInfo> users) {
         try {
-            return memberPersistenceMgr.addMember(groupId, userName, nickname);
+            return memberPersistenceMgr.addMembers(groupId, users);
         } catch (PersistenceException e) {
             LOG.error("保存聊天用户失败。", e);
             return false;

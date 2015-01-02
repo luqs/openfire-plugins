@@ -490,8 +490,8 @@
   <x xmlns='http://skysea.com/protocol/group#member'>
   	<invite>
   		<member username='user100' nickname='独孤求败' />
-  		<member username='user101' nickname='东邪' />
-  		<member username='user102' nickname='西毒' />
+  		<member username='user101' nickname='雁过留声' />
+  		<member username='user102' nickname='圆月弯刀' />
   	</invite>
   </x>
 </iq>

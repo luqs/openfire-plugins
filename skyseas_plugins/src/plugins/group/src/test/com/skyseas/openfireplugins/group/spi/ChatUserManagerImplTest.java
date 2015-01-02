@@ -8,6 +8,7 @@ import mockit.NonStrictExpectations;
 import org.xmpp.packet.JID;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ChatUserManagerImplTest extends TestCase {
@@ -58,7 +59,13 @@ public class ChatUserManagerImplTest extends TestCase {
         final String nickname = "大海故乡";
         new NonStrictExpectations(GroupEventDispatcher.class) {
             {
-                persistenceManager.addMember(groupId, userName, nickname);
+                persistenceManager.addMembers(groupId, with(new Delegate<List<GroupMemberInfo>>() {
+                    public void validate(List<GroupMemberInfo> members) {
+                        assertEquals(1, members.size());
+                        assertEquals(userName, members.get(0).getUserName());
+                        assertEquals(nickname, members.get(0).getNickName());
+                    }
+                }));
                 result = true;
                 times = 1;
 
@@ -84,6 +91,35 @@ public class ChatUserManagerImplTest extends TestCase {
         assertEquals(user, manager.getUser(userName));
         assertUserInManager(userName, nickname);
         assertEquals(2, manager.getUsers().size());
+    }
+
+    public void testAddUsers() throws Exception {
+        // Arrange
+        final GroupMemberInfo memberInfo1 = new GroupMemberInfo("user1", "nick1");
+        final GroupMemberInfo memberInfo2 = new GroupMemberInfo("user2", "nick2");
+        List<GroupMemberInfo> memberInfos = Arrays.asList(memberInfo1, memberInfo2);
+        new NonStrictExpectations(GroupEventDispatcher.class) {
+            {
+                persistenceManager.addMembers(groupId, with(new Delegate<List<GroupMemberInfo>>() {
+                    public void validate(List<GroupMemberInfo> members) {
+                        assertTrue(members.contains(memberInfo1));
+                        assertTrue(members.contains(memberInfo2));
+                    }
+                }));
+                result = true;
+                times = 1;
+
+                GroupEventDispatcher.fireUserJoined(group, (ChatUser)any);
+                times = 2;
+            }
+        };
+
+        // Act
+        assertEquals(2, manager.addUsers(memberInfos).size());
+
+        // Assert
+        assertNotNull(manager.getUser(memberInfo1.getUserName()));
+        assertNotNull(manager.getUser(memberInfo2.getUserName()));
     }
 
     public void testRemoveUser() throws Exception {
@@ -171,7 +207,7 @@ public class ChatUserManagerImplTest extends TestCase {
         ChatUser user = manager.getUser(userName);
         assertEquals(userName, user.getUserName());
         assertEquals(nickName, user.getNickname());
-        assertEquals(new JID(userName + "@" + xmppDomain), ((ChatUserImpl)user).getJid());
+        assertEquals(new JID(userName + "@" + xmppDomain), ((ChatUserImpl) user).getJid());
 
         boolean found = false;
         for (ChatUser u : manager.getUsers()) {

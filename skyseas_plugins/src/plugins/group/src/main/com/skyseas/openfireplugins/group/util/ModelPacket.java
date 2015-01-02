@@ -34,6 +34,10 @@ public abstract class ModelPacket {
         return ele.getStringValue();
     }
 
+    public Element getModeElement() {
+        return modeElement;
+    }
+
     public Element getExtensionRoot(){
         return extensionRoot;
     }

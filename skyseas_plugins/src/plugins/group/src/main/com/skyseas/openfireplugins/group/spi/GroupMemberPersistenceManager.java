@@ -21,22 +21,22 @@ interface GroupMemberPersistenceManager {
     boolean changeGroupProfile(int id, String userName, String nickname)throws PersistenceException;
 
     /**
-     * 添加圈子成员。
+     * 添加一系列圈子成员。
      * @param groupId
-     * @param userName
-     * @param nickName
+     * @param members
      * @return
      * @throws PersistenceException
      */
-    boolean addMember(int groupId, String userName, String nickName) throws PersistenceException;
+    boolean addMembers(int groupId, List<GroupMemberInfo> members) throws PersistenceException;
 
-    /**
-     * 删除圈子成员。
-     * @param groupId
-     * @param userName
-     * @return
-     * @throws PersistenceException
-     */
+
+        /**
+         * 删除圈子成员。
+         * @param groupId
+         * @param userName
+         * @return
+         * @throws PersistenceException
+         */
     boolean removeMember(int groupId, String userName) throws PersistenceException;
 
     /**

@@ -6,6 +6,8 @@ import mockit.*;
 import org.jivesoftware.openfire.PacketRouter;
 import org.xmpp.packet.*;
 
+import java.util.List;
+
 public class GroupImplTest extends TestCase {
     private JID userJid = new JID("user@skyaea.com");
     private JID groupJid = new JID("100@group.skysea.com");
@@ -39,7 +41,7 @@ public class GroupImplTest extends TestCase {
 
         new NonStrictExpectations() {
             {
-                groupMemberPersistenceManager.addMember(groupInfo.getId(), anyString, anyString);
+                groupMemberPersistenceManager.addMembers(groupInfo.getId(), (List<GroupMemberInfo>)any);
                 result = true;
             }
         };
