@@ -173,6 +173,8 @@ final class GroupImpl extends AbstractMultiUserChat implements Group, NumberOfUs
      */
     @Override
     public boolean destroy(JID operator, String reason) {
+        /* 触发聊天用户管理器初始化 */
+        getChatUserManager();
         if(persistenceDestroy()) {
             GroupEventDispatcher.fireGroupDestroyed(this, operator, reason);
             return true;

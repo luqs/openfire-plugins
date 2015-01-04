@@ -44,8 +44,8 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
             "SELECT id, name,owner,category,logo,description,openness,createTime,subject,numberOfMembers " +
              "FROM `sky_Group` WHERE id = ?";
 
-    private final static String SELECT_MEMBER_ALL_GROUPS =
-            "SELECT  `id`,`owner`,`name`,`numberOfMembers`,`subject`, `openness` " +
+    private final static String SELECT_GROUPS_BY_MEMBER =
+            "SELECT  `id`,`owner`,`name`,`logo`,`numberOfMembers`,`subject`, `openness` " +
                     "FROM `sky_Group` WHERE ID IN(SELECT `groupid` FROM sky_GroupMembers WHERE `userName` = ?)";
 
     private final static String SELECT_GROUP_ALL_MEMBERS =
@@ -179,7 +179,7 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
 
         try {
             con = DbConnectionManager.getConnection();
-            pstmt = con.prepareStatement(SELECT_MEMBER_ALL_GROUPS);
+            pstmt = con.prepareStatement(SELECT_GROUPS_BY_MEMBER);
 
             pstmt.setString(1, userName);
             rs = pstmt.executeQuery();
