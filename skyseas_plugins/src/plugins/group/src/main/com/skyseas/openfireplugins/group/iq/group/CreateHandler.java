@@ -38,6 +38,9 @@ public class CreateHandler extends ServiceIQHandler {
 
     private GroupInfo getGroupInfo(IQ packet) {
         GroupInfo groupInfo = GroupInfoPacket.getGroupInfo(packet);
+        if(groupInfo.getOpennessType() == null) {
+            groupInfo.setOpennessType(GroupInfo.OpennessType.PUBLIC);
+        }
         groupInfo.setOwner(packet.getFrom().getNode());
         groupInfo.setCreateTime(new Date());
         return groupInfo;

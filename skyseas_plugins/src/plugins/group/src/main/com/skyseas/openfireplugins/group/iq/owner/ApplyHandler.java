@@ -5,6 +5,7 @@ import com.skyseas.openfireplugins.group.Group;
 import com.skyseas.openfireplugins.group.iq.IQHandler;
 import com.skyseas.openfireplugins.group.iq.OwnerIQHandler;
 import com.skyseas.openfireplugins.group.iq.XHandler;
+import com.skyseas.openfireplugins.group.util.StringUtils;
 import org.xmpp.packet.IQ;
 import org.xmpp.packet.Message;
 import org.xmpp.packet.PacketError;
@@ -55,7 +56,9 @@ public class ApplyHandler extends OwnerIQHandler {
             try {
                 group.getChatUserManager().addUser(
                         appPacket.getUserName(),
-                        appPacket.getNickname());
+                        StringUtils.ifNullReturnDefaultValue(
+                                appPacket.getNickname(),
+                                appPacket.getUserName()));
                 return true;
             } catch (FullMemberException e) {
                 exp = e;

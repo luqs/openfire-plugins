@@ -27,8 +27,6 @@ final class GroupInfoPacket {
         String opennessValue = form.getFirstValue("openness");
         if (opennessValue != null) {
             groupInfo.setOpennessType(GroupInfo.OpennessType.valueOf(opennessValue));
-        } else {
-            groupInfo.setOpennessType(GroupInfo.OpennessType.PUBLIC);
         }
         return groupInfo;
     }

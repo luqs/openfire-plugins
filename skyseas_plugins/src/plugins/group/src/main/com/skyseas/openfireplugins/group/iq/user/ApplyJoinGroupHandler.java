@@ -22,30 +22,29 @@ public class ApplyJoinGroupHandler extends GroupIQHandler {
         assert group != null;
 
         String userName = packet.getFrom().getNode();
-        if(StringUtils.isNullOrEmpty(userName)){
+        if (StringUtils.isNullOrEmpty(userName)) {
             replyError(packet, PacketError.Condition.bad_request);
             return;
         }
 
-        /* 已经是圈子成员 */
-        if(group.getChatUserManager().hasUser(userName)) {
+        if (!group.getChatUserManager().hasUser(userName)) {
+            ApplyProcessPacket applyPacket = new ApplyProcessPacket(packet.getChildElement());
+            try {
+                String nickName = StringUtils.ifNullReturnDefaultValue(applyPacket.getNickname(), userName);
+                group.applyJoin(packet.getFrom(), nickName, applyPacket.getReason());
+
+                replyOK(packet);
+            } catch (FullMemberException exp) {
+
+                /* 已经达到最大成员限制 */
+                handleException(exp, "圈子已满员，申请加入失败,GroupId:%s, UserName:%s",
+                        group.getId(), userName);
+                replyError(packet, PacketError.Condition.service_unavailable);
+            }
+
+        } else {
+            /* 已经是圈子成员 */
             replyOK(packet);
-            return;
-        }
-
-        ApplyProcessPacket applyPacket = new ApplyProcessPacket(packet.getChildElement());
-        try {
-            String nickName = applyPacket.getNickname();
-            nickName = StringUtils.isNullOrEmpty(nickName) ? userName : nickName;
-            group.applyJoin(packet.getFrom(), nickName, applyPacket.getReason());
-
-            replyOK(packet);
-        }catch (FullMemberException exp) {
-
-            /* 已经达到最大成员限制 */
-            handleException(exp, "圈子已满员，申请加入失败,GroupId:%s, UserName:%s",
-                    group.getId(), userName);
-            replyError(packet, PacketError.Condition.service_unavailable);
         }
     }
 }
