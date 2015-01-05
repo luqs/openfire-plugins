@@ -13,4 +13,9 @@ public final class StringUtils {
     public static String ifNullReturnEmpty(String str) {
         return str != null ? str : "";
     }
+
+
+    public static String ifNullReturnDefaultValue(String str, String defaultValue) {
+        return str != null ? str : defaultValue;
+    }
 }

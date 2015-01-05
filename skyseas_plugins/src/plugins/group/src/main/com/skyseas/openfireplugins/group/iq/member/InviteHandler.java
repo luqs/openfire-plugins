@@ -53,7 +53,7 @@ public class InviteHandler extends MemberIQHandler {
     }
 
     private void broadcastInviteMessage(final Group group, final String from, final List<ChatUser> newMembers) {
-        if(newMembers.size() > 0) {
+        if (newMembers.size() > 0) {
             TaskEngine.getInstance().submit(new Runnable() {
                 @Override
                 public void run() {
@@ -116,10 +116,12 @@ public class InviteHandler extends MemberIQHandler {
 
             for (Element memElement : memberElements) {
                 String userName = memElement.attributeValue("username");
+                String userNickname = memElement.attributeValue("nickname");
+
                 if (!StringUtils.isNullOrEmpty(userName)) {
                     members.add(new GroupMemberInfo(
                             userName,
-                            memElement.attributeValue("nickname")));
+                            StringUtils.ifNullReturnDefaultValue(userNickname, userName)));
                 }
             }
             return members;
