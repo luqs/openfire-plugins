@@ -22,8 +22,8 @@ final class GroupInfoPacket {
         groupInfo.setName(form.getFirstValue("name"));
         groupInfo.setLogo(form.getFirstValue("logo"));
         groupInfo.setDescription(form.getFirstValue("description"));
-        groupInfo.setCategory(form.getFirstValueAsInt("category", 1));
-        groupInfo.setSubject(StringUtils.ifNullReturnEmpty(form.getFirstValue("subject")));
+        groupInfo.setCategory(form.getFirstValueAsInt("category", 0));
+        groupInfo.setSubject(form.getFirstValue("subject"));
         String opennessValue = form.getFirstValue("openness");
         if (opennessValue != null) {
             groupInfo.setOpennessType(GroupInfo.OpennessType.valueOf(opennessValue));

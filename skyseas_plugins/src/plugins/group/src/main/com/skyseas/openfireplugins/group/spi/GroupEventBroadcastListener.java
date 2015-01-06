@@ -37,6 +37,9 @@ public final class GroupEventBroadcastListener implements GroupEventListener {
             public void run() {
                 Message msg = MessageFactory.newInstanceForMemberExit(user.getUserName(), user.getNickname(), reason);
                 group.broadcast(msg);
+
+                /* 退出者也可以收到消息 */
+                group.send(user.getJid(), msg);
             }
         });
     }

@@ -2,6 +2,7 @@ package com.skyseas.openfireplugins.group.iq.group;
 
 import com.skyseas.openfireplugins.group.ChatUser;
 import org.jivesoftware.openfire.PacketRouter;
+import org.xmpp.packet.JID;
 import org.xmpp.packet.Packet;
 
 /**
@@ -27,7 +28,7 @@ public class MockChatUser implements ChatUser {
 
     }
 
-    public String getJid() {
+    public JID getJid() {
         return null;
     }
 

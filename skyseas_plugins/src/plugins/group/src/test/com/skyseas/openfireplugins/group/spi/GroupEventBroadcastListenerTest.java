@@ -32,6 +32,18 @@ public class GroupEventBroadcastListenerTest extends TestCase {
                     }
                 }));
                 times = 1;
+
+                group.send(user.getJid(), with(new Delegate<Message>() {
+
+                    public void validate(Message packet) {
+                        assertEquals(
+                                "<message>" +
+                                        "<x xmlns=\"http://skysea.com/protocol/group#member\"><exit>" +
+                                        "<member username=\"user\" nickname=\"碧眼狐狸\"/>" +
+                                        "<reason>reason</reason></exit></x></message>", packet.toXML().trim());
+                    }
+                }));
+                times = 1;
             }
         };
     }

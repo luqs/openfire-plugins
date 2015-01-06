@@ -86,7 +86,7 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
             pstmt.setByte(      6, (byte) groupInfo.getOpennessType().ordinal());
             pstmt.setTimestamp( 7, new Timestamp(groupInfo.getCreateTime().getTime()));
             pstmt.setString(    8, groupInfo.getSubject());
-            pstmt.setInt(       9, groupInfo.getNumberOfMembers());
+            pstmt.setInt(       9, 0);
             if(pstmt.executeUpdate() > 0) {
                 rs = pstmt.getGeneratedKeys();
                 rs.next();
@@ -276,10 +276,13 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
                 "logo", groupInfo.getLogo())
 
         .addField(groupInfo.getCategory() != 0,
-                "category", groupInfo.getCategory())
+                "category", groupInfo.getCategory());
 
-        .addField(groupInfo.getOpennessType() != null,
-                "openness", groupInfo.getOpennessType().ordinal());
+        if(groupInfo.getOpennessType() != null) {
+            fieldListBuilder.addField(true,
+                    "openness",
+                    groupInfo.getOpennessType().ordinal());
+        }
 
         parameters = fieldListBuilder.getParameters();
         sqlBuilder.append(fieldListBuilder.getSql());

@@ -28,4 +28,6 @@ public interface ChatUser {
      * @param packet
      */
     void send(PacketRouter router, Packet packet);
+
+    JID getJid();
 }

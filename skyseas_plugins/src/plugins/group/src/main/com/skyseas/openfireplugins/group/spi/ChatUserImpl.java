@@ -48,6 +48,7 @@ class ChatUserImpl implements ChatUser {
     }
 
 
+    @Override
     public JID getJid(){
         return this.jid;
     }
