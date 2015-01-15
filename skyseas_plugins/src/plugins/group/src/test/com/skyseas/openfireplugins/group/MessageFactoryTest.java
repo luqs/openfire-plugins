@@ -1,6 +1,7 @@
 package com.skyseas.openfireplugins.group;
 
 import junit.framework.TestCase;
+import org.dom4j.DocumentHelper;
 import org.xmpp.packet.JID;
 import org.xmpp.packet.Message;
 
@@ -58,8 +59,8 @@ public class MessageFactoryTest extends TestCase {
                 msg.toString().trim());
     }
 
-    public void testNewInstanceForMemberExit() {
-        // Act
+    public void testNewInstanceForMemberExit() throws Exception {
+
         Message msg = MessageFactory.newInstanceForMemberExit(
                 userName,
                 nickName,
@@ -97,13 +98,24 @@ public class MessageFactoryTest extends TestCase {
                 msg.toString().trim());
     }
 
-    public void testNewInstanceForGroupChat() {
+    public void testNewInstanceForGroupChat() throws Exception {
         // Act
-        Message msg = MessageFactory.newInstanceForGroupChat("大家好啊，一起出来喝酒吧！", "碧眼狐狸");
+        // Act
+        Message msg = new Message(DocumentHelper.parseText(
+                "<message>\n" +
+                        "<body>大家好啊，一起出来喝酒吧！</body>\n" +
+                        "<x xmlns='http://skysea.com/protocol/message#extension'>\n" +
+                        "   <contentType>image/jpg</contentType>\n" +
+                        "</x>" +
+                        "</message>").getRootElement());
+        msg = MessageFactory.newInstanceForGroupChat(msg, "碧眼狐狸");
 
         // Assert
-        assertEquals("<message type=\"groupchat\">\n" +
-                        "  <body>大家好啊，一起出来喝酒吧！</body>\n" +
+        assertEquals("<message type=\"groupchat\"> \n" +
+                        "  <body>大家好啊，一起出来喝酒吧！</body>  \n" +
+                        "  <x xmlns=\"http://skysea.com/protocol/message#extension\">  \n" +
+                        "    <contentType>image/jpg</contentType> \n" +
+                        "  </x>\n" +
                         "  <x xmlns=\"http://skysea.com/protocol/group#member\">\n" +
                         "    <member nickname=\"碧眼狐狸\"/>\n" +
                         "  </x>\n" +

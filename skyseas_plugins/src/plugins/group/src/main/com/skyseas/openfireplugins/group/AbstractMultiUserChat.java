@@ -70,9 +70,7 @@ public abstract class AbstractMultiUserChat implements MultiUserChat {
     protected void broadcast(Message message) {
         ChatUser user = checkMsg(message);
         if (user != null) {
-            message = MessageFactory.newInstanceForGroupChat(
-                    message.getBody(),
-                    user.getNickname());
+            message = MessageFactory.newInstanceForGroupChat(message, user.getNickname());
             message.setFrom(createGroupUserJid(user.getUserName()));
             broadcast((Packet) message);
         }

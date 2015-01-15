@@ -43,14 +43,10 @@ public class MessageFactory {
                 .build();
     }
 
-    public static Message newInstanceForGroupChat(String body, String nickName) {
-        Message msg = new Message();
-        msg.setBody(body);
-
-        msg =  new MessageBuilder(msg, ActionType.MESSAGE)
+    public static Message newInstanceForGroupChat(Message message, String nickName) {
+       return new MessageBuilder(message, ActionType.MESSAGE)
                 .setNickName(nickName)
                 .build();
-        return msg;
     }
 
     public static Message newInstanceForMemberUpdateProfile(String userName, String nickname, String newNickname) {

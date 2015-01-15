@@ -2,38 +2,43 @@
 
 <html>
 <head>
-	<title>�û����ɲ��˵��</title>
+    <title>附加资源插件</title>
     <style type="text/css">
         BODY {
-            font-size : 100%;
+            font-size: 100%;
         }
+
         BODY, TD, TH {
-            font-family : tahoma, verdana, arial, helvetica, sans-serif;
-            font-size : 0.8em;
+            font-family: tahoma, verdana, arial, helvetica, sans-serif;
+            font-size: 0.8em;
         }
+
         H2 {
-             font-size : 10pt;
-             font-weight : bold;
-        }
-        A:hover {
-            text-decoration : none;
-        }
-        H1 {
-            font-family : tahoma, arial, helvetica, sans-serif;
-            font-size : 1.4em;
+            font-size: 10pt;
             font-weight: bold;
-            border-bottom : 1px #ccc solid;
-            padding-bottom : 2px;
+        }
+
+        A:hover {
+            text-decoration: none;
+        }
+
+        H1 {
+            font-family: tahoma, arial, helvetica, sans-serif;
+            font-size: 1.4em;
+            font-weight: bold;
+            border-bottom: 1px #ccc solid;
+            padding-bottom: 2px;
         }
 
         TT {
-            font-family : courier new, sans-serif;
-            font-weight : bold;
-            color : #060;
+            font-family: courier new, sans-serif;
+            font-weight: bold;
+            color: #060;
         }
+
         PRE {
-            font-family : courier new, sans-serif;
-            font-size : 100%;
+            font-family: courier new, sans-serif;
+            font-size: 100%;
         }
     </style>
 </head>
@@ -41,16 +46,24 @@
 
 
 <h1>
-�û����ɲ��˵��
+    附加资源插件
 </h1>
 
-<h2>Overview</h2>
+<h2>概述</h2>
 
 <p>
-xxx
+    这个插件用于在客户端进行多媒体消息发送时用作多媒体文件存储之用。
 </p>
 
-<h2>Installation</h2>
-xxx
+
+<h2>安装</h2>
+
+<p>
+
+    通过openfire插件控制台上传插件之后，需要设置名为:<strong>resource.basepath</strong>的系统属性，
+    如：/usr/local/data/chatResource，
+    这个系统属性代表了文件资源存储的基础路径，记得需要赋予该目录的写入权限哦！
+
+</p>
 </body>
 </html>

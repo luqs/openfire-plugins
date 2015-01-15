@@ -141,7 +141,7 @@ public class GroupImplTest extends TestCase {
 
                         public boolean validate(Packet p) {
                             assertEquals(
-                                    "<message type=\"groupchat\" from=\"100@group.skysea.com/user\">" +
+                                    "<message from=\"100@group.skysea.com/user\" type=\"groupchat\">" +
                                             "<x xmlns=\"http://skysea.com/protocol/group#member\">" +
                                             "<member nickname=\"用户\"/>" +
                                             "</x></message>", p.toXML().trim());
@@ -153,7 +153,6 @@ public class GroupImplTest extends TestCase {
                 }
             };
         }
-
         // Act
         group.send(msg);
 
