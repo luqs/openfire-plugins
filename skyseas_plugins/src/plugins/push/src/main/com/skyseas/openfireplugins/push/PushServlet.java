@@ -3,7 +3,6 @@ package com.skyseas.openfireplugins.push;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.jivesoftware.openfire.XMPPServer;
 import org.jivesoftware.util.JiveGlobals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 /**
@@ -80,7 +78,7 @@ public class PushServlet extends HttpServlet {
          * 接收来自客户端的post请求，
          * 从请求中取得XMPP数据包，并将数据包通过PacketSender发送出去。
          */
-        String rawPacket    = getRawPacket(request);
+        String rawPacket    = getRawPacketContent(request);
         Packet packet       = createPacket(rawPacket);
 
         if (packet != null && sendPacket(packet)) {
@@ -97,9 +95,9 @@ public class PushServlet extends HttpServlet {
      * @param request
      * @return
      */
-    private String getRawPacket(HttpServletRequest request) {
+    private String getRawPacketContent(HttpServletRequest request) {
         String packetContent = request.getParameter(PACKET_CONTENT_PARAMETER_NAME);
-        return packetContent != null ? packetContent.trim() : "";
+        return packetContent != null ? packetContent.trim() : null;
     }
 
     /**
