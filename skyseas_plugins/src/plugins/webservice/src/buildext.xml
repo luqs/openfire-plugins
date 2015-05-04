@@ -6,7 +6,10 @@
   	<include name="xfire-aegis-1.2.6.jar"/>
   	<include name="gson-2.2.4.jar"/>
   	<include name="xfire-core-1.2.6.jar"/>
+  	<include name="jetty-6.1.25.jar"/>
+  	<include name="jetty-util-6.1.25.jar"/>
   </patternset>
 </project>
+
 
 

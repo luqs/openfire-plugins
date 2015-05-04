@@ -25,19 +25,17 @@ public class WebServicePlugin implements Plugin {
 	public void initializePlugin(PluginManager pluginManager, File file) {
 		try {
 			ObjectServiceFactory serviceFactory = new ObjectServiceFactory();
-			
+
 			Service service = serviceFactory.create(OpenfireWebService.class);
 			service.setInvoker(new BeanInvoker(new OpenfireWebServiceImpl()));
 
 			XFire xfire = XFireFactory.newInstance().getXFire();
 			xfire.getServiceRegistry().register(service);
 			httpServer = new XFireHttpServer();
-			httpServer.setPort(8191);
+			httpServer.setPort(3030);
 			httpServer.start();
-			LOGGER.info("WebService Server start success");
-			System.out.println("WebService Server start success");
 		} catch (Exception e) {
-			System.out.println("WebService Server start faile");
+			e.printStackTrace();
 			LOGGER.error("WebService Server start faile", e);
 		}
 	}
@@ -47,11 +45,8 @@ public class WebServicePlugin implements Plugin {
 		try {
 			if (httpServer != null && httpServer.isStarted()) {
 				httpServer.stop();
-				LOGGER.info("WebService Server stop success");
-				System.out.println("WebService Server start success");
 			}
 		} catch (Exception e) {
-			System.out.println("WebService Server stop faile");
 			LOGGER.error("WebService Server stop faile", e);
 		}
 

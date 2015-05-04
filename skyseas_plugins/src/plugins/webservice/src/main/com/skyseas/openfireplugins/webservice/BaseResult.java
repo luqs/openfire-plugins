@@ -1,9 +1,12 @@
 package com.skyseas.openfireplugins.webservice;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="Result")
 public class BaseResult {
 	protected String errorMessage ;
 	protected int errorCode;
-	protected String content;
+	protected Object object;
 	public BaseResult(){
 		
 	}
@@ -23,11 +26,11 @@ public class BaseResult {
 	public void setErrorCode(int errorCode) {
 		this.errorCode = errorCode;
 	}
-	public String getContent() {
-		return content;
+	public Object getObject() {
+		return object;
 	}
-	public void setContent(String content) {
-		this.content = content;
+	public void setObject(Object object) {
+		this.object = object;
 	}
 	
 }
