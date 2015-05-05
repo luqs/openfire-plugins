@@ -1,10 +1,12 @@
 package com.skyseas.openfireplugins.group;
 
 import com.skyseas.openfireplugins.group.spi.GroupServiceImpl;
+
 import org.jivesoftware.openfire.XMPPServer;
 import org.jivesoftware.openfire.container.Plugin;
 import org.jivesoftware.openfire.container.PluginManager;
 import org.jivesoftware.util.JiveGlobals;
+import org.jivesoftware.util.PropertyEventDispatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.component.ComponentException;
@@ -23,6 +25,7 @@ public final class GroupPlugin implements Plugin {
     public void initializePlugin(PluginManager pluginManager, File file) {
         String serviceName = JiveGlobals.getProperty("group.servicename", "group");
         GroupServiceImpl service = createService(serviceName);
+        PropertyEventDispatcher.addListener(service);
         installService(service);
     }
 
@@ -50,6 +53,7 @@ public final class GroupPlugin implements Plugin {
     private void uninstallService() {
         try {
             ComponentManagerFactory.getComponentManager().removeComponent(groupService.getServiceName());
+            PropertyEventDispatcher.removeListener(groupService);
         } catch (ComponentException e) {
             LOG.error("从组件管理器卸载GroupService失败。", e);
         }

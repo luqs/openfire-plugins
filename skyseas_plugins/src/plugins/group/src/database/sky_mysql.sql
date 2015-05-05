@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS sky_Group(
   description TEXT,
   openness TINYINT NOT NULL,
   createTime DATETIME NOT NULL,
-  numberOfMembers INT NOT NULL DEFAULT 0
+  numberOfMembers INT NOT NULL DEFAULT 0,
+  status VARCHAR(2) NOT NULL DEFAULT "0"
   ) DEFAULT CHARSET=utf8;
 
 

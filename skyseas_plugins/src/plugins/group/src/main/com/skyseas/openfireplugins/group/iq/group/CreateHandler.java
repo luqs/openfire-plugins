@@ -43,6 +43,7 @@ public class CreateHandler extends ServiceIQHandler {
         }
         groupInfo.setOwner(packet.getFrom().getNode());
         groupInfo.setCreateTime(new Date());
+        groupInfo.setStatus("0");
         return groupInfo;
     }
 

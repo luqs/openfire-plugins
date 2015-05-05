@@ -24,8 +24,8 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
     private final static String SELECT_GROUP_COUNT =
             "SELECT COUNT(*) FROM `sky_Group` %1$s;";
     private final static  String INSERT_GROUP =
-            "INSERT INTO sky_Group (name,owner,category,logo,description,openness,createTime,subject,numberOfMembers) " +
-                    "VALUES (?,?,?,?,?,?,?,?,?)";
+            "INSERT INTO sky_Group (name,owner,category,logo,description,openness,createTime,subject,numberOfMembers,status) " +
+                    "VALUES (?,?,?,?,?,?,?,?,?,?)";
     private final static String DELETE_GROUP =
             "DELETE FROM `sky_Group` WHERE id = ?";
     private final static String INSERT_GROUP_MEMBER =
@@ -41,7 +41,7 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
             "UPDATE `sky_GroupMembers` SET `nickName` = ? WHERE groupId = ? AND userName = ?";
 
     private final static String SELECT_SINGLE_GROUP =
-            "SELECT id, name,owner,category,logo,description,openness,createTime,subject,numberOfMembers " +
+            "SELECT id, name,owner,category,logo,description,openness,createTime,subject,numberOfMembers,status " +
              "FROM `sky_Group` WHERE id = ?";
 
     private final static String SELECT_GROUPS_BY_MEMBER =
@@ -87,6 +87,7 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
             pstmt.setTimestamp( 7, new Timestamp(groupInfo.getCreateTime().getTime()));
             pstmt.setString(    8, groupInfo.getSubject());
             pstmt.setInt(       9, 0);
+            pstmt.setString(       10, "0");
             if(pstmt.executeUpdate() > 0) {
                 rs = pstmt.getGeneratedKeys();
                 rs.next();
@@ -536,6 +537,7 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
         groupInfo.setCreateTime(        rs.getDate("createTime"));
         groupInfo.setSubject(           rs.getString("subject"));
         groupInfo.setNumberOfMembers(   rs.getInt("numberOfMembers"));
+        groupInfo.setStatus(  			rs.getString("status"));
         return groupInfo;
     }
 

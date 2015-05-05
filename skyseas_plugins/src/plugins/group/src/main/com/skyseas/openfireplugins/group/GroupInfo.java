@@ -28,8 +28,7 @@ public class GroupInfo {
          */
         PRIVATE
     }
-
-
+    
     private String owner;
     private String name;
     private String description;
@@ -40,6 +39,7 @@ public class GroupInfo {
     private String subject;
     private int numberOfMembers;
     private int id;
+    private String status ;//0代表正常，1代表禁止一切消息收发功能
 
     public void setDescription(String description) {
         this.description = description;
@@ -127,7 +127,15 @@ public class GroupInfo {
         this.numberOfMembers = numberOfMembers;
     }
 
-    public static GroupInfo combine(GroupInfo orgInfo, GroupInfo updater) {
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public static GroupInfo combine(GroupInfo orgInfo, GroupInfo updater) {
         GroupInfo newGroupInfo = new GroupInfo();
 
         newGroupInfo.setId(updater.getId() > 0
@@ -169,6 +177,10 @@ public class GroupInfo {
         newGroupInfo.setCreateTime(updater.getCreateTime() != null
                 ? updater.getCreateTime()
                 :orgInfo.getCreateTime());
+        
+        newGroupInfo.setStatus(updater.getStatus() !=null
+                ? updater.getStatus()
+                :orgInfo.getStatus());
 
         return newGroupInfo;
     }

@@ -1,6 +1,5 @@
 package com.skyseas.openfireplugins.group;
 
-import org.jivesoftware.openfire.PacketRouter;
 import org.jivesoftware.openfire.XMPPServer;
 import org.xmpp.packet.JID;
 
@@ -8,6 +7,9 @@ import org.xmpp.packet.JID;
  * Created by apple on 14-9-14.
  */
 public interface GroupService {
+	
+	public final static String ALLOW_CREATE_GROUP = "group.setting.allow_create_group";
+	public final static String FIRE_PROPERTY_LISTENER_TMP = "fire.property.listener.tmp";
     /**
      * 获得圈子服务名称。如：group。
      * @return

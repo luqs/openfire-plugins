@@ -1,25 +1,39 @@
 package com.skyseas.openfireplugins.group.spi;
 
-import com.skyseas.openfireplugins.group.Group;
-import com.skyseas.openfireplugins.group.GroupEventDispatcher;
-import com.skyseas.openfireplugins.group.GroupManager;
-import com.skyseas.openfireplugins.group.GroupService;
-import com.skyseas.openfireplugins.group.util.StringUtils;
+import java.util.Map;
+import java.util.TimerTask;
+
 import org.jivesoftware.openfire.XMPPServer;
+import org.jivesoftware.util.JiveGlobals;
+import org.jivesoftware.util.PropertyEventListener;
 import org.jivesoftware.util.TaskEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.component.Component;
 import org.xmpp.component.ComponentException;
 import org.xmpp.component.ComponentManager;
-import org.xmpp.packet.*;
+import org.xmpp.packet.IQ;
+import org.xmpp.packet.JID;
+import org.xmpp.packet.Message;
+import org.xmpp.packet.Packet;
+import org.xmpp.packet.PacketError;
+import org.xmpp.packet.Presence;
 
-import java.util.TimerTask;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.skyseas.openfireplugins.group.Group;
+import com.skyseas.openfireplugins.group.GroupEventDispatcher;
+import com.skyseas.openfireplugins.group.GroupManager;
+import com.skyseas.openfireplugins.group.GroupService;
+import com.skyseas.openfireplugins.group.iq.IQHandler;
+import com.skyseas.openfireplugins.group.iq.group.CreateHandler;
+import com.skyseas.openfireplugins.group.iq.group.InfoQueryHandler;
+import com.skyseas.openfireplugins.group.util.StringUtils;
 
 /**
  * Created by apple on 14-9-14.
  */
-public final class GroupServiceImpl implements GroupService, Component {
+public final class GroupServiceImpl implements GroupService, Component, PropertyEventListener {
     private final static int CLEAN_TASK_PERIOD = 60 * 1000 * 5; // 5分钟一次
     private final static Logger LOG = LoggerFactory.getLogger(GroupServiceImpl.class);
     private final String serviceName;
@@ -130,7 +144,19 @@ public final class GroupServiceImpl implements GroupService, Component {
     private void processGroupPacket(String groupId, Packet packet) {
         Group group = groupManager.getGroup(groupId);
         if (group != null) {
-            group.send(packet);
+        	String status = group.getGroupInfo().getStatus();
+        	if("0".equals(status)){
+        		//群的状态如果是0：非禁言，则想下一层路由消息
+        		group.send(packet);
+        	} else if(packet instanceof IQ && groupIQDispatcher.getHandler((IQ)packet) instanceof InfoQueryHandler) {
+        		//群的状态是禁言，只允许查询群详情的请求通过，
+        		group.send(packet);
+        	} else {
+        		System.out.println(packet);
+        		System.out.println("====================not_allowed");
+        		//其他一切请求不允许通过
+        		replyError(packet, PacketError.Condition.not_allowed);
+        	}
         } else {
             replyError(packet, PacketError.Condition.item_not_found);
         }
@@ -138,6 +164,13 @@ public final class GroupServiceImpl implements GroupService, Component {
 
     private void processServicePacket(Packet packet) {
         if (packet instanceof IQ) {
+        	IQHandler iqHandler = iqDispatcher.getHandler((IQ) packet);
+        	if("false".equals(JiveGlobals.getProperty(ALLOW_CREATE_GROUP,"true"))&&iqHandler instanceof CreateHandler){
+        		System.out.println(packet);
+        		System.out.println("====================not_allowed==============");
+        		replyError(packet, PacketError.Condition.not_allowed);
+        		return ;
+        	}
             iqDispatcher.dispatch((IQ) packet);
         } else {
             replyError(packet, PacketError.Condition.not_acceptable);
@@ -201,5 +234,38 @@ public final class GroupServiceImpl implements GroupService, Component {
             }
         }
     }
+
+	@Override
+	public void propertySet(String property, Map<String, Object> params) {
+		if(FIRE_PROPERTY_LISTENER_TMP.equals(property)){
+			String value =(String)params.get("value");
+			TypeToken<Map<String,String>> mapType =new TypeToken<Map<String,String>>(){};
+			Map<String,String> valueMap = new Gson().fromJson(value, mapType.getType());
+			if("GroupSatatusChange".equals(valueMap.get("event_name"))){
+				String groupId = valueMap.get("groupid");
+				String status = valueMap.get("status");
+				groupManager.getGroup(groupId).getGroupInfo().setStatus(status);
+			}
+		}
+		System.out.println(property);
+	}
+
+	@Override
+	public void propertyDeleted(String property, Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void xmlPropertySet(String property, Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void xmlPropertyDeleted(String property, Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

@@ -102,7 +102,7 @@ final class IQDispatcher implements GroupIQDispatcher {
     }
 
 
-    private IQHandler getHandler(IQ packet) {
+    public IQHandler getHandler(IQ packet) {
         Element extElement = packet.getChildElement();
         if (extElement != null) {
             String extName = extElement.getName();
