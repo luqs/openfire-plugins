@@ -72,7 +72,7 @@ public class OpenfireWebServiceImpl implements OpenfireWebService {
 			if(pstmt.executeUpdate()>0
 					&&(rs = pstmt.getGeneratedKeys()).next()){
 				Long id = rs.getLong(1); 
-				sql = "insert into sky_Groupmembers(groupId,userName,nickName,joinTime)"
+				sql = "insert into sky_GroupMembers(groupId,userName,nickName,joinTime)"
 						+ " values(?,?,?,?)";
 				memberPstmt = con.prepareStatement(sql);
 				for(int i = 0;i<jids.length;i++){
