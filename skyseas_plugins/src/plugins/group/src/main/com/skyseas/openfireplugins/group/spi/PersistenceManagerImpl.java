@@ -20,7 +20,7 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
 
     private final static Logger LOG = LoggerFactory.getLogger(PersistenceManagerImpl.class);
     private final static String SELECT_GROUP =
-            "SELECT `id`, `owner`,`name`,`logo`,`numberOfMembers`,`subject`,`openness` FROM `sky_Group` %1$s ORDER BY `id` DESC LIMIT ?,?;";
+            "SELECT `id`, `owner`,`name`,`logo`,`numberOfMembers`,`subject`,`openness` FROM `sky_Group` %1$s ORDER BY `numberOfMembers` DESC LIMIT ?,?;";
     private final static String SELECT_GROUP_COUNT =
             "SELECT COUNT(*) FROM `sky_Group` %1$s;";
     private final static  String INSERT_GROUP =
