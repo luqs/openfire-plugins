@@ -214,4 +214,18 @@ public class OpenfireWebServiceImpl implements OpenfireWebService {
 		return rsList;
 	}
 
+	@Override
+	public String getCurrentSessionCount() {
+		BaseResult baseResult = new BaseResult();
+		try {
+			int count =XMPPServer.getInstance().getSessionManager().getConnectionsCount(false);
+			baseResult.setObject(count);
+		} catch (Exception e) {
+			baseResult.setErrorCode(1);
+			baseResult.setErrorMessage(e.getMessage());
+			e.printStackTrace();
+		}
+		return new Gson().toJson(baseResult);
+	}
+
 }

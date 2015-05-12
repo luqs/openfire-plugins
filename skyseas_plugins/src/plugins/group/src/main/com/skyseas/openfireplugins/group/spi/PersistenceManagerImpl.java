@@ -259,7 +259,7 @@ public class PersistenceManagerImpl implements GroupPersistenceManager, GroupMem
         Connection          con             = null;
         PreparedStatement   pstmt           = null;
         ArrayList<Object>   parameters      = null;
-        final String        PART_UPDATE_SQL = "update sky_group set";
+        final String        PART_UPDATE_SQL = "update sky_Group set";
         StringBuilder       sqlBuilder      = new StringBuilder(PART_UPDATE_SQL);
 
 

@@ -20,4 +20,6 @@ public interface OpenfireWebService {
 	public String updateGroupSetting(String propertyName, String value);
 
 	public String getGroupSetting(String propertyName);
+	
+	public String getCurrentSessionCount();
 }
