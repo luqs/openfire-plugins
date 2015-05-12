@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/plugins/group/src/main"/>
+	<classpathentry kind="src" path="src/plugins/group/src/test"/>
+	<classpathentry kind="src" path="src/plugins/push/src/main"/>
+	<classpathentry kind="src" path="src/plugins/push/src/test"/>
+	<classpathentry kind="src" path="src/plugins/userintegration/src/main"/>
+	<classpathentry kind="src" path="src/plugins/userintegration/src/test"/>
+	<classpathentry kind="src" path="src/plugins/chatlogs/src/main"/>
+	<classpathentry kind="src" path="src/plugins/chatlogs/src/test"/>
+	<classpathentry kind="src" path="src/plugins/addition/src/main"/>
+	<classpathentry kind="src" path="src/plugins/webservice/src/main"/>
+	<classpathentry kind="src" path="src/plugins/webservice/src/test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_25"/>
+	<classpathentry kind="lib" path="lib/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-asl-1.9.4.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-mapper-asl-1.9.4.jar"/>
+	<classpathentry kind="lib" path="lib/jasper-compiler.jar"/>
+	<classpathentry kind="lib" path="lib/jasper-runtime.jar"/>
+	<classpathentry kind="lib" path="lib/jmockit-0.999.16.jar" sourcepath="d:/Users/qslu/.m2/repository/com/googlecode/jmockit/jmockit/0.999.16/jmockit-0.999.16-sources.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.11.jar"/>
+	<classpathentry kind="lib" path="lib/openfire.jar"/>
+	<classpathentry kind="lib" path="lib/servlet.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.2.4.jar"/>
+	<classpathentry kind="lib" path="lib/jedis-2.6.0.jar" sourcepath="d:/Users/qslu/.m2/repository/redis/clients/jedis/2.6.0/jedis-2.6.0-sources.jar"/>
+	<classpathentry kind="lib" path="lib/commons-pool2-2.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-fileupload-1.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.2.jar"/>
+	<classpathentry kind="lib" path="lib/jsr173_api-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/wsdl4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/xfire-aegis-1.2.6.jar"/>
+	<classpathentry kind="lib" path="lib/xfire-core-1.2.6.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
