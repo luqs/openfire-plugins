@@ -40,6 +40,8 @@ abstract class ApplyStrategy {
                 return IMMEDIATE_PROCESS;
             case AFFIRM_REQUIRED:
                 return FORWARDING_TO_OWNER;
+            case PRIVATE:
+            	return IMMEDIATE_PROCESS;
             default:
                 return NOT_ALLOWED;
         }
