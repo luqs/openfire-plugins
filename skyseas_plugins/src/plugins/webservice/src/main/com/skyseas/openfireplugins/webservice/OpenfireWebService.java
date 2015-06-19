@@ -1,6 +1,7 @@
 package com.skyseas.openfireplugins.webservice;
 
 
+
 public interface OpenfireWebService {
 	public final static String ALLOW_CREATE_GROUP = "group.setting.allow_create_group";
 	public final static String FIRE_PROPERTY_LISTENER_TMP = "fire.property.listener.tmp";
