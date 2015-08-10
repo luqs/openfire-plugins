@@ -49,6 +49,10 @@ public class JedisManager {
         return jedis;  
     }  
 	
+	public void destroy() {  
+        pool.destroy();
+    } 
+	
 	public void closeJedis(Jedis jedis) {  
         if(jedis != null) {  
             pool.returnResource(jedis);  
