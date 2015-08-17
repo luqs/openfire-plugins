@@ -1,7 +1,5 @@
 package com.skyseas.openfireplugins.chatlogs;
 
-import java.util.Date;
-
 /**
  * function: 聊天记录对象实体
  */
@@ -15,6 +13,8 @@ public class OfChatLogs {
 	private String toUser;
 
 	private String content;
+	
+	private String isGroup;
 
 	public Integer getId() {
 		return id;
@@ -54,5 +54,13 @@ public class OfChatLogs {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public String getIsGroup() {
+		return isGroup;
+	}
+
+	public void setIsGroup(String isGroup) {
+		this.isGroup = isGroup;
 	}
 }

@@ -110,6 +110,7 @@ public class ChatLogsPlugin implements PacketInterceptor, Plugin {
 			JID recipient = message.getTo();
 			logs.setToUser(recipient.getNode());
 		}
+		logs.setIsGroup(message.getType()== Message.Type.groupchat?"1":"0");
 		logs.setContent(message.toXML().replaceAll("\"", "\\\""));
 		logs.setCreateTime(sdf.format(new Date()));
 		return logs;
