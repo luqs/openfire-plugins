@@ -21,7 +21,7 @@ public class JedisManager {
 		int maxIdle = JiveGlobals.getIntProperty("redis.pool.maxIdle",50);
 		String host = JiveGlobals.getProperty("redis.host");
 		if(host==null || host.length()==0){
-			throw new RuntimeException("无法初连接Redis，未指定host");
+			throw new RuntimeException("can not initialize Redis connection，no host was specified");
 		}
 		int port = JiveGlobals.getIntProperty("redis.port",6379);
 		JedisPoolConfig config = new JedisPoolConfig();

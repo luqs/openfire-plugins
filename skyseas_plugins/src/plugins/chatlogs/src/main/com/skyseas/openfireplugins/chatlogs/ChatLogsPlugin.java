@@ -119,7 +119,7 @@ public class ChatLogsPlugin implements PacketInterceptor, Plugin {
 	public void destroyPlugin() {
 		interceptorManager.removeInterceptor(this);
 		jedisManager.destroy();
-		log.info("插件销毁成功");
+		log.info("chatlogs plugin stop success");
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class ChatLogsPlugin implements PacketInterceptor, Plugin {
 			props.load(in);
 			jedisManager = JedisManager.getInstance();
 			interceptorManager.addInterceptor(this);
-			log.info("插件启动成功");
+			log.info("chatlogs plugin start success");
 		} catch (Exception e) {
 			log.error("error: {}", e);
 		}
