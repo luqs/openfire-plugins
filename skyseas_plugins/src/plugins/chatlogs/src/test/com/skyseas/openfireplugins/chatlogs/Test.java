@@ -1,14 +1,6 @@
 package com.skyseas.openfireplugins.chatlogs;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
-import java.util.Properties;
-
-import com.google.gson.Gson;
 
 import redis.clients.jedis.Jedis;
 
@@ -16,12 +8,7 @@ public class Test {
 
 	public static void main(String[] args) throws Exception {
 
-		InputStream in = new BufferedInputStream(
-				new FileInputStream(
-						"E:/SMP_1.0/workspace/openfire-plugins/skyseas_plugins/src/plugins/chatlogs/src/redis.properties"));
-		Properties props = new Properties();
-		props.load(in);
-		JedisManager jedisUtil = JedisManager.getInstance(props);
+		JedisManager jedisUtil = JedisManager.getInstance();
 		Jedis jedis = jedisUtil.getJedis();
 
 		String key = "chatlogs";

@@ -3,7 +3,6 @@ package com.skyseas.openfireplugins.chatlogs;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -118,24 +117,23 @@ public class ChatLogsPlugin implements PacketInterceptor, Plugin {
 
 	@Override
 	public void destroyPlugin() {
-		jedisManager.destroy();
 		interceptorManager.removeInterceptor(this);
+		jedisManager.destroy();
 		log.info("插件销毁成功");
 	}
 
 	@Override
 	public void initializePlugin(PluginManager manager, File pluginDirectory) {
-		interceptorManager.addInterceptor(this);
 		
 		try {
 			InputStream in =new BufferedInputStream(new FileInputStream(new File(pluginDirectory,"redis.properties")));
 			Properties props = new Properties();
 			props.load(in);
-			jedisManager = JedisManager.getInstance(props);
+			jedisManager = JedisManager.getInstance();
+			interceptorManager.addInterceptor(this);
 			log.info("插件启动成功");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			log.error("error: {}", e);
-			e.printStackTrace();
 		}
 	}
 }

@@ -1,6 +1,6 @@
 package com.skyseas.openfireplugins.chatlogs;
 
-import java.util.Properties;
+import org.jivesoftware.util.JiveGlobals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,21 +16,23 @@ public class JedisManager {
 	private static JedisManager instance ;
 	private JedisPool pool;
 	
-	private JedisManager(Properties properties) {
-		if (properties == null) {
-			throw new IllegalArgumentException(
-					"cannot find the SignVerProp.properties");
+	private JedisManager() {
+		int maxActive = JiveGlobals.getIntProperty("redis.pool.maxActive",200);
+		int maxIdle = JiveGlobals.getIntProperty("redis.pool.maxIdle",50);
+		String host = JiveGlobals.getProperty("redis.host");
+		if(host==null || host.length()==0){
+			throw new RuntimeException("无法初连接Redis，未指定host");
 		}
+		int port = JiveGlobals.getIntProperty("redis.port",6379);
 		JedisPoolConfig config = new JedisPoolConfig();
-		config.setMaxTotal(Integer.valueOf(properties.getProperty("redis.pool.maxActive")));
-		config.setMaxIdle(Integer.valueOf(properties.getProperty("redis.pool.maxIdle")));
-		pool = new JedisPool(config, properties.getProperty("redis.host"),
-				Integer.valueOf(properties.getProperty("redis.port")));
+		config.setMaxTotal(maxActive);
+		config.setMaxIdle(maxIdle);
+		pool = new JedisPool(config, host, port);
 	}
 	
-	public static synchronized JedisManager getInstance(Properties properties) {
+	public static synchronized JedisManager getInstance() {
 		if (instance == null) { 
-			instance = new JedisManager(properties);
+			instance = new JedisManager();
 		}
 		return instance;  
     }  
