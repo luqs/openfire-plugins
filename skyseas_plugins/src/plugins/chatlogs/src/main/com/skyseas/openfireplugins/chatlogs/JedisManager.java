@@ -13,7 +13,7 @@ import redis.clients.jedis.JedisPoolConfig;
  */
 public class JedisManager {
 	private static final Logger log = LoggerFactory.getLogger(JedisManager.class);
-	private static JedisManager instance ;
+	private static JedisManager instance =new JedisManager();
 	private JedisPool pool;
 	
 	private JedisManager() {
@@ -31,9 +31,6 @@ public class JedisManager {
 	}
 	
 	public static synchronized JedisManager getInstance() {
-		if (instance == null) { 
-			instance = new JedisManager();
-		}
 		return instance;  
     }  
 
